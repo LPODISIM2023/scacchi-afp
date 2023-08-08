@@ -2,6 +2,7 @@ package it.univaq.disim.oop.scacchi.domain;
 
 import java.util.*;
 //import com.google.common.collect.ImmutableMap;
+import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 
 public abstract class Casella {
 
@@ -12,7 +13,7 @@ public abstract class Casella {
 	private static Map<Integer,CasellaVuota> creaCaselleVuote(){
 		final Map<Integer,CasellaVuota> mappaCaselle = new HashMap<Integer,CasellaVuota>();
 		
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < ScacchieraController.NUM_CASELLA; i++) {
 			mappaCaselle.put(i, new CasellaVuota(i));
 		}
 		
@@ -24,7 +25,7 @@ public abstract class Casella {
 		return pezzo != null ? new CasellaOccupata(coordinate, pezzo) : CASELLE_VUOTE_CACHE.get(coordinate);
 	}
 	
-	private Casella(int coordinata){
+	private Casella(final int coordinata){
 		this.casellaCoordinata = coordinata;
 	}
 	

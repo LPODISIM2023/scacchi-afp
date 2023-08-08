@@ -3,6 +3,7 @@ package it.univaq.disim.oop.scacchi.domain;
 import java.util.*;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.domain.Mossa.*;
 
 public class Cavallo extends Pezzo {
 
@@ -13,13 +14,13 @@ public class Cavallo extends Pezzo {
 	}
 
 	@Override
-	public Collection<Mossa> mosseLegali(Scacchiera scacchiera) {
+	public Collection<Mossa> mosseLegali(final Scacchiera scacchiera) {
 		
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
 		
 		for(final int insiemePosizioneCorrente : MOSSE_POSSIBILI) {
 			
-			int coordinateArrivo = this.coordinatePezzo + insiemePosizioneCorrente;
+			final int coordinateArrivo = this.coordinatePezzo + insiemePosizioneCorrente;
 			
 			if(ScacchieraController.casellaDisponibile(coordinateArrivo)) {
 				
@@ -33,14 +34,14 @@ public class Cavallo extends Pezzo {
 				final Casella casellaArrivo = scacchiera.getCasella(coordinateArrivo);
 				
 				if(!casellaArrivo.occupata()) {
-					possibiliMosse.add(new Mossa());
+					possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
 				}else {
 					
 					final Pezzo pezzoArrivo = casellaArrivo.getPezzo();
 					final Colore colorePezzo = pezzoArrivo.getColorePezzo();
 					
 					if(this.colorePezzo != colorePezzo) {
-						possibiliMosse.add(new Mossa());
+						possibiliMosse.add(new Attacco(scacchiera, this, coordinateArrivo, pezzoArrivo));
 					}
 				}
 				

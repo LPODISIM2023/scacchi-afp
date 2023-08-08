@@ -1,58 +1,42 @@
 package it.univaq.disim.oop.scacchi.domain;
+import it.univaq.disim.oop.scacchi.domain.Pezzo;
 
-import java.util.Set;
+//potrebbe essere astratta come classe
+public abstract class Mossa {
 
-public class Mossa {
+	final Scacchiera scacchiera;
+	final Pezzo pezzoMosso;
+	final int coordinateDestinazione;
 
-	private Integer Id;
-	private Integer IdPezzo;
-
-	private Giocatore mossaGiocatore;
-	private Pezzo pezzoMosso;
-	private Set<Partita> partite;
-
-	public Integer getId() {
-		return Id;
-	}
-
-	public void setId(Integer id) {
-		Id = id;
-	}
-
-	public Integer getIdPezzo() {
-		return IdPezzo;
-	}
-
-	public void setIdPezzo(Integer idPezzo) {
-		IdPezzo = idPezzo;
-	}
-
-	public Giocatore getMossaGiocatore() {
-		return mossaGiocatore;
-	}
-
-	public void setMossaGiocatore(Giocatore mossaGiocatore) {
-		this.mossaGiocatore = mossaGiocatore;
-	}
-
-	public Pezzo getPezzoMosso() {
-		return pezzoMosso;
-	}
-
-	public void setPezzoMosso(Pezzo pezzoMosso) {
+	private Mossa(final Scacchiera scacchiera,
+			final Pezzo pezzoMosso,
+			final int coordinateDestinazione){
+		this.scacchiera = scacchiera;
 		this.pezzoMosso = pezzoMosso;
+		this.coordinateDestinazione  = coordinateDestinazione;
 	}
+	
+	public static final class Muovi extends Mossa{
 
-	public Set<Partita> getPartite() {
-		return partite;
+		public Muovi(final Scacchiera scacchiera,
+				final Pezzo pezzoMosso,
+				final int coordinateDestinazione) {
+			super(scacchiera, pezzoMosso, coordinateDestinazione);
+		}
+		
 	}
+	
+	public static final class Attacco extends Mossa{
 
-	public void setPartite(Set<Partita> partite) {
-		this.partite = partite;
+		final Pezzo pezzoAttaccante;
+		
+		public Attacco(final Scacchiera scacchiera,
+				final Pezzo pezzoMosso,
+				final int coordinateDestinazione,
+				final Pezzo pezzoAttaccante) {
+			super(scacchiera, pezzoMosso, coordinateDestinazione);
+			this.pezzoAttaccante = pezzoAttaccante;
+		}
+		
 	}
-
-	public Scacchiera muovi() {
-		return null;
-	}
-
 }
