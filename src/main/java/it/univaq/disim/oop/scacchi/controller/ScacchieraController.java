@@ -2,31 +2,32 @@ package it.univaq.disim.oop.scacchi.controller;
 
 public class ScacchieraController {
 
-	//costanti rappresentanti le colonne della schacchiera
-	public static final boolean[] PRIMA_COLONNA = iniziallizzaColonna(0); 
-	public static final boolean[] SECONDA_COLONNA = iniziallizzaColonna(1);
-	public static final boolean[] SETTIMA_COLONNA = iniziallizzaColonna(6);
-	public static final boolean[] OTTAVA_COLONNA = iniziallizzaColonna(7);
-
-	public static final int NUM_CASELLA = 64;
-	public static final int NUM_CASELLA_PER_RIGA = 8;
+	public static final boolean[] PRIMA_COLONNA = initColonna(0); //array di caselle della prima colonna
+	public static final boolean[] SECONDA_COLONNA = initColonna(1);
+	public static final boolean[] SETTIMA_COLONNA = initColonna(6);
+	public static final boolean[] OTTAVA_COLONNA = initColonna(7);
 	
+	public static final boolean[] SECONDA_RIGA = null;
+	public static final boolean[] SETTIMA_RIGA = null;
+	
+	public static final int NUM_CASELLE = 64;
+	public static final int NUM_CASELLE_PER_RIGA = 8;
+
 	private ScacchieraController() {
 		throw new RuntimeException("Non puoi instanziarmi!");
 	}
 	
-	private static boolean[] iniziallizzaColonna(int numeroColonna) {
-		final boolean[] colonna = new boolean[NUM_CASELLA];
+	private static boolean[] initColonna(int numeroColonna) {
+		final boolean[] colonna = new boolean[NUM_CASELLE];
 		do {
 			colonna[numeroColonna] = true;
-			numeroColonna += NUM_CASELLA_PER_RIGA;
-		}while(numeroColonna < NUM_CASELLA);
-		
-			return colonna;
+			numeroColonna += NUM_CASELLE_PER_RIGA;
+		}while(numeroColonna < NUM_CASELLE);
+		return colonna;
 	}
-
-	public static boolean casellaDisponibile(final int coordinate) {
-		return coordinate >= 0 && coordinate < NUM_CASELLA;
+	
+	public static boolean casellaDisponibile(int coordinate) {
+		return coordinate >= 0 && coordinate < NUM_CASELLE;
 	}
 
 }

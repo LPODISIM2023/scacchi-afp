@@ -13,7 +13,7 @@ public abstract class Casella {
 	private static Map<Integer,CasellaVuota> creaCaselleVuote(){
 		final Map<Integer,CasellaVuota> mappaCaselle = new HashMap<Integer,CasellaVuota>();
 		
-		for(int i = 0; i < ScacchieraController.NUM_CASELLA; i++) {
+		for(int i = 0; i < ScacchieraController.NUM_CASELLE; i++) {
 			mappaCaselle.put(i, new CasellaVuota(i));
 		}
 		
