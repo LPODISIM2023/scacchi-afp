@@ -68,4 +68,8 @@ public class Scacchiera extends Giocatore {
 		this.pezzi = pezzi;
 	}
 
+	public Casella getCasella(int coordinateArrivo) {
+		return null;
+	}
+
 }

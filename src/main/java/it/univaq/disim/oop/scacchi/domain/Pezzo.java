@@ -1,60 +1,25 @@
 package it.univaq.disim.oop.scacchi.domain;
 
-public class Pezzo {
+import java.util.*;
+import it.univaq.disim.oop.scacchi.domain.Colore;
+import it.univaq.disim.oop.scacchi.domain.Mossa;
+import it.univaq.disim.oop.scacchi.domain.Scacchiera;
 
-	private int id;
-	private int idGiocatore;
-	private Scacchiera posizione;
-	private Boolean vivo;
-	private Scacchiera pezzoScacchiera;
-	private Mossa pezzoMosso;
+public abstract class Pezzo {
 
-	public int getId() {
-		return id;
+	protected final int coordinatePezzo;
+	protected final Colore colorePezzo;
+	
+	Pezzo(final int coordinatePezzo, final Colore colorePezzo){
+		this.coordinatePezzo = coordinatePezzo;
+		this.colorePezzo = colorePezzo;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	
+	public Colore getColorePezzo() {
+		return this.colorePezzo;
 	}
-
-	public int getIdGiocatore() {
-		return idGiocatore;
-	}
-
-	public void setIdGiocatore(int idGiocatore) {
-		this.idGiocatore = idGiocatore;
-	}
-
-	public Scacchiera getPosizione() {
-		return posizione;
-	}
-
-	public void setPosizione(Scacchiera posizione) {
-		this.posizione = posizione;
-	}
-
-	public Boolean getVivo() {
-		return vivo;
-	}
-
-	public void setVivo(Boolean vivo) {
-		this.vivo = vivo;
-	}
-
-	public Scacchiera getPezzoScacchiera() {
-		return pezzoScacchiera;
-	}
-
-	public void setPezzoScacchiera(Scacchiera pezzoScacchiera) {
-		this.pezzoScacchiera = pezzoScacchiera;
-	}
-
-	public Mossa getPezzoMosso() {
-		return pezzoMosso;
-	}
-
-	public void setPezzoMosso(Mossa pezzoMosso) {
-		this.pezzoMosso = pezzoMosso;
-	}
-
+	
+	//Dice quali mosse "legali" può effetturare un pezzo sulla scacchiera 
+	public abstract Collection<Mossa> mosseLegali(final Scacchiera scacchiera);
+	
 }
