@@ -1,9 +1,6 @@
 package it.univaq.disim.oop.scacchi.domain;
 
-import java.util.*;
-import it.univaq.disim.oop.scacchi.domain.Colore;
-import it.univaq.disim.oop.scacchi.domain.Mossa;
-import it.univaq.disim.oop.scacchi.domain.Scacchiera;
+import java.util.Collection;
 
 public abstract class Pezzo {
 
@@ -12,10 +9,14 @@ public abstract class Pezzo {
 	protected final boolean primaMossa;
 
 	Pezzo(final int coordinatePezzo, final Colore colorePezzo) {
-		this.coordinatePezzo = coordinatePezzo;
 		this.colorePezzo = colorePezzo;
+		this.coordinatePezzo = coordinatePezzo;
 		// TODO ci sono altre cose da inserire qui
 		this.primaMossa = false;
+	}
+	
+	public int getCoordinatePezzo() {
+		return this.coordinatePezzo;
 	}
 
 	public Colore getColorePezzo() {
@@ -27,6 +28,27 @@ public abstract class Pezzo {
 	}
 
 	// Dice quali mosse "legali" può effetturare un pezzo sulla scacchiera
-	public abstract Collection<Mossa> mosseLegali(final Scacchiera scacchiera);
+	public abstract Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera);
+	
+	public enum TipoPezzo {
+		
+		Pedone("P"),
+		Cavallo("C"),
+		Alfiere("A"),
+		Torre("T"),
+		Regina("Q"),
+		Re("K");
+		
+		private String nomePezzo;
+		
+		TipoPezzo(final String nomePezzo) {
+			this.nomePezzo = nomePezzo;
+		}
+		
+		@Override
+		public String toString() {
+			return this.nomePezzo;
+		}
+	}
 
 }

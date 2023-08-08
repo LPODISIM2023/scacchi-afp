@@ -12,13 +12,13 @@ public class Pedone extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI = { 8, 16, 7, 9 };
 
-	Pedone(final int coordinatePezzo, final Colore colorePezzo) {
+	Pedone(final Colore colorePezzo, final int coordinatePezzo) {
 		super(coordinatePezzo, colorePezzo);
 
 	}
 
 	@Override
-	public Collection<Mossa> mosseLegali(final Scacchiera scacchiera) {
+	public Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera) {
 
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
 
@@ -66,6 +66,11 @@ public class Pedone extends Pezzo {
 		}
 
 		return Collections.unmodifiableList(possibiliMosse);
+	}
+	
+	@Override
+	public String toString() {
+		return TipoPezzo.Pedone.toString();
 	}
 
 }

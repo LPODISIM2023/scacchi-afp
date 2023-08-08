@@ -13,12 +13,12 @@ public class Re extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	Re(int coordinatePezzo, Colore colorePezzo) {
+	Re(Colore colorePezzo, int coordinatePezzo) {
 		super(coordinatePezzo, colorePezzo);
 	}
 
 	@Override
-	public Collection<Mossa> mosseLegali(Scacchiera scacchiera) {
+	public Collection<Mossa> calcolaMosseLegali(Scacchiera scacchiera) {
 
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
 
@@ -44,6 +44,11 @@ public class Re extends Pezzo {
 
 		return Collections.unmodifiableList(possibiliMosse);
 	}
+	
+	@Override
+	public String toString() {
+		return TipoPezzo.Re.toString();
+	}
 
 	private static boolean primaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {
 		return ScacchieraController.PRIMA_COLONNA[posizioneAttuale]
@@ -54,4 +59,5 @@ public class Re extends Pezzo {
 		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale]
 				&& (possibilePosizione == -7 || possibilePosizione == 1 || possibilePosizione == 9);
 	}
+
 }

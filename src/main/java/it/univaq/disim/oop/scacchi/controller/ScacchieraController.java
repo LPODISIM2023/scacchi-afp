@@ -7,8 +7,8 @@ public class ScacchieraController {
 	public static final boolean[] SETTIMA_COLONNA = initColonna(6);
 	public static final boolean[] OTTAVA_COLONNA = initColonna(7);
 	
-	public static final boolean[] SECONDA_RIGA = null;
-	public static final boolean[] SETTIMA_RIGA = null;
+	public static final boolean[] SECONDA_RIGA = initRiga(1);
+	public static final boolean[] SETTIMA_RIGA = initRiga(6);
 	
 	public static final int NUM_CASELLE = 64;
 	public static final int NUM_CASELLE_PER_RIGA = 8;
@@ -16,7 +16,7 @@ public class ScacchieraController {
 	private ScacchieraController() {
 		throw new RuntimeException("Non puoi instanziarmi!");
 	}
-	
+
 	private static boolean[] initColonna(int numeroColonna) {
 		final boolean[] colonna = new boolean[NUM_CASELLE];
 		do {
@@ -24,6 +24,15 @@ public class ScacchieraController {
 			numeroColonna += NUM_CASELLE_PER_RIGA;
 		}while(numeroColonna < NUM_CASELLE);
 		return colonna;
+	}
+	
+	private static boolean[] initRiga(int numeroRiga) {
+		final boolean[] riga = new boolean[NUM_CASELLE];
+		do {
+			riga[numeroRiga] = true;
+			numeroRiga++;
+		}while(numeroRiga % NUM_CASELLE_PER_RIGA != 0);
+		return riga;
 	}
 	
 	public static boolean casellaDisponibile(int coordinate) {

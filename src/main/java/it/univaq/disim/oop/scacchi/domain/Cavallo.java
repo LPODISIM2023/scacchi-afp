@@ -1,20 +1,24 @@
 package it.univaq.disim.oop.scacchi.domain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.domain.Mossa.*;
+import it.univaq.disim.oop.scacchi.domain.Mossa.Attacco;
+import it.univaq.disim.oop.scacchi.domain.Mossa.Muovi;
 
 public class Cavallo extends Pezzo {
 
 	private final static int [] MOSSE_POSSIBILI = {-17, -15, -10, -6, 6, 10, 15, 17};
 	
-	Cavallo(final int coordinatePezzo, final Colore colorePezzo) {
+	Cavallo(final Colore colorePezzo, final int coordinatePezzo) {
 		super(coordinatePezzo, colorePezzo);
 	}
 
 	@Override
-	public Collection<Mossa> mosseLegali(final Scacchiera scacchiera) {
+	public Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera) {
 		
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
 		
@@ -49,6 +53,11 @@ public class Cavallo extends Pezzo {
 			
 		}
 		return Collections.unmodifiableList(possibiliMosse);
+	}
+	
+	@Override
+	public String toString() {
+		return TipoPezzo.Cavallo.toString();
 	}
 
 	private static boolean primaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {

@@ -1,7 +1,5 @@
 package it.univaq.disim.oop.scacchi.domain;
 
-import it.univaq.disim.oop.scacchi.domain.Pezzo;
-
 //potrebbe essere astratta come classe
 public abstract class Mossa {
 
