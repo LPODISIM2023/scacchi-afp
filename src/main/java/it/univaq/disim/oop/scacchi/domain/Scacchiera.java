@@ -39,15 +39,15 @@ public class Scacchiera extends Giocatore {
 	
 	@Override
 	public String toString() {
-		final StringCostruttore costruttore = new StringCostruttore();
+		final StringBuilder builder = new StringBuilder();
 		for(int i = 0; i < ScacchieraController.NUM_CASELLE; i++) {
 			final String testoCasella = this.scacchiera.get(i).toString();
-			costuttore.append(String.format("%3s", testoCasella));
+			builder.append(String.format("%3s", testoCasella));
 			if((i + 1) % ScacchieraController.NUM_CASELLE_PER_RIGA == 0) {
-				costruttore.append("\n");
+				builder.append("\n");
 			}
 		}
-		return costruttore.toString();
+		return builder.toString();
 	}
 
 	private Collection<Mossa> calcolaMosseLegali(final Collection<Pezzo> pezzi) {
