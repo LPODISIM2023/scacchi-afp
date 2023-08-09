@@ -13,7 +13,7 @@ public class Alfiere extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI  = {-9, -7, 7, 9};
 	
-	Alfiere(int coordinatePezzo, Colore colorePezzo) {
+	Alfiere(Colore colorePezzo, int coordinatePezzo) {
 		super(coordinatePezzo, colorePezzo);
 	}
 
@@ -22,13 +22,13 @@ public class Alfiere extends Pezzo {
 		
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
 		
-		for(final int offsetPossibiliCoordinate: MOSSE_POSSIBILI) {
+		for(final int insiemePosizioneCorrente: MOSSE_POSSIBILI) {
 			int coordinateArrivo = this.coordinatePezzo;	
 			while(ScacchieraController.casellaDisponibile(coordinateArrivo)) {
-				if(isPrimaColonnaEsclusa(coordinateArrivo, offsetPossibiliCoordinate) || isOttavaColonnaEsclusa(coordinateArrivo, offsetPossibiliCoordinate)) {
+				if(isPrimaColonnaEsclusa(coordinateArrivo, insiemePosizioneCorrente) || isOttavaColonnaEsclusa(coordinateArrivo, insiemePosizioneCorrente)) {
 					break;
 				}
-				coordinateArrivo += offsetPossibiliCoordinate;
+				coordinateArrivo += insiemePosizioneCorrente;
 				if(ScacchieraController.casellaDisponibile(coordinateArrivo)) {
 					final Casella casellaArrivo = scacchiera.getCasella(coordinateArrivo);
 					if(!casellaArrivo.occupata()) {
@@ -46,6 +46,11 @@ public class Alfiere extends Pezzo {
 		}
 		
 		return Collections.unmodifiableList(possibiliMosse);
+	}
+	
+	@Override
+	public String toString() {
+		return TipoPezzo.Alfiere.toString();
 	}
 	
 	private static boolean isPrimaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {
