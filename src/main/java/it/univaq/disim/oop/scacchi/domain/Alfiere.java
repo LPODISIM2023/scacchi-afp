@@ -11,14 +11,14 @@ import it.univaq.disim.oop.scacchi.domain.Mossa.Muovi;
 
 public class Alfiere extends Pezzo {
 
-	private final static int[] MOSSE_POSSIBILI  = {-9, -7, 7, 9};
+	private final static int[] MOSSE_POSSIBILI  = {-9, -7, 7, 9 };
 	
 	Alfiere(Colore colorePezzo, int coordinatePezzo) {
 		super(coordinatePezzo, colorePezzo);
 	}
 
 	@Override
-	public Collection<Mossa> calcolaMosseLegali(Scacchiera scacchiera) {
+	public Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera) {
 		
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
 		
