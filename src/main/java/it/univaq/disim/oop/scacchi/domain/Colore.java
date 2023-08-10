@@ -8,12 +8,12 @@ public enum Colore {
 		}
 
 		@Override
-		public boolean èBianco() {
+		public boolean isBianco() {
 			return true;
 		}
 
 		@Override
-		public boolean èNero() {
+		public boolean isNero() {
 			return false;
 		}
 	},
@@ -24,19 +24,19 @@ public enum Colore {
 		}
 
 		@Override
-		public boolean èBianco() {
+		public boolean isBianco() {
 			return false;
 		}
 
 		@Override
-		public boolean èNero() {
+		public boolean isNero() {
 			return true;
 		}
 	};
 
 	public abstract int getDirezione();
 
-	public abstract boolean èBianco();
+	public abstract boolean isBianco();
 
-	public abstract boolean èNero();
+	public abstract boolean isNero();
 }

@@ -1,6 +1,7 @@
 package it.univaq.disim.oop.scacchi.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,7 +82,8 @@ public class Scacchiera extends Giocatore {
 		for (int i = 0; i < ScacchieraController.NUM_CASELLE; i++) {
 			caselle[i] = Casella.creaCasella(i, costruttore.scacchieraConfig.get(i));
 		}
-		return Collections.unmodifiableList(caselle);
+		List<Casella> c = Arrays.asList(caselle);
+		return Collections.unmodifiableList(c);
 	}
 
 	// serve per creare la scacchiera con i pezzi nelle posizioni di partenza

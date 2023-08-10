@@ -35,16 +35,16 @@ public class Pedone extends Pezzo {
 				// TODO more work to do here(occuparsi delle promozioni)
 				possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
 			} else if (insiemePosizioneCorrente == 16 && this.primaMossa()
-					&& (ScacchieraController.SECONDA_RIGA[this.coordinatePezzo] && this.getColorePezzo().èNero())
-					|| (ScacchieraController.SETTIMA_RIGA[this.coordinatePezzo] && this.getColorePezzo().èBianco())) {
+					&& (ScacchieraController.SECONDA_RIGA[this.coordinatePezzo] && this.getColorePezzo().isNero())
+					|| (ScacchieraController.SETTIMA_RIGA[this.coordinatePezzo] && this.getColorePezzo().isBianco())) {
 				final int casellaArrivo = this.coordinatePezzo + (this.colorePezzo.getDirezione() * 8);
 				if (!scacchiera.getCasella(casellaArrivo).occupata()
 						&& !scacchiera.getCasella(coordinateArrivo).occupata()) {
 					possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
 				}
 			} else if (insiemePosizioneCorrente == 7 && !((ScacchieraController.OTTAVA_COLONNA[this.coordinatePezzo]
-					&& this.colorePezzo.èBianco()
-					|| (ScacchieraController.PRIMA_COLONNA[this.coordinatePezzo] && this.colorePezzo.èNero())))) {
+					&& this.colorePezzo.isBianco()
+					|| (ScacchieraController.PRIMA_COLONNA[this.coordinatePezzo] && this.colorePezzo.isNero())))) {
 				if (scacchiera.getCasella(coordinateArrivo).occupata()) {
 					final Pezzo pezzoArrivo = scacchiera.getCasella(coordinateArrivo).getPezzo();
 					if (this.colorePezzo != pezzoArrivo.getColorePezzo()) {
@@ -53,8 +53,8 @@ public class Pedone extends Pezzo {
 					}
 				}
 			} else if (insiemePosizioneCorrente == 9 && !((ScacchieraController.PRIMA_COLONNA[this.coordinatePezzo]
-					&& this.colorePezzo.èBianco()
-					|| (ScacchieraController.OTTAVA_COLONNA[this.coordinatePezzo] && this.colorePezzo.èNero())))) {
+					&& this.colorePezzo.isBianco()
+					|| (ScacchieraController.OTTAVA_COLONNA[this.coordinatePezzo] && this.colorePezzo.isNero())))) {
 				if (scacchiera.getCasella(coordinateArrivo).occupata()) {
 					final Pezzo pezzoArrivo = scacchiera.getCasella(coordinateArrivo).getPezzo();
 					if (this.colorePezzo != pezzoArrivo.getColorePezzo()) {

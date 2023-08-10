@@ -24,7 +24,7 @@ public class Re extends Pezzo {
 
 		for (final int insiemePosizioneCorrente : MOSSE_POSSIBILI) {
 			final int coordinateArrivo = this.coordinatePezzo + insiemePosizioneCorrente;
-			if (primaColonnaEsclusa(insiemePosizioneCorrente, coordinateArrivo)
+			if (primaColonnaEsclusa(this.coordinatePezzo, insiemePosizioneCorrente)
 					|| ottavaColonnaEsclusa(this.coordinatePezzo, insiemePosizioneCorrente)) {
 				continue;
 			}

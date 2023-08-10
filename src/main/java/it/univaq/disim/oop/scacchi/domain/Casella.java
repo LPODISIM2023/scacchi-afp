@@ -65,7 +65,7 @@ public abstract class Casella {
 
 		@Override
 		public String toString() {
-			return getPezzo().getColorePezzo().èNero() ? getPezzo().toString().toLowerCase() : getPezzo().toString();
+			return getPezzo().getColorePezzo().isNero() ? getPezzo().toString().toLowerCase() : getPezzo().toString();
 		}
 
 		@Override
