@@ -2,6 +2,8 @@ package it.univaq.disim.oop.scacchi.domain;
 
 import java.util.Set;
 
+import it.univaq.disim.oop.scacchi.player.Giocatore;
+
 public class Partita {
 
 	private Integer Id;

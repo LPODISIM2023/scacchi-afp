@@ -1,7 +1,7 @@
 package it.univaq.disim.oop.scacchi.domain;
 
 public enum Colore {
-	Bianco {
+	BIANCO {
 		@Override
 		public int getDirezione() {
 			return -1;
@@ -17,7 +17,7 @@ public enum Colore {
 			return false;
 		}
 	},
-	Nero {
+	NERO {
 		@Override
 		public int getDirezione() {
 			return 1;

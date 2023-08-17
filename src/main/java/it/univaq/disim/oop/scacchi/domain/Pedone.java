@@ -13,7 +13,7 @@ public class Pedone extends Pezzo {
 	private final static int[] MOSSE_POSSIBILI = { 8, 16, 7, 9 };
 
 	Pedone(final Colore colorePezzo, final int coordinatePezzo) {
-		super(coordinatePezzo, colorePezzo);
+		super(TipoPezzo.PEDONE, coordinatePezzo, colorePezzo);
 
 	}
 
@@ -70,7 +70,7 @@ public class Pedone extends Pezzo {
 	
 	@Override
 	public String toString() {
-		return TipoPezzo.Pedone.toString();
+		return TipoPezzo.PEDONE.toString();
 	}
 
 }

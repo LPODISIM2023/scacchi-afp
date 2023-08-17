@@ -14,7 +14,7 @@ public class Cavallo extends Pezzo {
 	private final static int [] MOSSE_POSSIBILI = {-17, -15, -10, -6, 6, 10, 15, 17};
 	
 	Cavallo(final Colore colorePezzo, final int coordinatePezzo) {
-		super(coordinatePezzo, colorePezzo);
+		super(TipoPezzo.CAVALLO, coordinatePezzo, colorePezzo);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class Cavallo extends Pezzo {
 	
 	@Override
 	public String toString() {
-		return TipoPezzo.Cavallo.toString();
+		return TipoPezzo.CAVALLO.toString();
 	}
 
 	private static boolean primaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {

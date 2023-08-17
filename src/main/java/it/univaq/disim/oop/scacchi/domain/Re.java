@@ -14,7 +14,7 @@ public class Re extends Pezzo {
 	private final static int[] MOSSE_POSSIBILI = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
 	Re(Colore colorePezzo, int coordinatePezzo) {
-		super(coordinatePezzo, colorePezzo);
+		super(TipoPezzo.RE, coordinatePezzo, colorePezzo);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class Re extends Pezzo {
 	
 	@Override
 	public String toString() {
-		return TipoPezzo.Re.toString();
+		return TipoPezzo.RE.toString();
 	}
 
 	private static boolean primaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {

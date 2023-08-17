@@ -10,8 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.player.Giocatore;
+import it.univaq.disim.oop.scacchi.player.GiocatoreBianco;
+import it.univaq.disim.oop.scacchi.player.GiocatoreNero;
 
-public class Scacchiera extends Giocatore {
+public class Scacchiera{
 
 	private Integer Id;
 	private Boolean vittoria;
@@ -24,14 +27,18 @@ public class Scacchiera extends Giocatore {
 	private final Collection<Pezzo> pezziBianchi;
 	private final Collection<Pezzo> pezziNeri;
 	
+	private final GiocatoreBianco giocatoreBianco;
+	private final GiocatoreNero giocatoreNero;
+	
 
 	private Scacchiera(Costruttore costruttore) {
 		this.scacchiera = creaScacchiera(costruttore);
-		this.pezziBianchi = calcolaPezziAttivi(this.scacchiera, Colore.Bianco);
-		this.pezziNeri = calcolaPezziAttivi(this.scacchiera, Colore.Nero);
-		
-		final Collection<Mossa> mosseStandardlegaliBianco = calcolaMosseLegali(this.pezziBianchi);
-		final Collection<Mossa> mosseStandardLegaliNero = calcolaMosseLegali(this.pezziNeri);
+		this.pezziBianchi = calcolaPezziAttivi(this.scacchiera, Colore.BIANCO);
+		this.pezziNeri = calcolaPezziAttivi(this.scacchiera, Colore.NERO);
+		final Collection<Mossa> mosseStandardLegaliBianco = calcolaMosseLegali(this.pezziBianchi);
+		final Collection<Mossa> mosseStandardLegaliNero = calcolaMosseLegali(this.pezziNeri);		
+		this.giocatoreBianco = new GiocatoreBianco(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
+		this.giocatoreNero = new GiocatoreNero(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
 	}
 	
 	private static String stampaBella(Casella casella) {
@@ -51,6 +58,22 @@ public class Scacchiera extends Giocatore {
 		return builder.toString();
 	}
 
+	public Giocatore giocatoreBianco() {
+		return this.giocatoreBianco();
+	}
+	
+	public Giocatore giocatoreNero() {
+		return this.giocatoreNero();
+	}
+	
+	public Collection<Pezzo> getPezziNeri(){
+		return this.pezziNeri;
+	}
+	
+	public Collection<Pezzo> getPezziBianchi(){
+		return this.pezziBianchi;
+	}
+	
 	private Collection<Mossa> calcolaMosseLegali(final Collection<Pezzo> pezzi) {
 		final List<Mossa> mosseLegali = new ArrayList<Mossa>();
 		for(final Pezzo pezzo : pezzi) {
@@ -90,41 +113,41 @@ public class Scacchiera extends Giocatore {
 	public static Scacchiera creaScacchieraStandard() {
 		final Costruttore costruttore = new Costruttore();
 		// Lato Nero
-		costruttore.setPezzo(new Torre(Colore.Nero, 0));
-		costruttore.setPezzo(new Cavallo(Colore.Nero, 1));
-		costruttore.setPezzo(new Alfiere(Colore.Nero, 2));
-		costruttore.setPezzo(new Regina(Colore.Nero, 3));
-		costruttore.setPezzo(new Re(Colore.Nero, 4));	
-		costruttore.setPezzo(new Alfiere(Colore.Nero, 5));
-		costruttore.setPezzo(new Cavallo(Colore.Nero, 6));
-		costruttore.setPezzo(new Torre(Colore.Nero, 7));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 8));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 9));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 10));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 11));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 12));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 13));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 14));
-		costruttore.setPezzo(new Pedone(Colore.Nero, 15));
+		costruttore.setPezzo(new Torre(Colore.NERO, 0));
+		costruttore.setPezzo(new Cavallo(Colore.NERO, 1));
+		costruttore.setPezzo(new Alfiere(Colore.NERO, 2));
+		costruttore.setPezzo(new Regina(Colore.NERO, 3));
+		costruttore.setPezzo(new Re(Colore.NERO, 4));	
+		costruttore.setPezzo(new Alfiere(Colore.NERO, 5));
+		costruttore.setPezzo(new Cavallo(Colore.NERO, 6));
+		costruttore.setPezzo(new Torre(Colore.NERO, 7));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 8));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 9));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 10));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 11));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 12));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 13));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 14));
+		costruttore.setPezzo(new Pedone(Colore.NERO, 15));
 		// Lato Bianco
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 48));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 49));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 50));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 51));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 52));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 53));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 54));
-		costruttore.setPezzo(new Pedone(Colore.Bianco, 55));
-		costruttore.setPezzo(new Torre(Colore.Bianco, 56));
-		costruttore.setPezzo(new Cavallo(Colore.Bianco, 57));
-		costruttore.setPezzo(new Alfiere(Colore.Bianco, 58));
-		costruttore.setPezzo(new Regina(Colore.Bianco, 59));
-		costruttore.setPezzo(new Re(Colore.Bianco, 60));
-		costruttore.setPezzo(new Alfiere(Colore.Bianco, 61));
-		costruttore.setPezzo(new Cavallo(Colore.Bianco, 62));
-		costruttore.setPezzo(new Torre(Colore.Bianco, 63));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 48));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 49));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 50));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 51));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 52));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 53));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 54));
+		costruttore.setPezzo(new Pedone(Colore.BIANCO, 55));
+		costruttore.setPezzo(new Torre(Colore.BIANCO, 56));
+		costruttore.setPezzo(new Cavallo(Colore.BIANCO, 57));
+		costruttore.setPezzo(new Alfiere(Colore.BIANCO, 58));
+		costruttore.setPezzo(new Regina(Colore.BIANCO, 59));
+		costruttore.setPezzo(new Re(Colore.BIANCO, 60));
+		costruttore.setPezzo(new Alfiere(Colore.BIANCO, 61));
+		costruttore.setPezzo(new Cavallo(Colore.BIANCO, 62));
+		costruttore.setPezzo(new Torre(Colore.BIANCO, 63));
 		// bianco da spostare
-		costruttore.setMossaFatta(Colore.Bianco);
+		costruttore.setMossaFatta(Colore.BIANCO);
 
 		return costruttore.crea();
 	}

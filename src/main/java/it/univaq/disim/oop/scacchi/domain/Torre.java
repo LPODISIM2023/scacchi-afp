@@ -14,7 +14,7 @@ public class Torre extends Pezzo{
 	private final static int[] MOSSE_POSSIBILI  = {-8, -1, 1, 8 };
 	
 	Torre(Colore colorePezzo, int coordinatePezzo) {
-		super(coordinatePezzo, colorePezzo);
+		super(TipoPezzo.TORRE, coordinatePezzo, colorePezzo);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Torre extends Pezzo{
 	
 	@Override
 	public String toString() {
-		return TipoPezzo.Torre.toString();
+		return TipoPezzo.TORRE.toString();
 	}
 	
 	private static boolean isPrimaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {

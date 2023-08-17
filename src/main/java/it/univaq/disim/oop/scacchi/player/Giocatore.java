@@ -1,42 +1,107 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.player;
 
-public class Giocatore {
+import java.util.Collection;
 
-	private Integer Id;
-	private String nome;
-	private Colore colore;
-	private Partita partite;
+import it.univaq.disim.oop.scacchi.domain.Colore;
+import it.univaq.disim.oop.scacchi.domain.Mossa;
+import it.univaq.disim.oop.scacchi.domain.Pezzo;
+import it.univaq.disim.oop.scacchi.domain.Re;
+import it.univaq.disim.oop.scacchi.domain.Scacchiera;
 
-	public Integer getId() {
-		return Id;
+public abstract class Giocatore {
+
+//	private Integer Id;
+//	private String nome;
+//	private Colore colore;
+//	private Partita partite;
+//
+//	public Integer getId() {
+//		return Id;
+//	}
+//
+//	public void setId(Integer id) {
+//		Id = id;
+//	}
+//
+//	public String getNome() {
+//		return nome;
+//	}
+//
+//	public void setNome(String nome) {
+//		this.nome = nome;
+//	}
+//
+//	public Colore getColore() {
+//		return colore;
+//	}
+//
+//	public void setColore(Colore colore) {
+//		this.colore = colore;
+//	}
+//
+//	public Partita getPartite() {
+//		return partite;
+//	}
+//
+//	public void setPartite(Partita partite) {
+//		this.partite = partite;
+//	}
+
+	protected final Scacchiera scacchiera;
+	protected final Re giocatoreRe;
+	protected final Collection<Mossa> mosseLegali;
+	
+	Giocatore(final Scacchiera scacchiera,
+			  final Collection<Mossa> mosseLegali,
+			  final Collection<Mossa> mosseAvversario) {
+		
+		this.scacchiera = scacchiera;
+		this.giocatoreRe = stabilireRe();
+		this.mosseLegali = mosseLegali;
 	}
 
-	public void setId(Integer id) {
-		Id = id;
+	private Re stabilireRe() {
+		for(final Pezzo pezzo : getPezziAttivi()) {
+			if(pezzo.getTipoPezzo().isRe()) {
+				return(Re) pezzo;
+			}
+		}
+		throw new RuntimeException("Non dovrebbe arrivare qui!");
 	}
-
-	public String getNome() {
-		return nome;
+	
+	public boolean isMossaLegale(final Mossa mossa) {
+		return this.mosseLegali.contains(mossa);
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	
+	//TODO metodi da implementare
+	public boolean isInScacco() {
+		return false;
 	}
-
-	public Colore getColore() {
-		return colore;
+	
+	public boolean isInScaccoMatto() {
+		return false;
 	}
-
-	public void setColore(Colore colore) {
-		this.colore = colore;
+	
+	public boolean isInStallo() {
+		return false;
 	}
-
-	public Partita getPartite() {
-		return partite;
+	
+	public boolean isArroccato() {
+		return false;
 	}
-
-	public void setPartite(Partita partite) {
-		this.partite = partite;
+	
+	public TransizioneMossa fareMossa(final Mossa mossa) {
+		return null;
 	}
-
+	
+	public abstract Collection<Pezzo> getPezziAttivi();
+	public abstract Colore getColore();
+	public abstract Giocatore getAvversario();
 }
+
+
+
+
+
+
+

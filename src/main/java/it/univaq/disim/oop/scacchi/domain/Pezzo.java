@@ -4,11 +4,13 @@ import java.util.Collection;
 
 public abstract class Pezzo {
 
+	protected final TipoPezzo tipoPezzo;
 	protected final int coordinatePezzo;
 	protected final Colore colorePezzo;
 	protected final boolean primaMossa;
 
-	Pezzo(final int coordinatePezzo, final Colore colorePezzo) {
+	Pezzo(final TipoPezzo tipoPezzo, final int coordinatePezzo, final Colore colorePezzo) {
+		this.tipoPezzo = tipoPezzo;
 		this.colorePezzo = colorePezzo;
 		this.coordinatePezzo = coordinatePezzo;
 		// TODO ci sono altre cose da inserire qui
@@ -26,18 +28,52 @@ public abstract class Pezzo {
 	public boolean primaMossa() {
 		return this.primaMossa;
 	}
-
-	// Dice quali mosse "legali" può effetturare un pezzo sulla scacchiera
+	
+	public TipoPezzo getTipoPezzo() {
+		return this.tipoPezzo;
+	}
+	
+	// Dice quali mosse "legali" puo' effetturare un pezzo sulla scacchiera
 	public abstract Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera);
 	
 	public enum TipoPezzo {
 		
-		Pedone("P"),
-		Cavallo("C"),
-		Alfiere("A"),
-		Torre("T"),
-		Regina("Q"),
-		Re("K");
+		PEDONE("P"){
+			@Override
+			public boolean isRe() {
+				return false;
+			}
+		},
+		CAVALLO("C") {
+			@Override
+			public boolean isRe() {
+				return false;
+			}
+		},
+		ALFIERE("A") {
+			@Override
+			public boolean isRe() {
+				return false;
+			}
+		},
+		TORRE("T") {
+			@Override
+			public boolean isRe() {
+				return false;
+			}
+		},	
+		REGINA("Q") {
+			@Override
+			public boolean isRe() {
+				return false;
+			}
+		},
+		RE("K") {
+			@Override
+			public boolean isRe() {
+				return true;
+			}
+		};		
 		
 		private String nomePezzo;
 		
@@ -49,6 +85,8 @@ public abstract class Pezzo {
 		public String toString() {
 			return this.nomePezzo;
 		}
+		
+		public abstract boolean isRe();
 	}
 
 }

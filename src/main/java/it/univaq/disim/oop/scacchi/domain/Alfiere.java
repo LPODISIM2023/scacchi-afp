@@ -14,7 +14,7 @@ public class Alfiere extends Pezzo {
 	private final static int[] MOSSE_POSSIBILI  = {-9, -7, 7, 9 };
 	
 	Alfiere(Colore colorePezzo, int coordinatePezzo) {
-		super(coordinatePezzo, colorePezzo);
+		super(TipoPezzo.ALFIERE, coordinatePezzo, colorePezzo);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Alfiere extends Pezzo {
 	
 	@Override
 	public String toString() {
-		return TipoPezzo.Alfiere.toString();
+		return TipoPezzo.ALFIERE.toString();
 	}
 	
 	private static boolean isPrimaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {

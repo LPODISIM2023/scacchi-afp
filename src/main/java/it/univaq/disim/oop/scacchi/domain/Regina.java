@@ -15,7 +15,7 @@ public class Regina extends Pezzo{
 	private final static int[] MOSSE_POSSIBILI  = {-9, -8, -7, -1, 1, 7, 8, 9 };
 	
 	Regina(Colore colorePezzo, int coordinatePezzo) {
-		super(coordinatePezzo, colorePezzo);
+		super(TipoPezzo.REGINA, coordinatePezzo, colorePezzo);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Regina extends Pezzo{
 	
 	@Override
 	public String toString() {
-		return TipoPezzo.Regina.toString();
+		return TipoPezzo.REGINA.toString();
 	}
 	
 	private static boolean isPrimaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {
