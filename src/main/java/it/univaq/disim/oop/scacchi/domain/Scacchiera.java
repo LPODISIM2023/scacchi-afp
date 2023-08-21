@@ -29,6 +29,7 @@ public class Scacchiera{
 	
 	private final GiocatoreBianco giocatoreBianco;
 	private final GiocatoreNero giocatoreNero;
+	private final Giocatore giocatoreAttuale;
 	
 
 	private Scacchiera(Costruttore costruttore) {
@@ -39,6 +40,7 @@ public class Scacchiera{
 		final Collection<Mossa> mosseStandardLegaliNero = calcolaMosseLegali(this.pezziNeri);		
 		this.giocatoreBianco = new GiocatoreBianco(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
 		this.giocatoreNero = new GiocatoreNero(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
+		this.giocatoreAttuale = null;
 	}
 	
 	private static String stampaBella(Casella casella) {
@@ -64,6 +66,10 @@ public class Scacchiera{
 	
 	public Giocatore giocatoreNero() {
 		return this.giocatoreNero();
+	}
+	
+	public Giocatore giocatoreAttuale() {
+		return this.giocatoreAttuale;
 	}
 	
 	public Collection<Pezzo> getPezziNeri(){

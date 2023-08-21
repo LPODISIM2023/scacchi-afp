@@ -12,11 +12,20 @@ public abstract class Mossa {
 		this.pezzoMosso = pezzoMosso;
 		this.coordinateDestinazione = coordinateDestinazione;
 	}
-
+	
+	public int getCoordinateDestinazione() {
+		return this.coordinateDestinazione;
+	}
+	
 	public static final class Muovi extends Mossa {
 
 		public Muovi(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione) {
 			super(scacchiera, pezzoMosso, coordinateDestinazione);
+		}
+
+		@Override
+		public Scacchiera esegui() {
+			return null;
 		}
 
 	}
@@ -31,5 +40,12 @@ public abstract class Mossa {
 			this.pezzoAttaccante = pezzoAttaccante;
 		}
 
+		@Override
+		public Scacchiera esegui() {
+			return null;
+		}
+
 	}
+
+	public abstract Scacchiera esegui();
 }

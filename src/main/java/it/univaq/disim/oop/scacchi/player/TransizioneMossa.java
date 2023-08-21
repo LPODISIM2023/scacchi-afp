@@ -16,4 +16,8 @@ public class TransizioneMossa {
 		this.mossa = mossa;
 		this.statoMossa = statoMossa;
 	}
+	
+	public StatoMossa getStatoMossa() {
+		return this.statoMossa;
+	}
 }
