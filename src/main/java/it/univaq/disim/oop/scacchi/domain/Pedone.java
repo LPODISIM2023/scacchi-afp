@@ -35,8 +35,8 @@ public class Pedone extends Pezzo {
 				// TODO more work to do here(occuparsi delle promozioni)
 				possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
 			} else if (insiemePosizioneCorrente == 16 && this.primaMossa()
-					&& (ScacchieraController.SECONDA_RIGA[this.coordinatePezzo] && this.getColorePezzo().isNero())
-					|| (ScacchieraController.SETTIMA_RIGA[this.coordinatePezzo] && this.getColorePezzo().isBianco())) {
+					&& (ScacchieraController.RANGO_DUE[this.coordinatePezzo] && this.getColorePezzo().isNero())
+					|| (ScacchieraController.RANGO_SETTE[this.coordinatePezzo] && this.getColorePezzo().isBianco())) {
 				final int casellaArrivo = this.coordinatePezzo + (this.colorePezzo.getDirezione() * 8);
 				if (!scacchiera.getCasella(casellaArrivo).occupata()
 						&& !scacchiera.getCasella(coordinateArrivo).occupata()) {
