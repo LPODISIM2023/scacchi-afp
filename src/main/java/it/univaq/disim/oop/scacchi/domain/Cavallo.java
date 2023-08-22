@@ -81,5 +81,10 @@ public class Cavallo extends Pezzo {
 		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale] && (possibilePosizione == -15 || 
 				possibilePosizione == -6 || possibilePosizione == 10 || possibilePosizione == 17);
 	}
+
+	@Override
+	public Cavallo pezzoMosso(Mossa mossa) {
+		return new Cavallo(mossa.getPezzoMosso().getColorePezzo(), mossa.getCoordinateDestinazione());
+	}
 	
 }

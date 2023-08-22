@@ -9,9 +9,9 @@ import it.univaq.disim.oop.scacchi.domain.Scacchiera;
 
 public class GiocatoreNero extends Giocatore{
 
-	public GiocatoreNero(Scacchiera scacchiera, 
-						 Collection<Mossa> mosseStandardLegaliBianco,
-						 Collection<Mossa> mosseStandardLegaliNero) {
+	public GiocatoreNero(final Scacchiera scacchiera, 
+						 final Collection<Mossa> mosseStandardLegaliBianco,
+						 final Collection<Mossa> mosseStandardLegaliNero) {
 		super(scacchiera, mosseStandardLegaliNero, mosseStandardLegaliBianco);
 	}
 

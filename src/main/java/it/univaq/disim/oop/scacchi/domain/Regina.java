@@ -62,7 +62,9 @@ public class Regina extends Pezzo{
 		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale] && (possibilePosizione == -7 || possibilePosizione == 1 || possibilePosizione == 9);
 	}
 
-    
-    
-    
+	@Override
+	public Regina pezzoMosso(Mossa mossa) {
+		return new Regina(mossa.getPezzoMosso().getColorePezzo(), mossa.getCoordinateDestinazione());
+	}
+
 }

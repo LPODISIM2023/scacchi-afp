@@ -73,4 +73,9 @@ public class Pedone extends Pezzo {
 		return TipoPezzo.PEDONE.toString();
 	}
 
+	@Override
+	public Pedone pezzoMosso(Mossa mossa) {
+		return new Pedone(mossa.getPezzoMosso().getColorePezzo(), mossa.getCoordinateDestinazione());
+	}
+
 }

@@ -1,19 +1,8 @@
 package it.univaq.disim.oop.scacchi.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.player.Giocatore;
-import it.univaq.disim.oop.scacchi.player.GiocatoreBianco;
-import it.univaq.disim.oop.scacchi.player.GiocatoreNero;
-
+import it.univaq.disim.oop.scacchi.player.*;
 public class Scacchiera{
 
 	private Integer Id;
@@ -32,7 +21,7 @@ public class Scacchiera{
 	private final Giocatore giocatoreAttuale;
 	
 
-	private Scacchiera(Costruttore costruttore) {
+	private Scacchiera(final Costruttore costruttore) {
 		this.scacchiera = creaScacchiera(costruttore);
 		this.pezziBianchi = calcolaPezziAttivi(this.scacchiera, Colore.BIANCO);
 		this.pezziNeri = calcolaPezziAttivi(this.scacchiera, Colore.NERO);
@@ -40,9 +29,10 @@ public class Scacchiera{
 		final Collection<Mossa> mosseStandardLegaliNero = calcolaMosseLegali(this.pezziNeri);		
 		this.giocatoreBianco = new GiocatoreBianco(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
 		this.giocatoreNero = new GiocatoreNero(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
-		this.giocatoreAttuale = null;
+		this.giocatoreAttuale = costruttore.prossimaMossaFatta.scegliGiocatore(this.giocatoreBianco,this.giocatoreNero);
 	}
 	
+	@SuppressWarnings("unused")
 	private static String stampaBella(Casella casella) {
 		return casella.toString();
 	}
@@ -229,7 +219,5 @@ public class Scacchiera{
 	public void setPezzi(Set<Pezzo> pezzi) {
 		this.pezzi = pezzi;
 	}
-
-	
 
 }

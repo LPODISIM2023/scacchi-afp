@@ -1,5 +1,7 @@
 package it.univaq.disim.oop.scacchi.domain;
 
+import it.univaq.disim.oop.scacchi.player.*;
+
 public enum Colore {
 	BIANCO {
 		@Override
@@ -15,6 +17,12 @@ public enum Colore {
 		@Override
 		public boolean isNero() {
 			return false;
+		}
+
+		@Override
+		protected Giocatore scegliGiocatore(GiocatoreBianco giocatoreBianco,
+				GiocatoreNero giocatoreNero) {
+			return giocatoreBianco;
 		}
 	},
 	NERO {
@@ -32,6 +40,12 @@ public enum Colore {
 		public boolean isNero() {
 			return true;
 		}
+
+		@Override
+		protected Giocatore scegliGiocatore(GiocatoreBianco giocatoreBianco,
+				GiocatoreNero giocatoreNero) {
+			return giocatoreNero;
+		}
 	};
 
 	public abstract int getDirezione();
@@ -39,4 +53,6 @@ public enum Colore {
 	public abstract boolean isBianco();
 
 	public abstract boolean isNero();
+
+	protected abstract Giocatore scegliGiocatore(GiocatoreBianco giocatoreBianco, GiocatoreNero giocatoreNero);
 }

@@ -61,4 +61,9 @@ public class Torre extends Pezzo{
 		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale] && (possibilePosizione == 1);
 	}
 
+	@Override
+	public Torre pezzoMosso(Mossa mossa) {
+		return new Torre(mossa.getPezzoMosso().getColorePezzo(), mossa.getCoordinateDestinazione());
+	}
+
 }

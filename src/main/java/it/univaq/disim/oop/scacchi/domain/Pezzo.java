@@ -8,18 +8,50 @@ public abstract class Pezzo {
 	protected final int coordinatePezzo;
 	protected final Colore colorePezzo;
 	protected final boolean primaMossa;
+	private final int cacehashCode;
 
 	Pezzo(final TipoPezzo tipoPezzo, final int coordinatePezzo, final Colore colorePezzo) {
 		this.tipoPezzo = tipoPezzo;
 		this.colorePezzo = colorePezzo;
 		this.coordinatePezzo = coordinatePezzo;
-		// TODO ci sono altre cose da inserire qui
 		this.primaMossa = false;
+		this.cacehashCode = eseguiHashCode();
 	}
+	
+	protected int eseguiHashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((colorePezzo == null) ? 0 : colorePezzo.hashCode());
+		result = prime * result + coordinatePezzo;
+		result = prime * result + (primaMossa ? 1231 : 1237);
+		result = prime * result + ((tipoPezzo == null) ? 0 : tipoPezzo.hashCode());
+		return result;
+	};
+
+	//equals pregenerati da eclips
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pezzo other = (Pezzo) obj;
+		return coordinatePezzo == other.getCoordinatePezzo() && tipoPezzo == other.getTipoPezzo()
+				&& colorePezzo == other.getColorePezzo() && primaMossa == other.primaMossa();
+	}
+
+	@Override
+	public int hashCode() {
+		return this.cacehashCode;
+	}
+	
 	
 	public int getCoordinatePezzo() {
 		return this.coordinatePezzo;
 	}
+
 
 	public Colore getColorePezzo() {
 		return this.colorePezzo;
@@ -32,6 +64,9 @@ public abstract class Pezzo {
 	public TipoPezzo getTipoPezzo() {
 		return this.tipoPezzo;
 	}
+	
+	//genera un nuovo pezzo in seguito a una mossa(movimento/cattura)
+	public abstract Pezzo pezzoMosso(Mossa mossa);
 	
 	// Dice quali mosse "legali" puo' effetturare un pezzo sulla scacchiera
 	public abstract Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera);

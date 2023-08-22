@@ -61,4 +61,9 @@ public class Alfiere extends Pezzo {
 		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale] && (possibilePosizione == -7 || possibilePosizione == 9);
 	}
 
+	@Override
+	public Alfiere pezzoMosso(Mossa mossa) {
+		return new Alfiere(mossa.getPezzoMosso().getColorePezzo(), mossa.getCoordinateDestinazione());
+	}
+
 }

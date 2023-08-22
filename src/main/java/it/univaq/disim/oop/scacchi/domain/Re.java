@@ -13,7 +13,7 @@ public class Re extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	Re(Colore colorePezzo, int coordinatePezzo) {
+	Re(final Colore colorePezzo, final int coordinatePezzo) {
 		super(TipoPezzo.RE, coordinatePezzo, colorePezzo);
 	}
 
@@ -58,6 +58,11 @@ public class Re extends Pezzo {
 	private static boolean ottavaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {
 		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale]
 				&& (possibilePosizione == -7 || possibilePosizione == 1 || possibilePosizione == 9);
+	}
+
+	@Override
+	public Re pezzoMosso(Mossa mossa) {
+		return new Re(mossa.getPezzoMosso().getColorePezzo(), mossa.getCoordinateDestinazione());
 	}
 
 }
