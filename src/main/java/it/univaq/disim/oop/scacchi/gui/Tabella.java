@@ -1,25 +1,35 @@
 package it.univaq.disim.oop.scacchi.gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.domain.Scacchiera;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.domain.Casella;
+import it.univaq.disim.oop.scacchi.domain.Mossa;
+import it.univaq.disim.oop.scacchi.domain.Pezzo;
+import it.univaq.disim.oop.scacchi.domain.Scacchiera;
+import it.univaq.disim.oop.scacchi.player.TransizioneMossa;
 
 public class Tabella {
 
 	private final JFrame gameFrame;
 	private final ScacchieraPanel scacchieraPanel;
 	private final Scacchiera scacchiScacchiera;
+
+	private Casella provenienzaCasella;
+	private Casella destinazioneCasella;
+	private Pezzo personaMuovePezzo;
 
 	private final static Dimension DIMENSIONE_FRAME_ESTERNO = new Dimension(600, 600);
 	private final static Dimension DIMENSIONE_PANNELLO_CONTROLLO = new Dimension(400, 350);
@@ -95,7 +105,48 @@ public class Tabella {
 			setPreferredSize(DIMENSIONE_PANNELLO_CASELLA);
 			assegnaColoreCasella();
 			assegnaIconaPezzoCasella(scacchiScacchiera);
+
+			addMouseListener(new MouseListener() {
+
+				public void mouseClicked(final MouseEvent e) {
+
+					if (SwingUtilities.isRightMouseButton(e)) {
+						provenienzaCasella = null;
+						destinazioneCasella = null;
+						personaMuovePezzo = null;
+					} else if (SwingUtilities.isLeftMouseButton(e)) {
+						if (provenienzaCasella == null) {
+							provenienzaCasella = scacchiScacchiera.getCasella(casellaId);
+							personaMuovePezzo = provenienzaCasella.getPezzo();
+							if (personaMuovePezzo == null) {
+								provenienzaCasella = null;
+							}
+						} else {
+							destinazioneCasella = scacchiScacchiera.getCasella(casellaId);
+							final Mossa mossa = null;
+						}
+					}
+				}
+
+				public void mousePressed(final MouseEvent e) {
+
+				}
+
+				public void mouseReleased(final MouseEvent e) {
+
+				}
+
+				public void mouseEntered(final MouseEvent e) {
+
+				}
+
+				public void mouseExited(final MouseEvent e) {
+
+				}
+			});
+
 			validate();
+
 		}
 
 		private void assegnaIconaPezzoCasella(final Scacchiera scacchiera) {
