@@ -1,6 +1,9 @@
 package it.univaq.disim.oop.scacchi.domain;
 
 import java.util.*;
+
+import com.google.common.collect.*;
+
 //import com.google.common.collect.ImmutableMap;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 
@@ -17,8 +20,7 @@ public abstract class Casella {
 			mappaCaselle.put(i, new CasellaVuota(i));
 		}
 
-		// return ImmutableMap.copyOf(mappaCaselle);
-		return Collections.unmodifiableMap(mappaCaselle);
+		return ImmutableMap.copyOf(mappaCaselle);
 	}
 
 	public static Casella creaCasella(final int coordinate, final Pezzo pezzo) {

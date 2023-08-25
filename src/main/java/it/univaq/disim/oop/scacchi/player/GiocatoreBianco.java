@@ -1,7 +1,6 @@
 package it.univaq.disim.oop.scacchi.player;
 
-import java.util.Collection;
-
+import java.util.*;
 import it.univaq.disim.oop.scacchi.domain.Colore;
 import it.univaq.disim.oop.scacchi.domain.Mossa;
 import it.univaq.disim.oop.scacchi.domain.Pezzo;

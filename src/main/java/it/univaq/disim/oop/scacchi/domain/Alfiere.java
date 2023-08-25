@@ -1,9 +1,8 @@
 package it.univaq.disim.oop.scacchi.domain;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
+import com.google.common.collect.ImmutableList;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.domain.Mossa.Attacco;
@@ -45,7 +44,7 @@ public class Alfiere extends Pezzo {
 			}
 		}
 		
-		return Collections.unmodifiableList(possibiliMosse);
+		return ImmutableList.copyOf(possibiliMosse);
 	}
 	
 	@Override

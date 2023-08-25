@@ -1,10 +1,7 @@
 package it.univaq.disim.oop.scacchi.player;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
+import java.util.*;
+import com.google.common.collect.ImmutableList;
 import it.univaq.disim.oop.scacchi.domain.Colore;
 import it.univaq.disim.oop.scacchi.domain.Mossa;
 import it.univaq.disim.oop.scacchi.domain.Pezzo;
@@ -80,7 +77,8 @@ public abstract class Giocatore {
 				mosseAttacco.add(mossa); 
 			}
 		}
-		return Collections.unmodifiableList(mosseAttacco);
+		
+		return ImmutableList.copyOf(mosseAttacco);
 	}
 	
 	private Re stabilireRe() {

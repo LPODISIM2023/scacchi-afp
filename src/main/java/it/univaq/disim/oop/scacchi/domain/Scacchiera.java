@@ -1,4 +1,5 @@
 package it.univaq.disim.oop.scacchi.domain;
+import com.google.common.collect.*;
 
 import java.util.*;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
@@ -89,7 +90,7 @@ public class Scacchiera{
 			}
 		}
 		
-		return Collections.unmodifiableList(pezziAttivi);
+		return ImmutableList.copyOf(pezziAttivi);
 	}
 
 	public Casella getCasella(final int casellaCoordinata) {
@@ -101,8 +102,7 @@ public class Scacchiera{
 		for (int i = 0; i < ScacchieraController.NUM_CASELLE; i++) {
 			caselle[i] = Casella.creaCasella(i, costruttore.scacchieraConfig.get(i));
 		}
-		List<Casella> c = Arrays.asList(caselle);
-		return Collections.unmodifiableList(c);
+		return ImmutableList.copyOf(caselle);
 	}
 
 	// serve per creare la scacchiera con i pezzi nelle posizioni di partenza
@@ -218,6 +218,10 @@ public class Scacchiera{
 
 	public void setPezzi(Set<Pezzo> pezzi) {
 		this.pezzi = pezzi;
+	}
+
+	public Iterable<Mossa> getMossePossibili() {
+		return Iterables.unmodifiableIterable(Iterables.concat(this.giocatoreBianco.getMosseLegali(), this.giocatoreNero.getMosseLegali()));
 	}
 
 }
