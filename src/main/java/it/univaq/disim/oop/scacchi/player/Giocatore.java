@@ -2,11 +2,12 @@ package it.univaq.disim.oop.scacchi.player;
 
 import java.util.*;
 import com.google.common.collect.ImmutableList;
-import it.univaq.disim.oop.scacchi.domain.Colore;
-import it.univaq.disim.oop.scacchi.domain.Mossa;
-import it.univaq.disim.oop.scacchi.domain.Pezzo;
-import it.univaq.disim.oop.scacchi.domain.Re;
-import it.univaq.disim.oop.scacchi.domain.Scacchiera;
+
+import it.univaq.disim.oop.scacchi.pezzi.Colore;
+import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
+import it.univaq.disim.oop.scacchi.pezzi.Re;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
 public abstract class Giocatore {
 

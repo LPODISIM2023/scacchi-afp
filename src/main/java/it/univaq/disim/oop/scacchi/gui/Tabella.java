@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.domain.Casella;
-import it.univaq.disim.oop.scacchi.domain.Mossa;
-import it.univaq.disim.oop.scacchi.domain.Pezzo;
-import it.univaq.disim.oop.scacchi.domain.Scacchiera;
+import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.player.TransizioneMossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Casella;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
 public class Tabella {
 

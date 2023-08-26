@@ -1,8 +1,10 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.pezzi;
 
 import java.util.Set;
 
 import it.univaq.disim.oop.scacchi.player.Giocatore;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
 public class Partita {
 

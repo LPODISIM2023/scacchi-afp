@@ -1,7 +1,7 @@
 package it.univaq.disim.oop.scacchi.player;
 
-import it.univaq.disim.oop.scacchi.domain.Mossa;
-import it.univaq.disim.oop.scacchi.domain.Scacchiera;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
 public class TransizioneMossa {
 

@@ -1,6 +1,7 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.pezzi;
 
 import it.univaq.disim.oop.scacchi.gui.Tabella;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
 public class JScacchi {
 

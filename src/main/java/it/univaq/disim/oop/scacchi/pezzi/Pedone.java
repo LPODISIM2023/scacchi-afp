@@ -1,17 +1,19 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.pezzi;
 
 import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.domain.Mossa.Muovi;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Muovi;
 
 public class Pedone extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI = { 8, 16, 7, 9 };
 
-	Pedone(final Colore colorePezzo, final int coordinatePezzo) {
+	public Pedone(final Colore colorePezzo, final int coordinatePezzo) {
 		super(TipoPezzo.PEDONE, coordinatePezzo, colorePezzo);
 
 	}

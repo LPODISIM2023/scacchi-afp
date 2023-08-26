@@ -1,6 +1,8 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.scacchiera;
 
-import it.univaq.disim.oop.scacchi.domain.Scacchiera.*;
+import it.univaq.disim.oop.scacchi.pezzi.Pedone;
+import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera.*;
 
 public abstract class Mossa {
 

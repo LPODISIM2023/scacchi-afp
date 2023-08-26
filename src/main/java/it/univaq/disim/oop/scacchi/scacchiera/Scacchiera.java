@@ -1,8 +1,9 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.scacchiera;
 import com.google.common.collect.*;
 
 import java.util.*;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.pezzi.*;
 import it.univaq.disim.oop.scacchi.player.*;
 public class Scacchiera{
 

@@ -1,4 +1,4 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.scacchiera;
 
 import java.util.*;
 
@@ -6,6 +6,7 @@ import com.google.common.collect.*;
 
 //import com.google.common.collect.ImmutableMap;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 
 public abstract class Casella {
 
@@ -34,6 +35,10 @@ public abstract class Casella {
 	public abstract boolean occupata();
 
 	public abstract Pezzo getPezzo();
+	
+	public int getCasella() {
+		return this.casellaCoordinata;
+	}
 
 	public static final class CasellaVuota extends Casella {
 		private CasellaVuota(final int coordinate) {

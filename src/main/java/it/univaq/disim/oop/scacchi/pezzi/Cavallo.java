@@ -1,18 +1,21 @@
-package it.univaq.disim.oop.scacchi.domain;
+package it.univaq.disim.oop.scacchi.pezzi;
 
 import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.domain.Mossa.Attacco;
-import it.univaq.disim.oop.scacchi.domain.Mossa.Muovi;
+import it.univaq.disim.oop.scacchi.scacchiera.Casella;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Attacco;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Muovi;
 
 public class Cavallo extends Pezzo {
 
 	private final static int [] MOSSE_POSSIBILI = {-17, -15, -10, -6, 6, 10, 15, 17};
 	
-	Cavallo(final Colore colorePezzo, final int coordinatePezzo) {
+	public Cavallo(final Colore colorePezzo, final int coordinatePezzo) {
 		super(TipoPezzo.CAVALLO, coordinatePezzo, colorePezzo);
 	}
 
