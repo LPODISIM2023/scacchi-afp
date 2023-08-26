@@ -9,9 +9,14 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import com.google.common.collect.Lists;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
@@ -25,11 +30,14 @@ public class Tabella {
 
 	private final JFrame gameFrame;
 	private final ScacchieraPanel scacchieraPanel;
-	private final Scacchiera scacchiScacchiera;
+	private Scacchiera scacchiScacchiera;
 
 	private Casella provenienzaCasella;
 	private Casella destinazioneCasella;
 	private Pezzo personaMuovePezzo;
+	private DirezioneScacchiera direzioneScacchiera;
+
+	private boolean evidenziaMosseLegali;
 
 	private final static Dimension DIMENSIONE_FRAME_ESTERNO = new Dimension(600, 600);
 	private final static Dimension DIMENSIONE_PANNELLO_CONTROLLO = new Dimension(400, 350);
@@ -47,6 +55,7 @@ public class Tabella {
 		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
 		this.scacchiScacchiera = Scacchiera.creaScacchieraStandard();
 		this.scacchieraPanel = new ScacchieraPanel();
+		this.evidenziaMosseLegali = false;
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
 		this.gameFrame.setVisible(true);
 	}
@@ -54,9 +63,11 @@ public class Tabella {
 	private JMenuBar creaTabellaMenuBar() {
 		final JMenuBar tabellaMenuBar = new JMenuBar();
 		tabellaMenuBar.add(creaFileMenu());
+		tabellaMenuBar.add(creaMenuPreferenze());
 		return tabellaMenuBar;
 	}
 
+	// Menu File
 	private JMenu creaFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
 		final JMenuItem openPGN = new JMenuItem("Carica PGN File");
@@ -79,6 +90,66 @@ public class Tabella {
 		return fileMenu;
 	}
 
+	// Menu Preferenze
+	private JMenu creaMenuPreferenze() {
+		final JMenu preferencesMenu = new JMenu("Preferenze");
+		final JMenuItem flipBoardMenuItem = new JMenuItem("scheda");
+		flipBoardMenuItem.addActionListener(new ActionListener() {
+
+			public void actionPerformed(final ActionEvent e) {
+				direzioneScacchiera = direzioneScacchiera.opposite();
+				scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
+			}
+		});
+		preferencesMenu.add(flipBoardMenuItem);
+
+		preferencesMenu.addSeparator();
+
+		final JCheckBoxMenuItem evidenziaDatiLegaliCheckBox = new JCheckBoxMenuItem("Evidenzia Mossa Legale", false);
+
+		evidenziaDatiLegaliCheckBox.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				evidenziaMosseLegali = evidenziaDatiLegaliCheckBox.isSelected();
+			}
+		});
+
+		preferencesMenu.add(evidenziaDatiLegaliCheckBox);
+
+		return preferencesMenu;
+	}
+
+	enum DirezioneScacchiera {
+		NORMALE {
+
+			@Override
+			List<CasellaPanel> traverse(final List<CasellaPanel> scacchiScacchiera) {
+				return scacchiScacchiera;
+			}
+
+			@Override
+			DirezioneScacchiera opposite() {
+				return RIBALTATO;
+			}
+		},
+		RIBALTATO {
+			@Override
+			List<CasellaPanel> traverse(final List<CasellaPanel> scacchiScacchiera) {
+				return Lists.reverse(scacchiScacchiera);
+			}
+
+			@Override
+			DirezioneScacchiera opposite() {
+				return NORMALE;
+			}
+		};
+
+		abstract List<CasellaPanel> traverse(final List<CasellaPanel> scacchiScacchiera);
+
+		abstract DirezioneScacchiera opposite();
+
+	}
+
 	private class ScacchieraPanel extends JPanel {
 		final List<CasellaPanel> caselleScacchiera;
 
@@ -93,13 +164,23 @@ public class Tabella {
 			setPreferredSize(DIMENSIONE_PANNELLO_CONTROLLO);
 			validate();
 		}
+
+		public void disegnaScacchiera(final Scacchiera scacchiera) {
+			removeAll();
+			for (final CasellaPanel caselleScacchiera : direzioneScacchiera.traverse(caselleScacchiera)) {
+				caselleScacchiera.disegnaCasella(scacchiera);
+				add(caselleScacchiera);
+			}
+			validate();
+			repaint();
+		}
 	}
 
 	private class CasellaPanel extends JPanel {
 
 		private final int casellaId;
 
-		CasellaPanel(final ScacchieraPanel pannelloDiControllo, final int casellaId) {
+		CasellaPanel(final ScacchieraPanel scacchieraPanel, final int casellaId) {
 			super(new GridBagLayout());
 			this.casellaId = casellaId;
 			setPreferredSize(DIMENSIONE_PANNELLO_CASELLA);
@@ -123,8 +204,23 @@ public class Tabella {
 							}
 						} else {
 							destinazioneCasella = scacchiScacchiera.getCasella(casellaId);
-							final Mossa mossa = null;
+							final Mossa mossa = Mossa.Mosse.generaMossa(scacchiScacchiera,
+									provenienzaCasella.getCasella(), destinazioneCasella.getCasella());
+							final TransizioneMossa transizione = scacchiScacchiera.giocatoreAttuale().fareMossa(mossa);
+							if (transizione.getStatoMossa().isFatto()) {
+								scacchiScacchiera = transizione.getTransizioneScacchiera();
+								// TODO aggiungere la mossa che viene fatta dal registro degli spostamenti
+							}
+							provenienzaCasella = null;
+							destinazioneCasella = null;
+							personaMuovePezzo = null;
 						}
+						SwingUtilities.invokeLater(new Runnable() {
+
+							public void run() {
+								scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
+							}
+						});
 					}
 				}
 
@@ -149,6 +245,13 @@ public class Tabella {
 
 		}
 
+		public void disegnaCasella(final Scacchiera scacchiera) {
+			assegnaColoreCasella();
+			assegnaIconaPezzoCasella(scacchiera);
+			validate();
+			repaint();
+		}
+
 		private void assegnaIconaPezzoCasella(final Scacchiera scacchiera) {
 			this.removeAll();
 			if (scacchiera.getCasella(this.casellaId).occupata()) {
@@ -164,6 +267,28 @@ public class Tabella {
 				}
 
 			}
+		}
+
+		private void evidenziaDatiLegali(final Scacchiera scacchiera) {
+			if (evidenziaMosseLegali) {
+				for (final Mossa mossa : mossePezziLegali(scacchiera)) {
+					if (mossa.getCoordinateDestinazione() == this.casellaId) {
+						try {
+							add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+
+		private Collection<Mossa> mossePezziLegali(final Scacchiera scacchiera) {
+			if (personaMuovePezzo != null
+					&& personaMuovePezzo.getColorePezzo() == scacchiera.giocatoreAttuale().getColore()) {
+				return personaMuovePezzo.calcolaMosseLegali(scacchiera);
+			}
+			return Collections.emptyList();
 		}
 
 		private void assegnaColoreCasella() {

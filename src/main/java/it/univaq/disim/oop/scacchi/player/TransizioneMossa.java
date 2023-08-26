@@ -20,4 +20,8 @@ public class TransizioneMossa {
 	public StatoMossa getStatoMossa() {
 		return this.statoMossa;
 	}
+	
+	public Scacchiera getTransizioneScacchiera() {
+		return this.transizioneScacchiera;
+	}
 }
