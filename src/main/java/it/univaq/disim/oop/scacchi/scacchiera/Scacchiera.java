@@ -1,10 +1,17 @@
 package it.univaq.disim.oop.scacchi.scacchiera;
-import com.google.common.collect.*;
+
 
 import java.util.*;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.pezzi.*;
-import it.univaq.disim.oop.scacchi.player.*;
+import it.univaq.disim.oop.scacchi.player.Colore;
+import it.univaq.disim.oop.scacchi.player.Giocatore;
+import it.univaq.disim.oop.scacchi.player.GiocatoreBianco;
+import it.univaq.disim.oop.scacchi.player.GiocatoreNero;
 public class Scacchiera{
 
 	private Integer Id;
@@ -106,6 +113,7 @@ public class Scacchiera{
 		return ImmutableList.copyOf(caselle);
 	}
 
+	
 	// serve per creare la scacchiera con i pezzi nelle posizioni di partenza
 	public static Scacchiera creaScacchieraStandard() {
 		final Costruttore costruttore = new Costruttore();

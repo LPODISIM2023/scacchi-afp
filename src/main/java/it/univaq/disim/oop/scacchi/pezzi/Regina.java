@@ -5,6 +5,7 @@ import java.util.*;
 import com.google.common.collect.ImmutableList;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.player.Colore;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
@@ -48,7 +49,7 @@ public class Regina extends Pezzo{
 			}
 		}
 		
-		return ImmutableList.copyOf(possibiliMosse);
+		return Collections.unmodifiableList(possibiliMosse);
 	}
 	
 	@Override

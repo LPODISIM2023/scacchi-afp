@@ -3,7 +3,6 @@ package it.univaq.disim.oop.scacchi.player;
 import java.util.*;
 import com.google.common.collect.ImmutableList;
 
-import it.univaq.disim.oop.scacchi.pezzi.Colore;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.pezzi.Re;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;

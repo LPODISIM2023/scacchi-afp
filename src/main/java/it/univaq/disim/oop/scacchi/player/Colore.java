@@ -1,4 +1,4 @@
-package it.univaq.disim.oop.scacchi.pezzi;
+package it.univaq.disim.oop.scacchi.player;
 
 import it.univaq.disim.oop.scacchi.player.*;
 
