@@ -2,6 +2,7 @@ package it.univaq.disim.oop.scacchi.player;
 
 import java.util.*;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.pezzi.Re;
@@ -58,7 +59,7 @@ public abstract class Giocatore {
 		
 		this.scacchiera = scacchiera;
 		this.giocatoreRe = stabilireRe();
-		this.mosseLegali = mosseLegali;
+		this.mosseLegali = ImmutableList.copyOf(mosseLegali);
 		this.isInScacco = !Giocatore.calcolaAttaccoSuCasella(this.giocatoreRe.getCoordinatePezzo(), mosseAvversario).isEmpty();
 	}
 	
