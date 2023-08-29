@@ -1,6 +1,5 @@
 package it.univaq.disim.oop.scacchi.scacchiera;
 
-
 import java.util.*;
 
 import com.google.common.collect.ImmutableList;
@@ -12,7 +11,8 @@ import it.univaq.disim.oop.scacchi.player.Colore;
 import it.univaq.disim.oop.scacchi.player.Giocatore;
 import it.univaq.disim.oop.scacchi.player.GiocatoreBianco;
 import it.univaq.disim.oop.scacchi.player.GiocatoreNero;
-public class Scacchiera{
+
+public class Scacchiera {
 
 	private Integer Id;
 	private Boolean vittoria;
@@ -20,39 +20,38 @@ public class Scacchiera{
 	private Pezzo pezzo;
 	private Partita partite;
 	private Set<Pezzo> pezzi;
-	
+
 	private final List<Casella> scacchiera;
 	private final Collection<Pezzo> pezziBianchi;
 	private final Collection<Pezzo> pezziNeri;
-	
 	private final GiocatoreBianco giocatoreBianco;
 	private final GiocatoreNero giocatoreNero;
 	private final Giocatore giocatoreAttuale;
-	
 
 	private Scacchiera(final Costruttore costruttore) {
 		this.scacchiera = creaScacchiera(costruttore);
 		this.pezziBianchi = calcolaPezziAttivi(this.scacchiera, Colore.BIANCO);
 		this.pezziNeri = calcolaPezziAttivi(this.scacchiera, Colore.NERO);
 		final Collection<Mossa> mosseStandardLegaliBianco = calcolaMosseLegali(this.pezziBianchi);
-		final Collection<Mossa> mosseStandardLegaliNero = calcolaMosseLegali(this.pezziNeri);		
+		final Collection<Mossa> mosseStandardLegaliNero = calcolaMosseLegali(this.pezziNeri);
 		this.giocatoreBianco = new GiocatoreBianco(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
 		this.giocatoreNero = new GiocatoreNero(this, mosseStandardLegaliBianco, mosseStandardLegaliNero);
-		this.giocatoreAttuale = costruttore.prossimaMossaFatta.scegliGiocatore(this.giocatoreBianco,this.giocatoreNero);
+		this.giocatoreAttuale = costruttore.prossimaMossaFatta.scegliGiocatore(this.giocatoreBianco,
+				this.giocatoreNero);
 	}
-	
+
 	@SuppressWarnings("unused")
 	private static String stampaBella(Casella casella) {
 		return casella.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		for(int i = 0; i < ScacchieraController.NUM_CASELLE; i++) {
+		for (int i = 0; i < ScacchieraController.NUM_CASELLE; i++) {
 			final String testoCasella = this.scacchiera.get(i).toString();
 			builder.append(String.format("%3s", testoCasella));
-			if((i + 1) % ScacchieraController.NUM_CASELLE_PER_RIGA == 0) {
+			if ((i + 1) % ScacchieraController.NUM_CASELLE_PER_RIGA == 0) {
 				builder.append("\n");
 			}
 		}
@@ -60,28 +59,28 @@ public class Scacchiera{
 	}
 
 	public Giocatore giocatoreBianco() {
-		return this.giocatoreBianco();
+		return this.giocatoreBianco;
 	}
-	
+
 	public Giocatore giocatoreNero() {
-		return this.giocatoreNero();
+		return this.giocatoreNero;
 	}
-	
+
 	public Giocatore giocatoreAttuale() {
 		return this.giocatoreAttuale;
 	}
-	
-	public Collection<Pezzo> getPezziNeri(){
+
+	public Collection<Pezzo> getPezziNeri() {
 		return this.pezziNeri;
 	}
-	
-	public Collection<Pezzo> getPezziBianchi(){
+
+	public Collection<Pezzo> getPezziBianchi() {
 		return this.pezziBianchi;
 	}
-	
+
 	private Collection<Mossa> calcolaMosseLegali(final Collection<Pezzo> pezzi) {
 		final List<Mossa> mosseLegali = new ArrayList<Mossa>();
-		for(final Pezzo pezzo : pezzi) {
+		for (final Pezzo pezzo : pezzi) {
 			mosseLegali.addAll(pezzo.calcolaMosseLegali(this));
 		}
 		return Collections.unmodifiableList(mosseLegali);
@@ -89,15 +88,15 @@ public class Scacchiera{
 
 	private static Collection<Pezzo> calcolaPezziAttivi(final List<Casella> scacchiera, final Colore colore) {
 		final List<Pezzo> pezziAttivi = new ArrayList<Pezzo>();
-		for(final Casella casella : scacchiera) {
-			if(casella.occupata()) {
+		for (final Casella casella : scacchiera) {
+			if (casella.occupata()) {
 				final Pezzo pezzo = casella.getPezzo();
-				if(pezzo.getColorePezzo() == colore) {
+				if (pezzo.getColorePezzo() == colore) {
 					pezziAttivi.add(pezzo);
 				}
 			}
 		}
-		
+
 		return ImmutableList.copyOf(pezziAttivi);
 	}
 
@@ -113,7 +112,6 @@ public class Scacchiera{
 		return ImmutableList.copyOf(caselle);
 	}
 
-	
 	// serve per creare la scacchiera con i pezzi nelle posizioni di partenza
 	public static Scacchiera creaScacchieraStandard() {
 		final Costruttore costruttore = new Costruttore();
@@ -122,7 +120,7 @@ public class Scacchiera{
 		costruttore.setPezzo(new Cavallo(Colore.NERO, 1));
 		costruttore.setPezzo(new Alfiere(Colore.NERO, 2));
 		costruttore.setPezzo(new Regina(Colore.NERO, 3));
-		costruttore.setPezzo(new Re(Colore.NERO, 4));	
+		costruttore.setPezzo(new Re(Colore.NERO, 4));
 		costruttore.setPezzo(new Alfiere(Colore.NERO, 5));
 		costruttore.setPezzo(new Cavallo(Colore.NERO, 6));
 		costruttore.setPezzo(new Torre(Colore.NERO, 7));
@@ -180,7 +178,7 @@ public class Scacchiera{
 		}
 
 	}
-
+/*
 	public Integer getId() {
 		return Id;
 	}
@@ -228,9 +226,10 @@ public class Scacchiera{
 	public void setPezzi(Set<Pezzo> pezzi) {
 		this.pezzi = pezzi;
 	}
-
+*/
 	public Iterable<Mossa> getMossePossibili() {
-		return Iterables.unmodifiableIterable(Iterables.concat(this.giocatoreBianco.getMosseLegali(), this.giocatoreNero.getMosseLegali()));
+		return Iterables.unmodifiableIterable(
+				Iterables.concat(this.giocatoreBianco.getMosseLegali(), this.giocatoreNero.getMosseLegali()));
 	}
 
 }

@@ -55,6 +55,7 @@ public class Tabella {
 		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
 		this.scacchiScacchiera = Scacchiera.creaScacchieraStandard();
 		this.scacchieraPanel = new ScacchieraPanel();
+		this.direzioneScacchiera = DirezioneScacchiera.NORMALE;
 		this.evidenziaMosseLegali = false;
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
 		this.gameFrame.setVisible(true);
@@ -93,7 +94,7 @@ public class Tabella {
 	// Menu Preferenze
 	private JMenu creaMenuPreferenze() {
 		final JMenu preferencesMenu = new JMenu("Preferenze");
-		final JMenuItem flipBoardMenuItem = new JMenuItem("scheda");
+		final JMenuItem flipBoardMenuItem = new JMenuItem("capovolgere scacchiera");
 		flipBoardMenuItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(final ActionEvent e) {
@@ -167,9 +168,9 @@ public class Tabella {
 
 		public void disegnaScacchiera(final Scacchiera scacchiera) {
 			removeAll();
-			for (final CasellaPanel caselleScacchiera : direzioneScacchiera.traverse(caselleScacchiera)) {
-				caselleScacchiera.disegnaCasella(scacchiera);
-				add(caselleScacchiera);
+			for (final CasellaPanel casellaPanel : direzioneScacchiera.traverse(caselleScacchiera)) {
+				casellaPanel.disegnaCasella(scacchiera);
+				add(casellaPanel);
 			}
 			validate();
 			repaint();
@@ -204,8 +205,7 @@ public class Tabella {
 							}
 						} else {
 							destinazioneCasella = scacchiScacchiera.getCasella(casellaId);
-							final Mossa mossa = Mossa.Mosse.generaMossa(scacchiScacchiera,
-									provenienzaCasella.getCasella(), destinazioneCasella.getCasella());
+							final Mossa mossa = Mossa.MossaFactory.creaMossa(scacchiScacchiera, provenienzaCasella.getCasella(),destinazioneCasella.getCasella());
 							final TransizioneMossa transizione = scacchiScacchiera.giocatoreAttuale().fareMossa(mossa);
 							if (transizione.getStatoMossa().isFatto()) {
 								scacchiScacchiera = transizione.getTransizioneScacchiera();
@@ -216,7 +216,6 @@ public class Tabella {
 							personaMuovePezzo = null;
 						}
 						SwingUtilities.invokeLater(new Runnable() {
-
 							public void run() {
 								scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
 							}

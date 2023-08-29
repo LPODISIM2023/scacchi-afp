@@ -38,8 +38,8 @@ public class Pedone extends Pezzo {
 			} else if (insiemePosizioneCorrente == 16 && this.primaMossa()
 					&& (ScacchieraController.RANGO_DUE[this.coordinatePezzo] && this.getColorePezzo().isNero())
 					|| (ScacchieraController.RANGO_SETTE[this.coordinatePezzo] && this.getColorePezzo().isBianco())) {
-				final int casellaArrivo = this.coordinatePezzo + (this.colorePezzo.getDirezione() * 8);
-				if (!scacchiera.getCasella(casellaArrivo).occupata()
+				final int casellaPrecedenteArrivo = this.coordinatePezzo + (this.colorePezzo.getDirezione() * 8);
+				if (!scacchiera.getCasella(casellaPrecedenteArrivo).occupata()
 						&& !scacchiera.getCasella(coordinateArrivo).occupata()) {
 					possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
 				}
@@ -65,8 +65,7 @@ public class Pedone extends Pezzo {
 				}
 			}
 		}
-
-		return Collections.unmodifiableList(possibiliMosse);
+		return ImmutableList.copyOf(possibiliMosse);
 	}
 	
 	@Override

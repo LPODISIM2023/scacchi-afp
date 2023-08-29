@@ -12,35 +12,35 @@ import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Attacco;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Muovi;
 
+public class Regina extends Pezzo {
 
-public class Regina extends Pezzo{
+	private final static int[] MOSSE_POSSIBILI = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	private final static int[] MOSSE_POSSIBILI  = {-9, -8, -7, -1, 1, 7, 8, 9 };
-	
 	public Regina(Colore colorePezzo, int coordinatePezzo) {
 		super(TipoPezzo.REGINA, coordinatePezzo, colorePezzo);
 	}
 
 	@Override
 	public Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera) {
-		
+
 		final List<Mossa> possibiliMosse = new ArrayList<Mossa>();
-		
-		for(final int insiemePosizioneCorrente: MOSSE_POSSIBILI) {
-			int coordinateArrivo = this.coordinatePezzo;	
-			while(ScacchieraController.casellaDisponibile(coordinateArrivo)) {
-				if(isPrimaColonnaEsclusa(coordinateArrivo, insiemePosizioneCorrente) || isOttavaColonnaEsclusa(coordinateArrivo, insiemePosizioneCorrente)) {
+
+		for (final int insiemePosizioneCorrente : MOSSE_POSSIBILI) {
+			int coordinateArrivo = this.coordinatePezzo;
+			while (ScacchieraController.casellaDisponibile(coordinateArrivo)) {
+				if (isPrimaColonnaEsclusa(coordinateArrivo, insiemePosizioneCorrente)
+						|| isOttavaColonnaEsclusa(coordinateArrivo, insiemePosizioneCorrente)) {
 					break;
 				}
 				coordinateArrivo += insiemePosizioneCorrente;
-				if(ScacchieraController.casellaDisponibile(coordinateArrivo)) {
+				if (ScacchieraController.casellaDisponibile(coordinateArrivo)) {
 					final Casella casellaArrivo = scacchiera.getCasella(coordinateArrivo);
-					if(!casellaArrivo.occupata()) {
+					if (!casellaArrivo.occupata()) {
 						possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
-					}else {
+					} else {
 						final Pezzo pezzoArrivo = casellaArrivo.getPezzo();
 						final Colore colorePezzo = pezzoArrivo.getColorePezzo();
-						if(this.colorePezzo != colorePezzo) {
+						if (this.colorePezzo != colorePezzo) {
 							possibiliMosse.add(new Attacco(scacchiera, this, coordinateArrivo, pezzoArrivo));
 						}
 						break;
@@ -48,21 +48,22 @@ public class Regina extends Pezzo{
 				}
 			}
 		}
-		
-		return Collections.unmodifiableList(possibiliMosse);
+		return ImmutableList.copyOf(possibiliMosse);
 	}
-	
+
 	@Override
 	public String toString() {
 		return TipoPezzo.REGINA.toString();
 	}
-	
+
 	private static boolean isPrimaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {
-		return ScacchieraController.PRIMA_COLONNA[posizioneAttuale] && (possibilePosizione == -1 || possibilePosizione == -9 || possibilePosizione == 7);
+		return ScacchieraController.PRIMA_COLONNA[posizioneAttuale]
+				&& (possibilePosizione == -1 || possibilePosizione == -9 || possibilePosizione == 7);
 	}
-	
+
 	private static boolean isOttavaColonnaEsclusa(final int posizioneAttuale, final int possibilePosizione) {
-		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale] && (possibilePosizione == -7 || possibilePosizione == 1 || possibilePosizione == 9);
+		return ScacchieraController.OTTAVA_COLONNA[posizioneAttuale]
+				&& (possibilePosizione == -7 || possibilePosizione == 1 || possibilePosizione == 9);
 	}
 
 	@Override

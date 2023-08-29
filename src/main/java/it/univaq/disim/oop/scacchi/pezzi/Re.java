@@ -44,8 +44,7 @@ public class Re extends Pezzo {
 				}
 			}
 		}
-
-		return Collections.unmodifiableList(possibiliMosse);
+		return ImmutableList.copyOf(possibiliMosse);
 	}
 	
 	@Override

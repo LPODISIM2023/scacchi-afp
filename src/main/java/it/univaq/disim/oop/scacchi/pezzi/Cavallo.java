@@ -55,7 +55,7 @@ public class Cavallo extends Pezzo {
 			}
 			
 		}
-		return Collections.unmodifiableList(possibiliMosse);
+		return ImmutableList.copyOf(possibiliMosse);
 	}
 	
 	@Override

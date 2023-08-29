@@ -58,30 +58,30 @@ public abstract class Mossa {
 		return false;
 	}
 
-	public Pezzo getPezzoAtttaccante() {
+	public Pezzo getPezzoAttaccante() {
 		return null;
 	}
 
 	public Scacchiera esegui() {
 
-		final Costruttore ns = new Costruttore();
+		final Costruttore costruttore = new Costruttore();
 		// controllo tutti i pezzi del giocatore attuale,
 		// controllo quali pezzi ha mosso e li inserisco nella nuova Scacchiera
 		for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getPezziAttivi()) {
-			if (this.pezzoMosso.equals(pezzo)) {
-				ns.setPezzo(pezzo);
+			if (!this.pezzoMosso.equals(pezzo)) {
+				costruttore.setPezzo(pezzo);
 			}
 		}
 
 		for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi()) {
-			ns.setPezzo(pezzo);
+			costruttore.setPezzo(pezzo);
 		}
 		// sposta il pezzo dopo la mossa
-		ns.setPezzo(this.pezzoMosso.pezzoMosso(this));
+		costruttore.setPezzo(this.pezzoMosso.pezzoMosso(this));
 		// dopo aver fatto una mossa passo al giocatore di colore opposto
-		ns.setMossaFatta(this.scacchiera.giocatoreAttuale().getAvversario().getColore());
+		costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getAvversario().getColore());
 		// restiruisco una nuova scacchira dopo ogni mossa fatta
-		return ns.crea();
+		return costruttore.crea();
 	}
 
 	public static final class Muovi extends Mossa {
@@ -116,7 +116,7 @@ public abstract class Mossa {
 				return false;
 			}
 			final Attacco a1 = (Attacco) obj;
-			return super.equals(a1) && this.getPezzoAtttaccante().equals(a1.getPezzoAtttaccante());
+			return super.equals(a1) && this.getPezzoAttaccante().equals(a1.getPezzoAttaccante());
 		}
 
 		@Override
@@ -130,7 +130,7 @@ public abstract class Mossa {
 		}
 
 		@Override
-		public Pezzo getPezzoAtttaccante() {
+		public Pezzo getPezzoAttaccante() {
 			return this.pezzoAttaccante;
 		}
 	}
@@ -186,18 +186,18 @@ public abstract class Mossa {
 
 		@Override
 		public Scacchiera esegui() {
-			throw new RuntimeException("Non istanziabile");
+			throw new RuntimeException("Non puoi eseguire una mossa nulla");
 		}
 
 	}
 
-	public static class Mosse {
+	public static class MossaFactory {
 
-		private Mosse() {
+		private MossaFactory() {
 			throw new RuntimeException("Non istanziabile");
 		}
 
-		public static Mossa generaMossa(final Scacchiera scacchiera, final int coordinateAttuali,
+		public static Mossa creaMossa(final Scacchiera scacchiera, final int coordinateAttuali,
 				final int coordinateDestinazione) {
 
 			for (final Mossa mossa : scacchiera.getMossePossibili()) {

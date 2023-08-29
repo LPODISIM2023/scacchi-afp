@@ -47,8 +47,7 @@ public class Alfiere extends Pezzo {
 				}
 			}
 		}
-		
-		return Collections.unmodifiableList(possibiliMosse);
+		return ImmutableList.copyOf(possibiliMosse);
 	}
 	
 	@Override
