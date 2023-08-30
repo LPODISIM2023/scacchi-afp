@@ -2,7 +2,6 @@ package it.univaq.disim.oop.scacchi.player;
 
 import java.util.*;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.pezzi.Re;
@@ -89,7 +88,7 @@ public abstract class Giocatore {
 		}
 		final Scacchiera transizioneScacchiera = mossa.esegui();
 		final Collection<Mossa> attacchiRe = Giocatore.calcolaAttaccoSuCasella(
-				transizioneScacchiera.giocatoreAttuale().getAvversario().giocatoreRe.getCoordinatePezzo(),	
+				transizioneScacchiera.giocatoreAttuale().getAvversario().getGiocatoreRe().getCoordinatePezzo(),
 				transizioneScacchiera.giocatoreAttuale().getMosseLegali());
 		if (!attacchiRe.isEmpty()) {
 			return new TransizioneMossa(this.scacchiera, mossa, StatoMossa.LASCIA_GIOCATORE_IN_SCACCO);

@@ -16,8 +16,12 @@ public class Alfiere extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI  = {-9, -7, 7, 9 };
 	
-	public Alfiere(Colore colorePezzo, int coordinatePezzo) {
-		super(TipoPezzo.ALFIERE, coordinatePezzo, colorePezzo);
+	public Alfiere(final Colore colorePezzo, final int coordinatePezzo) {
+		super(TipoPezzo.ALFIERE, coordinatePezzo, colorePezzo, true);
+	}
+	
+	public Alfiere(final Colore colorePezzo, final int coordinatePezzo, final boolean primaMossa) {
+		super(TipoPezzo.ALFIERE, coordinatePezzo, colorePezzo, primaMossa);
 	}
 
 	@Override

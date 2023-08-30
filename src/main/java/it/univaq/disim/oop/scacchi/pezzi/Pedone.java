@@ -8,14 +8,20 @@ import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.player.Colore;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MossaAttaccoPedone;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Muovi;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MuoviPedone;
 
 public class Pedone extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI = { 8, 16, 7, 9 };
 
 	public Pedone(final Colore colorePezzo, final int coordinatePezzo) {
-		super(TipoPezzo.PEDONE, coordinatePezzo, colorePezzo);
+		super(TipoPezzo.PEDONE, coordinatePezzo, colorePezzo, true);
+	}
+	
+	public Pedone(final Colore colorePezzo, final int coordinatePezzo, final boolean primaMossa) {
+		super(TipoPezzo.PEDONE, coordinatePezzo, colorePezzo, primaMossa);
 	}
 
 	@Override
@@ -36,12 +42,13 @@ public class Pedone extends Pezzo {
 				// TODO more work to do here(occuparsi delle promozioni)
 				possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
 			} else if (insiemePosizioneCorrente == 16 && this.primaMossa()
-					&& (ScacchieraController.RANGO_DUE[this.coordinatePezzo] && this.getColorePezzo().isNero())
-					|| (ScacchieraController.RANGO_SETTE[this.coordinatePezzo] && this.getColorePezzo().isBianco())) {
+					&& ((ScacchieraController.RANGO_SETTE[this.coordinatePezzo] && this.getColorePezzo().isNero())
+							|| (ScacchieraController.RANGO_DUE[this.coordinatePezzo]
+									&& this.getColorePezzo().isBianco()))) {
 				final int casellaPrecedenteArrivo = this.coordinatePezzo + (this.colorePezzo.getDirezione() * 8);
 				if (!scacchiera.getCasella(casellaPrecedenteArrivo).occupata()
 						&& !scacchiera.getCasella(coordinateArrivo).occupata()) {
-					possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
+					possibiliMosse.add(new MuoviPedone(scacchiera, this, coordinateArrivo));
 				}
 			} else if (insiemePosizioneCorrente == 7 && !((ScacchieraController.OTTAVA_COLONNA[this.coordinatePezzo]
 					&& this.colorePezzo.isBianco()
@@ -50,7 +57,7 @@ public class Pedone extends Pezzo {
 					final Pezzo pezzoArrivo = scacchiera.getCasella(coordinateArrivo).getPezzo();
 					if (this.colorePezzo != pezzoArrivo.getColorePezzo()) {
 						// TODO more to do here
-						possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
+						possibiliMosse.add(new MossaAttaccoPedone(scacchiera, this, coordinateArrivo, pezzoArrivo));
 					}
 				}
 			} else if (insiemePosizioneCorrente == 9 && !((ScacchieraController.PRIMA_COLONNA[this.coordinatePezzo]
@@ -60,14 +67,14 @@ public class Pedone extends Pezzo {
 					final Pezzo pezzoArrivo = scacchiera.getCasella(coordinateArrivo).getPezzo();
 					if (this.colorePezzo != pezzoArrivo.getColorePezzo()) {
 						// TODO more to do here
-						possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
+						possibiliMosse.add(new MossaAttaccoPedone(scacchiera, this, coordinateArrivo, pezzoArrivo));
 					}
 				}
 			}
 		}
 		return ImmutableList.copyOf(possibiliMosse);
 	}
-	
+
 	@Override
 	public String toString() {
 		return TipoPezzo.PEDONE.toString();

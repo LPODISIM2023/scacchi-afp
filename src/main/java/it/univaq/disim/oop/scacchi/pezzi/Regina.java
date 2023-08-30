@@ -16,8 +16,12 @@ public class Regina extends Pezzo {
 
 	private final static int[] MOSSE_POSSIBILI = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	public Regina(Colore colorePezzo, int coordinatePezzo) {
-		super(TipoPezzo.REGINA, coordinatePezzo, colorePezzo);
+	public Regina(final Colore colorePezzo, final int coordinatePezzo) {
+		super(TipoPezzo.REGINA, coordinatePezzo, colorePezzo, true);
+	}
+	
+	public Regina(final Colore colorePezzo, final int coordinatePezzo, final boolean primaMossa) {
+		super(TipoPezzo.REGINA, coordinatePezzo, colorePezzo, primaMossa);
 	}
 
 	@Override

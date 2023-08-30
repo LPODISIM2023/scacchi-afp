@@ -14,13 +14,6 @@ import it.univaq.disim.oop.scacchi.player.GiocatoreNero;
 
 public class Scacchiera {
 
-	private Integer Id;
-	private Boolean vittoria;
-	private Boolean pareggio;
-	private Pezzo pezzo;
-	private Partita partite;
-	private Set<Pezzo> pezzi;
-
 	private final List<Casella> scacchiera;
 	private final Collection<Pezzo> pezziBianchi;
 	private final Collection<Pezzo> pezziNeri;
@@ -40,7 +33,7 @@ public class Scacchiera {
 				this.giocatoreNero);
 	}
 
-	@SuppressWarnings("unused")
+	
 	private static String stampaBella(Casella casella) {
 		return casella.toString();
 	}
@@ -178,55 +171,7 @@ public class Scacchiera {
 		}
 
 	}
-/*
-	public Integer getId() {
-		return Id;
-	}
 
-	public void setId(Integer id) {
-		Id = id;
-	}
-
-	public Boolean getVittoria() {
-		return vittoria;
-	}
-
-	public void setVittoria(Boolean vittoria) {
-		this.vittoria = vittoria;
-	}
-
-	public Boolean getPareggio() {
-		return pareggio;
-	}
-
-	public void setPareggio(Boolean pareggio) {
-		this.pareggio = pareggio;
-	}
-
-	public Pezzo getPezzo() {
-		return pezzo;
-	}
-
-	public void setPezzo(Pezzo pezzo) {
-		this.pezzo = pezzo;
-	}
-
-	public Partita getPartite() {
-		return partite;
-	}
-
-	public void setPartite(Partita partite) {
-		this.partite = partite;
-	}
-
-	public Set<Pezzo> getPezzi() {
-		return pezzi;
-	}
-
-	public void setPezzi(Set<Pezzo> pezzi) {
-		this.pezzi = pezzi;
-	}
-*/
 	public Iterable<Mossa> getMossePossibili() {
 		return Iterables.unmodifiableIterable(
 				Iterables.concat(this.giocatoreBianco.getMosseLegali(), this.giocatoreNero.getMosseLegali()));

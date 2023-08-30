@@ -29,7 +29,10 @@ import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 public class Tabella {
 
 	private final JFrame gameFrame;
+	private final StoricoGiocoPanel storicoGiocoPanel;
+	private final PezziPresiPanel pezziPresiPanel;
 	private final ScacchieraPanel scacchieraPanel;
+	private final RegistroMosse registroMosse;
 	private Scacchiera scacchiScacchiera;
 
 	private Casella provenienzaCasella;
@@ -54,10 +57,15 @@ public class Tabella {
 		this.gameFrame.setJMenuBar(tabellaMenuBar);
 		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
 		this.scacchiScacchiera = Scacchiera.creaScacchieraStandard();
+		this.storicoGiocoPanel = new StoricoGiocoPanel();
+		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
+		this.registroMosse = new RegistroMosse();
 		this.direzioneScacchiera = DirezioneScacchiera.NORMALE;
 		this.evidenziaMosseLegali = false;
+		this.gameFrame.add(this.pezziPresiPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
+		this.gameFrame.add(this.storicoGiocoPanel, BorderLayout.EAST);
 		this.gameFrame.setVisible(true);
 	}
 
@@ -177,6 +185,39 @@ public class Tabella {
 		}
 	}
 
+	public static class RegistroMosse {
+		private final List<Mossa> mosse;
+
+		RegistroMosse() {
+			this.mosse = new ArrayList<Mossa>();
+		}
+
+		public List<Mossa> getMosse() {
+			return this.mosse;
+		}
+
+		public void addMosse(final Mossa mossa) {
+			this.mosse.add(mossa);
+		}
+
+		public int size() {
+			return this.mosse.size();
+		}
+
+		public void clear() {
+			this.mosse.clear();
+		}
+
+		public Mossa rimuoviMossa(int index) {
+			return this.mosse.remove(index);
+		}
+
+		public boolean rimuoviMossa(final Mossa mossa) {
+			return this.mosse.remove(mossa);
+		}
+
+	}
+
 	private class CasellaPanel extends JPanel {
 
 		private final int casellaId;
@@ -205,11 +246,12 @@ public class Tabella {
 							}
 						} else {
 							destinazioneCasella = scacchiScacchiera.getCasella(casellaId);
-							final Mossa mossa = Mossa.MossaFactory.creaMossa(scacchiScacchiera, provenienzaCasella.getCasella(),destinazioneCasella.getCasella());
+							final Mossa mossa = Mossa.MossaFactory.creaMossa(scacchiScacchiera,
+									provenienzaCasella.getCasella(), destinazioneCasella.getCasella());
 							final TransizioneMossa transizione = scacchiScacchiera.giocatoreAttuale().fareMossa(mossa);
 							if (transizione.getStatoMossa().isFatto()) {
 								scacchiScacchiera = transizione.getTransizioneScacchiera();
-								// TODO aggiungere la mossa che viene fatta dal registro degli spostamenti
+								registroMosse.addMosse(mossa);
 							}
 							provenienzaCasella = null;
 							destinazioneCasella = null;
@@ -217,6 +259,8 @@ public class Tabella {
 						}
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
+								storicoGiocoPanel.redo(scacchiScacchiera, registroMosse);
+								pezziPresiPanel.redo(registroMosse);
 								scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
 							}
 						});

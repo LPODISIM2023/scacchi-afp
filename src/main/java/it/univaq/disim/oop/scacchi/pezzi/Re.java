@@ -17,7 +17,11 @@ public class Re extends Pezzo {
 	private final static int[] MOSSE_POSSIBILI = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
 	public Re(final Colore colorePezzo, final int coordinatePezzo) {
-		super(TipoPezzo.RE, coordinatePezzo, colorePezzo);
+		super(TipoPezzo.RE, coordinatePezzo, colorePezzo, true);
+	}
+	
+	public Re(final Colore colorePezzo, final int coordinatePezzo, final boolean primaMossa) {
+		super(TipoPezzo.RE, coordinatePezzo, colorePezzo, primaMossa);
 	}
 
 	@Override

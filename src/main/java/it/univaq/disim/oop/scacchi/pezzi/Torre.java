@@ -17,7 +17,11 @@ public class Torre extends Pezzo {
 	private final static int[] MOSSE_POSSIBILI = { -8, -1, 1, 8 };
 
 	public Torre(Colore colorePezzo, int coordinatePezzo) {
-		super(TipoPezzo.TORRE, coordinatePezzo, colorePezzo);
+		super(TipoPezzo.TORRE, coordinatePezzo, colorePezzo, true);
+	}
+	
+	public Torre(Colore colorePezzo, int coordinatePezzo, final boolean primaMossa) {
+		super(TipoPezzo.TORRE, coordinatePezzo, colorePezzo, primaMossa);
 	}
 
 	@Override

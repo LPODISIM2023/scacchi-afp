@@ -17,7 +17,11 @@ public class Cavallo extends Pezzo {
 	private final static int [] MOSSE_POSSIBILI = {-17, -15, -10, -6, 6, 10, 15, 17};
 	
 	public Cavallo(final Colore colorePezzo, final int coordinatePezzo) {
-		super(TipoPezzo.CAVALLO, coordinatePezzo, colorePezzo);
+		super(TipoPezzo.CAVALLO, coordinatePezzo, colorePezzo, true);
+	}
+	
+	public Cavallo(final Colore colorePezzo, final int coordinatePezzo, final boolean primaMossa) {
+		super(TipoPezzo.CAVALLO, coordinatePezzo, colorePezzo, primaMossa);
 	}
 
 	@Override

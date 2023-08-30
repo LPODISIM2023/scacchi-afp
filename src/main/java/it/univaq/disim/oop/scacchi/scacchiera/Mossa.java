@@ -1,14 +1,16 @@
 package it.univaq.disim.oop.scacchi.scacchiera;
 
+import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.pezzi.Pedone;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera.*;
 
 public abstract class Mossa {
 
-	final Scacchiera scacchiera;
-	final Pezzo pezzoMosso;
-	final int coordinateDestinazione;
+	protected final Scacchiera scacchiera;
+	protected final Pezzo pezzoMosso;
+	protected final int coordinateDestinazione;
+	protected final boolean primaMossa;
 
 	public static final Mossa PASSA = new Passa();
 
@@ -16,16 +18,23 @@ public abstract class Mossa {
 		this.scacchiera = scacchiera;
 		this.pezzoMosso = pezzoMosso;
 		this.coordinateDestinazione = coordinateDestinazione;
+		this.primaMossa = pezzoMosso.primaMossa();
+	}
+
+	private Mossa(final Scacchiera scacchiera, final int coordinateDestinazione) {
+		this.scacchiera = scacchiera;
+		this.coordinateDestinazione = coordinateDestinazione;
+		this.pezzoMosso = null;
+		this.primaMossa = false;
 	}
 
 	@Override
 	public int hashCode() {
-		final int primo = 3;
+		final int primo = 31;
 		int risultato = 1;
-
-		risultato = primo + risultato + this.coordinateDestinazione;
-		risultato = primo + risultato + this.pezzoMosso.hashCode();
-
+		risultato = primo * risultato + this.coordinateDestinazione;
+		risultato = primo * risultato + this.pezzoMosso.hashCode();
+		risultato = primo * risultato + this.pezzoMosso.getCoordinatePezzo();
 		return risultato;
 	}
 
@@ -38,24 +47,25 @@ public abstract class Mossa {
 			return false;
 		}
 		final Mossa m1 = (Mossa) obj;
-		return this.getCoordinateDestinazione() == m1.getCoordinateDestinazione()
-				&& this.getPezzoMosso() == m1.getPezzoMosso();
-	}
-
-	public int getCoordinateDestinazione() {
-		return this.coordinateDestinazione;
+		return getCoordianteAttuali() == m1.getCoordianteAttuali()
+				&& getCoordinateDestinazione() == m1.getCoordinateDestinazione()
+				&& getPezzoMosso() == m1.getPezzoMosso();
 	}
 
 	public int getCoordianteAttuali() {
 		return this.getPezzoMosso().getCoordinatePezzo();
 	}
 
-	public Pezzo getPezzoMosso() {
-		return this.pezzoMosso;
+	public int getCoordinateDestinazione() {
+		return this.coordinateDestinazione;
 	}
 
 	public boolean Attacca() {
 		return false;
+	}
+
+	public Pezzo getPezzoMosso() {
+		return this.pezzoMosso;
 	}
 
 	public Pezzo getPezzoAttaccante() {
@@ -88,6 +98,16 @@ public abstract class Mossa {
 
 		public Muovi(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione) {
 			super(scacchiera, pezzoMosso, coordinateDestinazione);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return this == obj || obj instanceof Muovi && super.equals(obj);
+		}
+
+		@Override
+		public String toString() {
+			return ScacchieraController.getPosizioneInCoordinate(this.coordinateDestinazione);
 		}
 
 	}
@@ -143,21 +163,26 @@ public abstract class Mossa {
 
 		@Override
 		public Scacchiera esegui() {
-			final Costruttore nc = new Costruttore();
+			final Costruttore costruttore = new Costruttore();
 			for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getPezziAttivi()) {
 				if (!this.pezzoMosso.equals(pezzo)) {
-					nc.setPezzo(pezzo);
+					costruttore.setPezzo(pezzo);
 				}
 			}
 			for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi()) {
-				nc.setPezzo(pezzo);
+				costruttore.setPezzo(pezzo);
 			}
 			final Pedone pedonoMosso = (Pedone) this.pezzoMosso.pezzoMosso(this);
-			nc.setPezzo(pedonoMosso);
-			nc.setMossaFatta(this.scacchiera.giocatoreAttuale().getColore());
-			return nc.crea();
+			costruttore.setPezzo(pedonoMosso);
+			costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getColore());
+			return costruttore.crea();
 		}
-
+		
+		@Override
+		public String toString() {
+			return ScacchieraController.getPosizioneInCoordinate(this.coordinateDestinazione);
+		}
+		
 	}
 
 	public static class MossaAttaccoPedone extends Attacco {
@@ -181,7 +206,7 @@ public abstract class Mossa {
 	public static class Passa extends Mossa {
 
 		public Passa() {
-			super(null, null, -1);
+			super(null, -1);
 		}
 
 		@Override
