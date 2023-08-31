@@ -63,23 +63,25 @@ public class PezziPresiPanel extends JPanel {
 
 		Collections.sort(pezziPresiBianchi, new Comparator<Pezzo>() {
 
-			public int compare(Pezzo o1, Pezzo o2) {
-				return Ints.compare(o1.getValorePezzo(), o2.getValorePezzo());
+			public int compare(Pezzo p1, Pezzo p2) {
+				return Ints.compare(p1.getValorePezzo(), p2.getValorePezzo());
 			}
 		});
 
 		Collections.sort(pezziPresiNeri, new Comparator<Pezzo>() {
-			public int compare(Pezzo o1, Pezzo o2) {
-				return Ints.compare(o1.getValorePezzo(), o2.getValorePezzo());
+			public int compare(Pezzo p1, Pezzo p2) {
+				return Ints.compare(p1.getValorePezzo(), p2.getValorePezzo());
 			}
 		});
 
 		for (final Pezzo pezzoPreso : pezziPresiBianchi) {
 			try {
-				final BufferedImage image = ImageIO.read(new File("art/plain"
-				        + pezzoPreso.getColorePezzo().toString().substring(0, 1) + "" + pezzoPreso.toString()));
-				final ImageIcon icon = new ImageIcon(image);
-				final JLabel imageLabel = new JLabel();
+				final BufferedImage image = ImageIO
+						.read(new File("art/pezzi/" + pezzoPreso.getColorePezzo().toString().substring(0, 1) + ""
+								+ pezzoPreso.toString() + ".gif"));
+				final ImageIcon ic = new ImageIcon(image);
+				final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage()
+						.getScaledInstance(ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
 				this.pannelloSud.add(imageLabel);
 			} catch (final IOException e) {
 				e.printStackTrace();
@@ -88,11 +90,13 @@ public class PezziPresiPanel extends JPanel {
 
 		for (final Pezzo pezzoPreso : pezziPresiNeri) {
 			try {
-				final BufferedImage image = ImageIO.read(new File("art/plain"
-				        + pezzoPreso.getColorePezzo().toString().substring(0, 1) + "" + pezzoPreso.toString()));
-				final ImageIcon icon = new ImageIcon(image);
-				final JLabel imageLabel = new JLabel();
-				this.pannelloSud.add(imageLabel);
+				final BufferedImage image = ImageIO.read(new File("art/pezzi/"
+						+ pezzoPreso.getColorePezzo().toString().substring(0, 1) + "" + pezzoPreso.toString()
+						+ ".gif"));
+				final ImageIcon ic = new ImageIcon(image);
+				final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
+				this.pannelloNord.add(imageLabel);
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}

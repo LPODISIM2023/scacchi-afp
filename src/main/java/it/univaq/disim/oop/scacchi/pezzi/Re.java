@@ -9,8 +9,8 @@ import it.univaq.disim.oop.scacchi.player.Colore;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
-import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Attacco;
-import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Muovi;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MossaAttacco;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.GrandeMossa;
 
 public class Re extends Pezzo {
 
@@ -38,12 +38,12 @@ public class Re extends Pezzo {
 			if (ScacchieraController.casellaDisponibile(coordinateArrivo)) {
 				final Casella casellaArrivo = scacchiera.getCasella(coordinateArrivo);
 				if (!casellaArrivo.occupata()) {
-					possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
+					possibiliMosse.add(new GrandeMossa(scacchiera, this, coordinateArrivo));
 				} else {
 					final Pezzo pezzoArrivo = casellaArrivo.getPezzo();
 					final Colore colorePezzo = pezzoArrivo.getColorePezzo();
 					if (this.colorePezzo != colorePezzo) {
-						possibiliMosse.add(new Attacco(scacchiera, this, coordinateArrivo, pezzoArrivo));
+						possibiliMosse.add(new MossaAttacco(scacchiera, this, coordinateArrivo, pezzoArrivo));
 					}
 				}
 			}

@@ -9,7 +9,7 @@ import it.univaq.disim.oop.scacchi.player.Colore;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MossaAttaccoPedone;
-import it.univaq.disim.oop.scacchi.scacchiera.Mossa.Muovi;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.GrandeMossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MuoviPedone;
 
 public class Pedone extends Pezzo {
@@ -40,7 +40,7 @@ public class Pedone extends Pezzo {
 
 			if (insiemePosizioneCorrente == 8 && !scacchiera.getCasella(coordinateArrivo).occupata()) {
 				// TODO more work to do here(occuparsi delle promozioni)
-				possibiliMosse.add(new Muovi(scacchiera, this, coordinateArrivo));
+				possibiliMosse.add(new GrandeMossa(scacchiera, this, coordinateArrivo));
 			} else if (insiemePosizioneCorrente == 16 && this.primaMossa()
 					&& ((ScacchieraController.RANGO_SETTE[this.coordinatePezzo] && this.getColorePezzo().isNero())
 							|| (ScacchieraController.RANGO_DUE[this.coordinatePezzo]
