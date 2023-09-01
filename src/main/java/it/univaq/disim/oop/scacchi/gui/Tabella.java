@@ -52,21 +52,50 @@ public class Tabella {
 
 	public Tabella() {
 		this.gameFrame = new JFrame("JScacchi");
-		this.gameFrame.setLayout(new BorderLayout());
 		final JMenuBar tabellaMenuBar = creaTabellaMenuBar();
 		this.gameFrame.setJMenuBar(tabellaMenuBar);
-		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
+		this.gameFrame.setLayout(new BorderLayout());
 		this.scacchiScacchiera = Scacchiera.creaScacchieraStandard();
+		this.direzioneScacchiera = DirezioneScacchiera.NORMALE;
+		this.evidenziaMosseLegali = false;
 		this.storicoGiocoPanel = new StoricoGiocoPanel();
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
 		this.registroMosse = new RegistroMosse();
-		this.direzioneScacchiera = DirezioneScacchiera.NORMALE;
-		this.evidenziaMosseLegali = false;
+
 		this.gameFrame.add(this.pezziPresiPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
 		this.gameFrame.add(this.storicoGiocoPanel, BorderLayout.EAST);
+		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
 		this.gameFrame.setVisible(true);
+	}
+
+	private JFrame getGameFrame() {
+		return this.gameFrame;
+	}
+
+	private Scacchiera getGameBoard() {
+		return this.scacchiScacchiera;
+	}
+
+	private RegistroMosse getRegistroMosse() {
+		return this.registroMosse;
+	}
+
+	private ScacchieraPanel getScacchieraPanel() {
+		return this.scacchieraPanel;
+	}
+
+	private StoricoGiocoPanel getStoricoGiocoPanel() {
+		return this.storicoGiocoPanel;
+	}
+
+	private PezziPresiPanel getPezziPresiPanel() {
+		return this.pezziPresiPanel;
+	}
+
+	private boolean getEvidenziaMosseLegali() {
+		return this.evidenziaMosseLegali;
 	}
 
 	private JMenuBar creaTabellaMenuBar() {
@@ -291,6 +320,7 @@ public class Tabella {
 		public void disegnaCasella(final Scacchiera scacchiera) {
 			assegnaColoreCasella();
 			assegnaIconaPezzoCasella(scacchiera);
+			evidenziaDatiLegali(scacchiera);
 			validate();
 			repaint();
 		}

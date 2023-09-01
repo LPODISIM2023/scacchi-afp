@@ -14,13 +14,13 @@ import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
 public class StoricoGiocoPanel extends JPanel {
 
-	private final ModelloDati model;
+	private final DataModel model;
 	private final JScrollPane scrollPane;
 	private static final Dimension DIMENSIONE_PANNELLO_STORICO = new Dimension(100, 400);
 
 	StoricoGiocoPanel() {
 		this.setLayout(new BorderLayout());
-		this.model = new ModelloDati();
+		this.model = new DataModel();
 		final JTable table = new JTable(model);
 		table.setRowHeight(15);
 		this.scrollPane = new JScrollPane(table);
@@ -48,7 +48,7 @@ public class StoricoGiocoPanel extends JPanel {
 			final String testoMossa = ultimaMossa.toString();
 			if (ultimaMossa.getPezzoMosso().getColorePezzo().isBianco()) {
 				this.model.setValueAt(testoMossa + calcolaCheckECheckMateHash(scacchiera), rigaCorrente, 0);
-			} else if(ultimaMossa.getPezzoMosso().getColorePezzo().isNero()) {
+			} else if (ultimaMossa.getPezzoMosso().getColorePezzo().isNero()) {
 				this.model.setValueAt(testoMossa + calcolaCheckECheckMateHash(scacchiera), rigaCorrente - 1, 1);
 			}
 		}
@@ -68,12 +68,37 @@ public class StoricoGiocoPanel extends JPanel {
 		return "";
 	}
 
-	private static class ModelloDati extends DefaultTableModel {
+	private static class Riga {
+		private String mossaBianco;
+		private String mossaNero;
+
+		Riga() {
+		}
+
+		public String getMossaBianco() {
+			return this.mossaBianco;
+		}
+
+		public String getMossaNero() {
+			return this.mossaNero;
+		}
+
+		public void setMossaBianco(final String mossa) {
+			this.mossaBianco = mossa;
+		}
+
+		public void setMossaNero(final String mossa) {
+			this.mossaNero = mossa;
+		}
+
+	}
+
+	private static class DataModel extends DefaultTableModel {
 
 		private final ArrayList<Object> valori;
 		private static final String[] NOMI = { "Bianco", "Nero" };
 
-		public ModelloDati() {
+		public DataModel() {
 			this.valori = new ArrayList<Object>();
 		}
 
@@ -82,14 +107,14 @@ public class StoricoGiocoPanel extends JPanel {
 			setRowCount(0);
 		}
 
-		public int getRigaCount() {
+		public int getRowCount() {
 			if (this.valori == null) {
 				return 0;
 			}
 			return this.valori.size();
 		}
 
-		public int getColonnaCount() {
+		public int getColumnCount() {
 			return NOMI.length;
 		}
 
@@ -120,37 +145,12 @@ public class StoricoGiocoPanel extends JPanel {
 			}
 		}
 
-		public Class<?> getColonnaClass(final int colonna) {
+		public Class<?> getColumnClass(final int colonna) {
 			return Mossa.class;
 		}
 
-		public String getColonnaNome(final int colonna) {
+		public String getColumnName(final int colonna) {
 			return NOMI[colonna];
-		}
-
-	}
-
-	private static class Riga {
-		private String mossaBianco;
-		private String mossaNero;
-
-		Riga() {
-		}
-
-		public String getMossaBianco() {
-			return this.mossaBianco;
-		}
-
-		public String getMossaNero() {
-			return this.mossaNero;
-		}
-
-		public void setMossaBianco(final String mossa) {
-			this.mossaBianco = mossa;
-		}
-
-		public void setMossaNero(final String mossa) {
-			this.mossaNero = mossa;
 		}
 
 	}

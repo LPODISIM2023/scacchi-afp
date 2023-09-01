@@ -22,15 +22,31 @@ public abstract class Pezzo {
 		this.cachedHashCode = eseguiHashCode();
 	}
 
-	protected int eseguiHashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((colorePezzo == null) ? 0 : colorePezzo.hashCode());
-		result = prime * result + coordinatePezzo;
-		result = prime * result + (primaMossa ? 1231 : 1237);
-		result = prime * result + ((tipoPezzo == null) ? 0 : tipoPezzo.hashCode());
-		return result;
-	};
+	public int getCoordinatePezzo() {
+		return this.coordinatePezzo;
+	}
+
+	public Colore getColorePezzo() {
+		return this.colorePezzo;
+	}
+
+	public boolean primaMossa() {
+		return this.primaMossa;
+	}
+
+	public TipoPezzo getTipoPezzo() {
+		return this.tipoPezzo;
+	}
+
+	public int getValorePezzo() {
+		return this.tipoPezzo.getValorePezzo();
+	}
+
+	// Dice quali mosse "legali" puo' effetturare un pezzo sulla scacchiera
+	public abstract Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera);
+
+	// genera un nuovo pezzo in seguito a una mossa(movimento/cattura)
+	public abstract Pezzo pezzoMosso(Mossa mossa);
 
 	// equals pregenerati da eclipse
 	@Override
@@ -51,31 +67,13 @@ public abstract class Pezzo {
 		return this.cachedHashCode;
 	}
 
-	public int getCoordinatePezzo() {
-		return this.coordinatePezzo;
-	}
-
-	public Colore getColorePezzo() {
-		return this.colorePezzo;
-	}
-
-	public boolean primaMossa() {
-		return this.primaMossa;
-	}
-
-	public TipoPezzo getTipoPezzo() {
-		return this.tipoPezzo;
-	}
-	
-	public int getValorePezzo() {
-		return this.tipoPezzo.getValorePezzo();
-	}
-	
-	// Dice quali mosse "legali" puo' effetturare un pezzo sulla scacchiera
-		public abstract Collection<Mossa> calcolaMosseLegali(final Scacchiera scacchiera);
-
-	// genera un nuovo pezzo in seguito a una mossa(movimento/cattura)
-	public abstract Pezzo pezzoMosso(Mossa mossa);
+	protected int eseguiHashCode() {
+		int result = this.tipoPezzo.hashCode();
+		result = 31 * result + this.colorePezzo.hashCode();
+		result = 31 * result + this.coordinatePezzo;
+		result = 31 * result + (this.primaMossa ? 1 : 0);
+		return result;
+	};
 
 	public enum TipoPezzo {
 
@@ -91,7 +89,7 @@ public abstract class Pezzo {
 				return false;
 			}
 		},
-		ALFIERE("A", 300) {
+		ALFIERE("A", 330) {
 			@Override
 			public boolean isRe() {
 				return false;
@@ -109,7 +107,7 @@ public abstract class Pezzo {
 				return false;
 			}
 		},
-		RE("K", 10000) {
+		RE("K", 100000) {
 			@Override
 			public boolean isRe() {
 				return true;
@@ -128,7 +126,7 @@ public abstract class Pezzo {
 		public String toString() {
 			return this.nomePezzo;
 		}
-		
+
 		public int getValorePezzo() {
 			return this.valorePezzo;
 		}

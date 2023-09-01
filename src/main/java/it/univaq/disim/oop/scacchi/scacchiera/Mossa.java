@@ -176,7 +176,7 @@ public abstract class Mossa {
 		public MuoviPedone(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione) {
 			super(scacchiera, pezzoMosso, coordinateDestinazione);
 		}
-
+		/*
 		@Override
 		public Scacchiera esegui() {
 			final Costruttore costruttore = new Costruttore();
@@ -192,7 +192,7 @@ public abstract class Mossa {
 			costruttore.setPezzo(pedonoMosso);
 			costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getColore());
 			return costruttore.crea();
-		}
+		}*/
 
 		@Override
 		public boolean equals(final Object obj) {
