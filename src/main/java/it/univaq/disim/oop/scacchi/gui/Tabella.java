@@ -3,6 +3,7 @@ package it.univaq.disim.oop.scacchi.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,7 @@ import java.util.Observer;
 import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
+import it.univaq.disim.oop.scacchi.player.Giocatore;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MossaFactory;
@@ -40,7 +42,7 @@ public class Tabella extends Observable {
 	private final RegistroMosse registroMosse;
 	private final GiocoSetup giocoSetup;
 	private Scacchiera scacchiScacchiera;
-
+	private Mossa computerMossa;
 	private Casella provenienzaCasella;
 	private Casella destinazioneCasella;
 	private Pezzo personaMuovePezzo;
@@ -73,7 +75,7 @@ public class Tabella extends Observable {
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
 		this.registroMosse = new RegistroMosse();
-		//this.addObserver(new TabellaGiocoAIWatcher());
+		// this.addObserver(new TabellaGiocoAIWatcher());
 		this.giocoSetup = new GiocoSetup(this.gameFrame, true);
 		this.gameFrame.add(this.pezziPresiPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
@@ -135,6 +137,7 @@ public class Tabella extends Observable {
 		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
 		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
 		Tabella.get().getScacchieraPanel().disegnaScacchiera(Tabella.get().getGiocoBoard());
+		Tabella.get().getDebugPanel().redo();
 	}
 
 	private JMenuBar creaTabellaMenuBar() {
@@ -206,15 +209,66 @@ public class Tabella extends Observable {
 		return preferencesMenu;
 	}
 
+	private static String playerInfo(final Giocatore giocatore) {
+		return ("Il Giocatore è: " + giocatore.getColore() + "\nmosse legali (" + giocatore.getMosseLegali().size()
+				+ ") = " + giocatore.getMosseLegali() + "\nèinScacco = " + giocatore.isInScacco()
+				+ "\nèinScaccoMatto = " + giocatore.isInScaccoMatto()) + "\n";
+	}
+
+	private void aggiornaGiocoScacchiera(final Scacchiera scacchiera) {
+		this.scacchiScacchiera = scacchiera;
+	}
+
+	private void updateComputerMove(final Mossa mossa) {
+		this.computerMossa = mossa;
+	}
+
+	private void AnnullamentoTutteMosse() {
+		for (int i = Tabella.get().getRegistroMosse().size() - 1; i >= 0; i--) {
+			final Mossa ultimaMossa = Tabella.get().getRegistroMosse()
+					.rimuoviMossa(Tabella.get().getRegistroMosse().size() - 1);
+			this.scacchiScacchiera = this.scacchiScacchiera.giocatoreAttuale().mossaNonFatta(ultimaMossa)
+					.getInScacchiera();
+		}
+		this.computerMossa = null;
+		Tabella.get().getRegistroMosse().clear();
+		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
+		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
+		Tabella.get().getScacchieraPanel().disegnaScacchiera(scacchiScacchiera);
+		Tabella.get().getDebugPanel().redo();
+	}
+
 	private JMenu creaMenuOpzioni() {
 		final JMenu opzioniMenu = new JMenu("Opzioni");
+		opzioniMenu.setMnemonic(KeyEvent.VK_O);
+
+		final JMenuItem resetMenuItem = new JMenuItem("Nuova Partita", KeyEvent.VK_P);
+		resetMenuItem.addActionListener(e -> AnnullamentoTutteMosse());
+		opzioniMenu.add(resetMenuItem);
+
+		final JMenuItem legalMovesMenuItem = new JMenuItem("Stato Corrente", KeyEvent.VK_L);
+		legalMovesMenuItem.addActionListener(e -> {
+			System.out.println(scacchiScacchiera.getPezziBianchi());
+			System.out.println(scacchiScacchiera.getPezziNeri());
+			System.out.println(playerInfo(scacchiScacchiera.giocatoreAttuale()));
+			System.out.println(playerInfo(scacchiScacchiera.giocatoreAttuale().getAvversario()));
+		});
+		opzioniMenu.add(legalMovesMenuItem);
+
+		final JMenuItem undoMoveMenuItem = new JMenuItem("Ritorna all'ultima mossa", KeyEvent.VK_M);
+		undoMoveMenuItem.addActionListener(e -> {
+			if (Tabella.get().getRegistroMosse().size() > 0) {
+				undoUltimaMossa();
+			}
+		});
+		opzioniMenu.add(undoMoveMenuItem);
 
 		final JMenuItem setupGiocoMenuItem = new JMenuItem("Setup Gioco");
 		setupGiocoMenuItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				Tabella.get().getGiocoSetup().promptUser();
-				//Tabella.get().setupUpdate(Tabella.get().getGiocoSetup());
+				// Tabella.get().setupUpdate(Tabella.get().getGiocoSetup());
 			}
 		});
 
@@ -222,6 +276,17 @@ public class Tabella extends Observable {
 
 		return opzioniMenu;
 
+	}
+
+	private void undoUltimaMossa() {
+		final Mossa ultimaMossa = Tabella.get().getRegistroMosse().rimuoviMossa(Tabella.get().getRegistroMosse().size() - 1);
+		this.scacchiScacchiera = this.scacchiScacchiera.giocatoreAttuale().mossaNonFatta(ultimaMossa).getInScacchiera();
+		this.computerMossa = null;
+		Tabella.get().getRegistroMosse().rimuoviMossa(ultimaMossa);
+		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
+		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
+		Tabella.get().getScacchieraPanel().disegnaScacchiera(scacchiScacchiera);
+		Tabella.get().getDebugPanel().redo();
 	}
 
 	public String getIconaPezzoPath() {
@@ -383,9 +448,9 @@ public class Tabella extends Observable {
 							destinazioneCasella = scacchiScacchiera.getCasella(casellaId);
 							final Mossa mossa = Mossa.MossaFactory.creaMossa(scacchiScacchiera,
 									provenienzaCasella.getCasella(), destinazioneCasella.getCasella());
-							final TransizioneMossa transizione = scacchiScacchiera.giocatoreAttuale().fareMossa(mossa);
+							final TransizioneMossa transizione = scacchiScacchiera.giocatoreAttuale().mossaFatta(mossa);
 							if (transizione.getStatoMossa().isFatto()) {
-								scacchiScacchiera = transizione.getTransizioneScacchiera();
+								scacchiScacchiera = transizione.getInScacchiera();
 								registroMosse.addMosse(mossa);
 							}
 							provenienzaCasella = null;
@@ -397,6 +462,7 @@ public class Tabella extends Observable {
 								storicoGiocoPanel.redo(scacchiScacchiera, registroMosse);
 								pezziPresiPanel.redo(registroMosse);
 								scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
+								debugPanel.redo();
 							}
 						});
 					}

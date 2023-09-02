@@ -1,6 +1,8 @@
 package it.univaq.disim.oop.scacchi.scacchiera;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -70,6 +72,11 @@ public class Scacchiera {
 	public Collection<Pezzo> getPezziBianchi() {
 		return this.pezziBianchi;
 	}
+	
+	 public Collection<Pezzo> getPezziTotali() {
+	        return Stream.concat(this.pezziBianchi.stream(),
+	                             this.pezziNeri.stream()).collect(Collectors.toList());
+	    }
 
 	private Collection<Mossa> calcolaMosseLegali(final Collection<Pezzo> pezzi) {
 		final List<Mossa> mosseLegali = new ArrayList<Mossa>();
@@ -151,6 +158,7 @@ public class Scacchiera {
 	public static class Costruttore {
 		Map<Integer, Pezzo> scacchieraConfig;
 		Colore prossimaMossaFatta;
+		Mossa transizioneMossa;
 
 		public Costruttore() {
 			this.scacchieraConfig = new HashMap<Integer, Pezzo>();
@@ -165,6 +173,11 @@ public class Scacchiera {
 			this.prossimaMossaFatta = prossimaMossaFatta;
 			return this;
 		}
+		
+		public Costruttore setTransizioneMossa(final Mossa transizioneMossa) {
+            this.transizioneMossa = transizioneMossa;
+            return this;
+        }
 
 		public Scacchiera crea() {
 			return new Scacchiera(this);

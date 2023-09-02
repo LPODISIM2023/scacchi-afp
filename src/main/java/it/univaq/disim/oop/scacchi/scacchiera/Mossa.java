@@ -8,8 +8,8 @@ import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera.*;
 public abstract class Mossa {
 
 	protected final Scacchiera scacchiera;
-	protected final Pezzo pezzoMosso;
 	protected final int coordinateDestinazione;
+	protected final Pezzo pezzoMosso;
 	protected final boolean primaMossa;
 
 	public static final Mossa PASSA = new Passa();
@@ -60,12 +60,12 @@ public abstract class Mossa {
 		return this.coordinateDestinazione;
 	}
 
-	public boolean Attacca() {
-		return false;
-	}
-
 	public Pezzo getPezzoMosso() {
 		return this.pezzoMosso;
+	}
+
+	public boolean Attacca() {
+		return false;
 	}
 
 	public Pezzo getPezzoAttaccante() {
@@ -74,44 +74,61 @@ public abstract class Mossa {
 
 	public Scacchiera esegui() {
 
-		final Costruttore costruttore = new Costruttore();
-		// controllo tutti i pezzi del giocatore attuale,
-		// controllo quali pezzi ha mosso e li inserisco nella nuova Scacchiera
-		for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getPezziAttivi()) {
-			if (!this.pezzoMosso.equals(pezzo)) {
-				costruttore.setPezzo(pezzo);
-			}
-		}
+		final Costruttore costruttore = new Costruttore(); // controllo tutti i pezzi
+		/*
+		 * del giocatore attuale, // controllo quali pezzi ha mosso e li inserisco nella
+		 * nuova Scacchiera for (final Pezzo pezzo :
+		 * this.scacchiera.giocatoreAttuale().getPezziAttivi()) { if
+		 * (!this.pezzoMosso.equals(pezzo)) { costruttore.setPezzo(pezzo); } }
+		 * 
+		 * for (final Pezzo pezzo :
+		 * this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi()) {
+		 * costruttore.setPezzo(pezzo); } // sposta il pezzo dopo la mossa
+		 * costruttore.setPezzo(this.pezzoMosso.pezzoMosso(this)); // dopo aver fatto
+		 * una mossa passo al giocatore di colore opposto
+		 * costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getAvversario().
+		 * getColore()); // restiruisco una nuova scacchira dopo ogni mossa fatta return
+		 * costruttore.crea();
+		 */
 
-		for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi()) {
-			costruttore.setPezzo(pezzo);
-		}
-		// sposta il pezzo dopo la mossa
+		this.scacchiera.giocatoreAttuale().getPezziAttivi().stream().filter(pezzo -> !this.pezzoMosso.equals(pezzo))
+				.forEach(costruttore::setPezzo);
+		this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi().forEach(costruttore::setPezzo);
 		costruttore.setPezzo(this.pezzoMosso.pezzoMosso(this));
-		// dopo aver fatto una mossa passo al giocatore di colore opposto
 		costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getAvversario().getColore());
-		// restiruisco una nuova scacchira dopo ogni mossa fatta
+		costruttore.setTransizioneMossa(this);
+		return costruttore.crea();
+
+	}
+
+	public Scacchiera undo() {
+		final Scacchiera.Costruttore costruttore = new Costruttore();
+		this.scacchiera.getPezziTotali().forEach(costruttore::setPezzo);
+		costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getColore());
 		return costruttore.crea();
 	}
 
-	public static class GrandeMossaAttacco extends MossaAttacco {
+	public enum StatoMossa {
+		FATTO {
+			@Override
+			public boolean isFatto() {
+				return true;
+			}
+		},
+		MOSSA_ILLEGALE {
+			@Override
+			public boolean isFatto() {
+				return false;
+			}
+		},
+		LASCIA_GIOCATORE_IN_SCACCO {
+			@Override
+			public boolean isFatto() {
+				return false;
+			}
+		};
 
-		public GrandeMossaAttacco(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione,
-				final Pezzo pezzoAttaccante) {
-			super(scacchiera, pezzoMosso, coordinateDestinazione, pezzoAttaccante);
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return this == obj || obj instanceof GrandeMossaAttacco && super.equals(obj);
-		}
-
-		@Override
-		public String toString() {
-			return pezzoMosso.getTipoPezzo().toString()
-					+ ScacchieraController.getPosizioneInCoordinate(this.coordinateDestinazione);
-		}
-
+		public abstract boolean isFatto();
 	}
 
 	public static final class GrandeMossa extends Mossa {
@@ -171,28 +188,31 @@ public abstract class Mossa {
 		}
 	}
 
+	public static class GrandeMossaAttacco extends MossaAttacco {
+
+		public GrandeMossaAttacco(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione,
+				final Pezzo pezzoAttaccante) {
+			super(scacchiera, pezzoMosso, coordinateDestinazione, pezzoAttaccante);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return this == obj || obj instanceof GrandeMossaAttacco && super.equals(obj);
+		}
+
+		@Override
+		public String toString() {
+			return pezzoMosso.getTipoPezzo().toString()
+					+ ScacchieraController.getPosizioneInCoordinate(this.coordinateDestinazione);
+		}
+
+	}
+
 	public static class MuoviPedone extends Mossa {
 
 		public MuoviPedone(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione) {
 			super(scacchiera, pezzoMosso, coordinateDestinazione);
 		}
-		/*
-		@Override
-		public Scacchiera esegui() {
-			final Costruttore costruttore = new Costruttore();
-			for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getPezziAttivi()) {
-				if (!this.pezzoMosso.equals(pezzo)) {
-					costruttore.setPezzo(pezzo);
-				}
-			}
-			for (final Pezzo pezzo : this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi()) {
-				costruttore.setPezzo(pezzo);
-			}
-			final Pedone pedonoMosso = (Pedone) this.pezzoMosso.pezzoMosso(this);
-			costruttore.setPezzo(pedonoMosso);
-			costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getColore());
-			return costruttore.crea();
-		}*/
 
 		@Override
 		public boolean equals(final Object obj) {
@@ -257,10 +277,10 @@ public abstract class Mossa {
 		private MossaFactory() {
 			throw new RuntimeException("Non istanziabile");
 		}
-		
+
 		public static Mossa getMossaNulla() {
-            return PASSA;
-        }
+			return PASSA;
+		}
 
 		public static Mossa creaMossa(final Scacchiera scacchiera, final int coordinateAttuali,
 				final int coordinateDestinazione) {

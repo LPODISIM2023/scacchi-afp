@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableList;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.pezzi.Re;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.StatoMossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
-import it.univaq.disim.oop.scacchi.scacchiera.StatoMossa;
 import it.univaq.disim.oop.scacchi.scacchiera.TransizioneMossa;
 
 public abstract class Giocatore {
@@ -25,6 +25,18 @@ public abstract class Giocatore {
 		this.mosseLegali = ImmutableList.copyOf(mosseLegali);
 		this.isInScacco = !Giocatore.calcolaAttaccoSuCasella(this.giocatoreRe.getCoordinatePezzo(), mosseAvversario)
 				.isEmpty();
+	}
+
+	public boolean isInScacco() {
+		return this.isInScacco;
+	}
+
+	public boolean isInScaccoMatto() {
+		return this.isInScacco && !hasMosseDiFuga();
+	}
+
+	public boolean isInStallo() {
+		return !this.isInScacco && !hasMosseDiFuga(); // non � n� in scacco n� ha mosse di fuga
 	}
 
 	public Re getGiocatoreRe() {
@@ -53,49 +65,37 @@ public abstract class Giocatore {
 		}
 		throw new RuntimeException("Non dovrebbe arrivare qui!");
 	}
-
-	public boolean isMossaLegale(final Mossa mossa) {
-		return this.mosseLegali.contains(mossa);
-	}
-
-	public boolean isInScacco() {
-		return this.isInScacco;
-	}
-
-	public boolean isInScaccoMatto() {
-		return this.isInScacco && !hasMosseDiFuga();
-	}
-
-	public boolean isInStallo() {
-		return !this.isInScacco && !hasMosseDiFuga(); // non � n� in scacco n� ha mosse di fuga
-	}
-
 	private boolean hasMosseDiFuga() { // per verificare le mosse di fuga del re
-		for (final Mossa mossa : this.mosseLegali) {
-			final TransizioneMossa transizione = fareMossa(mossa);
-			if (transizione.getStatoMossa().isFatto()) {
-				return true;
-			}
-		}
-		return false;
+		return this.mosseLegali.stream()
+                .anyMatch(mossa -> mossaFatta(mossa)
+                .getStatoMossa().isFatto());
 	}
+	
+	 public Collection<Mossa> getLegalMoves() {
+	        return this.mosseLegali;
+	    }
+
 
 	public boolean isArroccato() {
 		return false;
 	}
 
-	public TransizioneMossa fareMossa(final Mossa mossa) {
-		if (!isMossaLegale(mossa)) {
-			return new TransizioneMossa(this.scacchiera, mossa, StatoMossa.MOSSA_ILLEGALE);
+	public TransizioneMossa mossaFatta(final Mossa mossa) {
+		if (!this.mosseLegali.contains(mossa)) {
+			return new TransizioneMossa(this.scacchiera, this.scacchiera, mossa, StatoMossa.MOSSA_ILLEGALE);
 		}
 		final Scacchiera transizioneScacchiera = mossa.esegui();
 		final Collection<Mossa> attacchiRe = Giocatore.calcolaAttaccoSuCasella(
 				transizioneScacchiera.giocatoreAttuale().getAvversario().getGiocatoreRe().getCoordinatePezzo(),
 				transizioneScacchiera.giocatoreAttuale().getMosseLegali());
 		if (!attacchiRe.isEmpty()) {
-			return new TransizioneMossa(this.scacchiera, mossa, StatoMossa.LASCIA_GIOCATORE_IN_SCACCO);
+			return new TransizioneMossa(this.scacchiera, this.scacchiera, mossa, StatoMossa.LASCIA_GIOCATORE_IN_SCACCO);
 		}
-		return new TransizioneMossa(transizioneScacchiera, mossa, StatoMossa.FATTO);
+		return new TransizioneMossa(this.scacchiera,transizioneScacchiera, mossa, StatoMossa.FATTO);
+	}
+
+	public TransizioneMossa mossaNonFatta(final Mossa mossa) {
+		return new TransizioneMossa(this.scacchiera, mossa.undo(), mossa, StatoMossa.FATTO);
 	}
 
 	public abstract Collection<Pezzo> getPezziAttivi();
