@@ -1,7 +1,5 @@
 package it.univaq.disim.oop.scacchi.player;
 
-import it.univaq.disim.oop.scacchi.player.*;
-
 public enum Colore {
 	BIANCO {
 		@Override

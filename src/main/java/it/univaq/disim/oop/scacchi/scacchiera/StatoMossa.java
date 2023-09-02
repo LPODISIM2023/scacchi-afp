@@ -1,4 +1,4 @@
-package it.univaq.disim.oop.scacchi.player;
+package it.univaq.disim.oop.scacchi.scacchiera;
 
 public enum StatoMossa {
 	FATTO {
@@ -19,6 +19,6 @@ public enum StatoMossa {
 			return false;
 		}
 	};
-	
+
 	public abstract boolean isFatto();
 }

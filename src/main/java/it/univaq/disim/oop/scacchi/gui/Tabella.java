@@ -18,30 +18,36 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
+import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
-import it.univaq.disim.oop.scacchi.player.TransizioneMossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MossaFactory;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
+import it.univaq.disim.oop.scacchi.scacchiera.TransizioneMossa;
 
-public class Tabella {
+public class Tabella extends Observable {
 
 	private final JFrame gameFrame;
 	private final StoricoGiocoPanel storicoGiocoPanel;
 	private final PezziPresiPanel pezziPresiPanel;
+	private final DebugPanel debugPanel;
 	private final ScacchieraPanel scacchieraPanel;
 	private final RegistroMosse registroMosse;
+	private final GiocoSetup giocoSetup;
 	private Scacchiera scacchiScacchiera;
 
 	private Casella provenienzaCasella;
 	private Casella destinazioneCasella;
 	private Pezzo personaMuovePezzo;
 	private DirezioneScacchiera direzioneScacchiera;
-
+	private String iconaPezzoPath;
 	private boolean evidenziaMosseLegali;
-
+	private boolean usaLibro;
 	private final static Dimension DIMENSIONE_FRAME_ESTERNO = new Dimension(600, 600);
 	private final static Dimension DIMENSIONE_PANNELLO_CONTROLLO = new Dimension(400, 350);
 	private final static Dimension DIMENSIONE_PANNELLO_CASELLA = new Dimension(10, 10);
@@ -50,7 +56,9 @@ public class Tabella {
 	private Color coloreCasellaChiara = Color.decode("#FFFACD");
 	private Color coloreCasellaScura = Color.decode("#593E1A");
 
-	public Tabella() {
+	private static final Tabella INSTANCE = new Tabella();
+
+	private Tabella() {
 		this.gameFrame = new JFrame("JScacchi");
 		final JMenuBar tabellaMenuBar = creaTabellaMenuBar();
 		this.gameFrame.setJMenuBar(tabellaMenuBar);
@@ -58,23 +66,35 @@ public class Tabella {
 		this.scacchiScacchiera = Scacchiera.creaScacchieraStandard();
 		this.direzioneScacchiera = DirezioneScacchiera.NORMALE;
 		this.evidenziaMosseLegali = false;
+		this.usaLibro = false;
+		this.setIconaPezzoPath("art/pezzi/");
 		this.storicoGiocoPanel = new StoricoGiocoPanel();
+		this.debugPanel = new DebugPanel();
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
 		this.registroMosse = new RegistroMosse();
-
+		//this.addObserver(new TabellaGiocoAIWatcher());
+		this.giocoSetup = new GiocoSetup(this.gameFrame, true);
 		this.gameFrame.add(this.pezziPresiPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
 		this.gameFrame.add(this.storicoGiocoPanel, BorderLayout.EAST);
+		this.gameFrame.add(debugPanel, BorderLayout.SOUTH);
+		setDefaultLookAndFeelDecorated(true);
+		this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
+		center(this.gameFrame);
 		this.gameFrame.setVisible(true);
+	}
+
+	public static Tabella get() {
+		return INSTANCE;
 	}
 
 	private JFrame getGameFrame() {
 		return this.gameFrame;
 	}
 
-	private Scacchiera getGameBoard() {
+	private Scacchiera getGiocoBoard() {
 		return this.scacchiScacchiera;
 	}
 
@@ -94,15 +114,44 @@ public class Tabella {
 		return this.pezziPresiPanel;
 	}
 
+	private DebugPanel getDebugPanel() {
+		return this.debugPanel;
+	}
+
+	private GiocoSetup getGiocoSetup() {
+		return this.giocoSetup;
+	}
+
 	private boolean getEvidenziaMosseLegali() {
 		return this.evidenziaMosseLegali;
+	}
+
+	private boolean getUsaLibro() {
+		return this.usaLibro;
+	}
+
+	public void mostra() {
+		Tabella.get().getRegistroMosse().clear();
+		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
+		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
+		Tabella.get().getScacchieraPanel().disegnaScacchiera(Tabella.get().getGiocoBoard());
 	}
 
 	private JMenuBar creaTabellaMenuBar() {
 		final JMenuBar tabellaMenuBar = new JMenuBar();
 		tabellaMenuBar.add(creaFileMenu());
 		tabellaMenuBar.add(creaMenuPreferenze());
+		tabellaMenuBar.add(creaMenuOpzioni());
 		return tabellaMenuBar;
+	}
+
+	private static void center(final JFrame frame) {
+		final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		final int w = frame.getSize().width;
+		final int h = frame.getSize().height;
+		final int x = (dim.width - w) / 2;
+		final int y = (dim.height - h) / 2;
+		frame.setLocation(x, y);
 	}
 
 	// Menu File
@@ -157,6 +206,61 @@ public class Tabella {
 		return preferencesMenu;
 	}
 
+	private JMenu creaMenuOpzioni() {
+		final JMenu opzioniMenu = new JMenu("Opzioni");
+
+		final JMenuItem setupGiocoMenuItem = new JMenuItem("Setup Gioco");
+		setupGiocoMenuItem.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				Tabella.get().getGiocoSetup().promptUser();
+				//Tabella.get().setupUpdate(Tabella.get().getGiocoSetup());
+			}
+		});
+
+		opzioniMenu.add(setupGiocoMenuItem);
+
+		return opzioniMenu;
+
+	}
+
+	public String getIconaPezzoPath() {
+		return iconaPezzoPath;
+	}
+
+	public void setIconaPezzoPath(String iconaPezzoPath) {
+		this.iconaPezzoPath = iconaPezzoPath;
+	}
+
+	private static class TabellaGiocoAIWatcher implements Observer {
+
+		public void update(final Observable o, final Object arg) {
+
+			if (Tabella.get().getGiocoSetup().isAIGIocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
+					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()
+					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
+				// System.out.println(Tabella.get().getGiocoBoard().giocatoreAttuale() + " è
+				// impostato con l'IA, penso....");
+				// Gruppo di riflessione sull'intelligenza artificiale
+				// final AIThinkTank thinkTank = new AIThinkTank();
+				// thinkTank.execute();
+			}
+
+			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
+				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + "è Scacco Matto!");
+			}
+
+			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
+				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + "è in Stallo!");
+			}
+		}
+
+	}
+
+	enum GiocatoreTipo {
+		UMANO, COMPUTER
+	}
+
 	enum DirezioneScacchiera {
 		NORMALE {
 
@@ -200,6 +304,8 @@ public class Tabella {
 				add(casellaPanel);
 			}
 			setPreferredSize(DIMENSIONE_PANNELLO_CONTROLLO);
+			setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+			setBackground(Color.decode("#8B4726"));
 			validate();
 		}
 
@@ -257,7 +363,7 @@ public class Tabella {
 			setPreferredSize(DIMENSIONE_PANNELLO_CASELLA);
 			assegnaColoreCasella();
 			assegnaIconaPezzoCasella(scacchiScacchiera);
-
+			evidenziaBordiCasella(scacchiScacchiera);
 			addMouseListener(new MouseListener() {
 
 				public void mouseClicked(final MouseEvent e) {
@@ -320,9 +426,28 @@ public class Tabella {
 		public void disegnaCasella(final Scacchiera scacchiera) {
 			assegnaColoreCasella();
 			assegnaIconaPezzoCasella(scacchiera);
+			evidenziaBordiCasella(scacchiera);
 			evidenziaDatiLegali(scacchiera);
 			validate();
 			repaint();
+		}
+
+		void setColoreCasellaChiara(final Color color) {
+			coloreCasellaChiara = color;
+		}
+
+		void setColoreCasellaScura(final Color color) {
+			coloreCasellaScura = color;
+		}
+
+		private void evidenziaBordiCasella(final Scacchiera scacchiera) {
+			if (personaMuovePezzo != null
+					&& personaMuovePezzo.getColorePezzo() == scacchiera.giocatoreAttuale().getColore()
+					&& personaMuovePezzo.getCoordinatePezzo() == this.casellaId) {
+				setBorder(BorderFactory.createLineBorder(Color.cyan));
+			} else {
+				setBorder(BorderFactory.createLineBorder(Color.GRAY));
+			}
 		}
 
 		private void assegnaIconaPezzoCasella(final Scacchiera scacchiera) {
@@ -379,4 +504,5 @@ public class Tabella {
 		}
 
 	}
+
 }

@@ -257,6 +257,10 @@ public abstract class Mossa {
 		private MossaFactory() {
 			throw new RuntimeException("Non istanziabile");
 		}
+		
+		public static Mossa getMossaNulla() {
+            return PASSA;
+        }
 
 		public static Mossa creaMossa(final Scacchiera scacchiera, final int coordinateAttuali,
 				final int coordinateDestinazione) {

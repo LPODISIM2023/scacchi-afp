@@ -53,8 +53,8 @@ public class StoricoGiocoPanel extends JPanel {
 			}
 		}
 
-		final JScrollBar verticale = scrollPane.getVerticalScrollBar();
-		verticale.setValue(verticale.getMaximum());
+		final JScrollBar vertical = scrollPane.getVerticalScrollBar();
+		vertical.setValue(vertical.getMaximum());
 
 	}
 
@@ -95,11 +95,11 @@ public class StoricoGiocoPanel extends JPanel {
 
 	private static class DataModel extends DefaultTableModel {
 
-		private final ArrayList<Object> valori;
+		private final ArrayList<Riga> valori;
 		private static final String[] NOMI = { "Bianco", "Nero" };
 
 		public DataModel() {
-			this.valori = new ArrayList<Object>();
+			this.valori = new ArrayList<Riga>();
 		}
 
 		public void clear() {

@@ -7,6 +7,8 @@ import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.pezzi.Re;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
+import it.univaq.disim.oop.scacchi.scacchiera.StatoMossa;
+import it.univaq.disim.oop.scacchi.scacchiera.TransizioneMossa;
 
 public abstract class Giocatore {
 

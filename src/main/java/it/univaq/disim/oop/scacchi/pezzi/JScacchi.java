@@ -11,7 +11,18 @@ public class JScacchi {
 
 		System.out.println(scacchiera);
 
-		Tabella tabella = new Tabella();
+		Tabella.get().mostra();
+		
+		/*
+		if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
+			System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + "è Scacco Matto!");
+		}
+
+		if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
+			System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + "è in Stallo!");
+		}
+		*/
+		
 	}
 
 }
