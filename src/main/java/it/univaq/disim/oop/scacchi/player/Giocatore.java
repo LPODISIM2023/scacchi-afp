@@ -70,10 +70,6 @@ public abstract class Giocatore {
                 .anyMatch(mossa -> mossaFatta(mossa)
                 .getStatoMossa().isFatto());
 	}
-	
-	 public Collection<Mossa> getLegalMoves() {
-	        return this.mosseLegali;
-	    }
 
 
 	public boolean isArroccato() {
