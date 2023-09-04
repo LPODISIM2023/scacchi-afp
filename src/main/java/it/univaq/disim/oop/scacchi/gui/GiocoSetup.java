@@ -80,7 +80,7 @@ class GiocoSetup extends JDialog {
         repaint();
     }
 
-    boolean isAIGIocatore(final Giocatore giocatore) {
+    boolean isCPUGiocatore(final Giocatore giocatore) {
         if(giocatore.getColore() == Colore.BIANCO) {
             return getTipoGiocatoreBianco() == GiocatoreTipo.COMPUTER;
         }

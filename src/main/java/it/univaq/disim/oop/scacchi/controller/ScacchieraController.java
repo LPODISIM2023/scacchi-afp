@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
+
 public class ScacchieraController {
 
 	public static final boolean[] PRIMA_COLONNA = initColonna(0); // array di caselle della prima colonna
@@ -79,5 +81,10 @@ public class ScacchieraController {
 	public static String getPosizioneInCoordinate(final int coordinate) {
 		return NOTAZIONE_ALGEBRICA[coordinate];
 	}
+	
+	public static boolean isFineDelGioco(final Scacchiera scacchiera) {
+        return scacchiera.giocatoreAttuale().isInScaccoMatto() ||
+        		scacchiera.giocatoreAttuale().isInStallo();
+    }
 
 }

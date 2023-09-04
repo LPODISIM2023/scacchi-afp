@@ -24,6 +24,7 @@ import java.util.Observer;
 
 import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
+import it.univaq.disim.oop.scacchi.cpu.Computer;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.player.Giocatore;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
@@ -75,7 +76,7 @@ public class Tabella extends Observable {
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
 		this.registroMosse = new RegistroMosse();
-		// this.addObserver(new TabellaGiocoAIWatcher());
+		this.addObserver(new TabellaGiocoCPUWatcher());
 		this.giocoSetup = new GiocoSetup(this.gameFrame, true);
 		this.gameFrame.add(this.pezziPresiPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
@@ -219,7 +220,7 @@ public class Tabella extends Observable {
 		this.scacchiScacchiera = scacchiera;
 	}
 
-	private void updateComputerMove(final Mossa mossa) {
+	private void aggiornaMosseComputer(final Mossa mossa) {
 		this.computerMossa = mossa;
 	}
 
@@ -268,7 +269,7 @@ public class Tabella extends Observable {
 
 			public void actionPerformed(ActionEvent e) {
 				Tabella.get().getGiocoSetup().promptUser();
-				// Tabella.get().setupUpdate(Tabella.get().getGiocoSetup());
+				Tabella.get().setupUpdate(Tabella.get().getGiocoSetup());
 			}
 		});
 
@@ -279,7 +280,8 @@ public class Tabella extends Observable {
 	}
 
 	private void undoUltimaMossa() {
-		final Mossa ultimaMossa = Tabella.get().getRegistroMosse().rimuoviMossa(Tabella.get().getRegistroMosse().size() - 1);
+		final Mossa ultimaMossa = Tabella.get().getRegistroMosse()
+				.rimuoviMossa(Tabella.get().getRegistroMosse().size() - 1);
 		this.scacchiScacchiera = this.scacchiScacchiera.giocatoreAttuale().mossaNonFatta(ultimaMossa).getInScacchiera();
 		this.computerMossa = null;
 		Tabella.get().getRegistroMosse().rimuoviMossa(ultimaMossa);
@@ -288,7 +290,7 @@ public class Tabella extends Observable {
 		Tabella.get().getScacchieraPanel().disegnaScacchiera(scacchiScacchiera);
 		Tabella.get().getDebugPanel().redo();
 	}
-
+	
 	public String getIconaPezzoPath() {
 		return iconaPezzoPath;
 	}
@@ -296,19 +298,29 @@ public class Tabella extends Observable {
 	public void setIconaPezzoPath(String iconaPezzoPath) {
 		this.iconaPezzoPath = iconaPezzoPath;
 	}
+	
+	private void mossaFattaUpdate(final GiocatoreTipo giocatoreTipo) {
+        setChanged();
+        notifyObservers(giocatoreTipo);
+    }
 
-	private static class TabellaGiocoAIWatcher implements Observer {
+	private void setupUpdate(final GiocoSetup giocoSetup) {
+		setChanged();
+		notifyObservers(giocoSetup);
+	}
+
+	private static class TabellaGiocoCPUWatcher implements Observer {
 
 		public void update(final Observable o, final Object arg) {
 
-			if (Tabella.get().getGiocoSetup().isAIGIocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
+			if (Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
-				// System.out.println(Tabella.get().getGiocoBoard().giocatoreAttuale() + " è
-				// impostato con l'IA, penso....");
+				System.out.println(
+						Tabella.get().getGiocoBoard().giocatoreAttuale() + " è impostato con la CPU, penso....");
 				// Gruppo di riflessione sull'intelligenza artificiale
-				// final AIThinkTank thinkTank = new AIThinkTank();
-				// thinkTank.execute();
+				final LogicaCPU thinkTank = new LogicaCPU();
+				thinkTank.execute();
 			}
 
 			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
@@ -324,6 +336,41 @@ public class Tabella extends Observable {
 
 	enum GiocatoreTipo {
 		UMANO, COMPUTER
+	}
+
+	//Elabora le mosse delle CPU
+	private static class LogicaCPU extends SwingWorker<Mossa, String> {
+
+		private LogicaCPU() {
+		}
+
+		@Override
+		protected Mossa doInBackground() {
+			
+			final Computer computer = new Computer(4);
+			
+			final Mossa mossaMigliore = computer.esegui(Tabella.get().getGiocoBoard());
+			
+			
+			return mossaMigliore;
+		}
+
+		@Override
+		public void done() {
+			try {
+				final Mossa mossaMigliore = get();
+				Tabella.get().aggiornaMosseComputer(mossaMigliore);
+				Tabella.get().aggiornaGiocoScacchiera(Tabella.get().getGiocoBoard().giocatoreAttuale().mossaFatta(mossaMigliore).getInScacchiera());
+				Tabella.get().getRegistroMosse().addMosse(mossaMigliore);
+				Tabella.get().getStoricoGiocoPanel().redo(Tabella.get().getGiocoBoard(), Tabella.get().getRegistroMosse());
+				Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
+				Tabella.get().getScacchieraPanel().disegnaScacchiera(Tabella.get().getGiocoBoard());
+				Tabella.get().getDebugPanel().redo();
+				Tabella.get().mossaFattaUpdate(GiocatoreTipo.COMPUTER);
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	enum DirezioneScacchiera {
@@ -432,6 +479,11 @@ public class Tabella extends Observable {
 			addMouseListener(new MouseListener() {
 
 				public void mouseClicked(final MouseEvent e) {
+					
+					if(Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale()) ||
+		                       ScacchieraController.isFineDelGioco(Tabella.get().getGiocoBoard())) {
+		                        return;
+		                    }
 
 					if (SwingUtilities.isRightMouseButton(e)) {
 						provenienzaCasella = null;
@@ -461,6 +513,9 @@ public class Tabella extends Observable {
 							public void run() {
 								storicoGiocoPanel.redo(scacchiScacchiera, registroMosse);
 								pezziPresiPanel.redo(registroMosse);
+								if(giocoSetup.isCPUGiocatore(scacchiScacchiera.giocatoreAttuale())) {
+									Tabella.get().mossaFattaUpdate(GiocatoreTipo.UMANO);
+								}
 								scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
 								debugPanel.redo();
 							}
@@ -494,6 +549,7 @@ public class Tabella extends Observable {
 			assegnaIconaPezzoCasella(scacchiera);
 			evidenziaBordiCasella(scacchiera);
 			evidenziaDatiLegali(scacchiera);
+			evidenziaMosseCPU();
 			validate();
 			repaint();
 		}
@@ -515,6 +571,16 @@ public class Tabella extends Observable {
 				setBorder(BorderFactory.createLineBorder(Color.GRAY));
 			}
 		}
+		
+		private void evidenziaMosseCPU() {
+            if(computerMossa != null) {
+                if(this.casellaId == computerMossa.getCoordinateAttuali()) {
+                    setBackground(Color.pink);
+                } else if(this.casellaId == computerMossa.getCoordinateDestinazione()) {
+                    setBackground(Color.red);
+                }
+            }
+        }
 
 		private void assegnaIconaPezzoCasella(final Scacchiera scacchiera) {
 			this.removeAll();

@@ -34,11 +34,11 @@ public class StoricoGiocoPanel extends JPanel {
 		int rigaCorrente = 0;
 		this.model.clear();
 		for (final Mossa mossa : storicoMosse.getMosse()) {
-			final String testoMosse = mossa.toString();
+			final String testoMossa = mossa.toString();
 			if (mossa.getPezzoMosso().getColorePezzo().isBianco()) {
-				this.model.setValueAt(testoMosse, rigaCorrente, 0);
+				this.model.setValueAt(testoMossa, rigaCorrente, 0);
 			} else if (mossa.getPezzoMosso().getColorePezzo().isNero()) {
-				this.model.setValueAt(testoMosse, rigaCorrente, 1);
+				this.model.setValueAt(testoMossa, rigaCorrente, 1);
 				rigaCorrente++;
 			}
 		}
