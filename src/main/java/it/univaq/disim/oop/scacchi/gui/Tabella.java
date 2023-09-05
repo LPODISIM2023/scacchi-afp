@@ -29,7 +29,6 @@ import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.player.Giocatore;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
-import it.univaq.disim.oop.scacchi.scacchiera.Mossa.MossaFactory;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 import it.univaq.disim.oop.scacchi.scacchiera.TransizioneMossa;
 
@@ -355,7 +354,6 @@ public class Tabella extends Observable {
 			return mossaMigliore;
 		}
 
-		@Override
 		public void done() {
 			try {
 				final Mossa mossaMigliore = get();
@@ -482,7 +480,7 @@ public class Tabella extends Observable {
 					
 					if(Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale()) ||
 		                       ScacchieraController.isFineDelGioco(Tabella.get().getGiocoBoard())) {
-		                        return;
+		                        return ;
 		                    }
 
 					if (SwingUtilities.isRightMouseButton(e)) {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
 
 import it.univaq.disim.oop.scacchi.gui.Tabella.RegistroMosse;
@@ -33,11 +32,11 @@ public class StoricoGiocoPanel extends JPanel {
 	void redo(final Scacchiera scacchiera, final RegistroMosse storicoMosse) {
 		int rigaCorrente = 0;
 		this.model.clear();
-		for (final Mossa mossa : storicoMosse.getMosse()) {
-			final String testoMossa = mossa.toString();
-			if (mossa.getPezzoMosso().getColorePezzo().isBianco()) {
+		for (final Mossa mosse : storicoMosse.getMosse()) {
+			final String testoMossa = mosse.toString();
+			if (mosse.getPezzoMosso().getColorePezzo().isBianco()) {
 				this.model.setValueAt(testoMossa, rigaCorrente, 0);
-			} else if (mossa.getPezzoMosso().getColorePezzo().isNero()) {
+			} else if (mosse.getPezzoMosso().getColorePezzo().isNero()) {
 				this.model.setValueAt(testoMossa, rigaCorrente, 1);
 				rigaCorrente++;
 			}
@@ -98,7 +97,7 @@ public class StoricoGiocoPanel extends JPanel {
 		private final ArrayList<Riga> valori;
 		private static final String[] NOMI = { "Bianco", "Nero" };
 
-		public DataModel() {
+		DataModel() {
 			this.valori = new ArrayList<Riga>();
 		}
 
