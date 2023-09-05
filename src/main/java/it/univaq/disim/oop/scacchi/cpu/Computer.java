@@ -1,5 +1,6 @@
 package it.univaq.disim.oop.scacchi.cpu;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
@@ -40,7 +41,7 @@ public class Computer implements StrategiaMossa {
 		int minore = Integer.MAX_VALUE;
 		int valoreAttuale;
 
-		System.out.println(scacchiera.giocatoreAttuale() + "Pensa:" + this.cercaFine);
+		System.out.println(scacchiera.giocatoreAttuale() + " Pensa: " + this.cercaFine);
 
 		this.frequenzaTabella = new RigaTabella[scacchiera.giocatoreAttuale().getMosseLegali().size()];
 		this.scacchieraValutate = 0;
@@ -56,18 +57,18 @@ public class Computer implements StrategiaMossa {
 				valoreAttuale = scacchiera.giocatoreAttuale().getColore().isBianco()
 						? min(tm.getInScacchiera(), this.cercaFine - 1)
 						: max(tm.getInScacchiera(), this.cercaFine - 1);
-				System.out.println("\t" + toString() + "anali mossa(" + contatoreMossa + "/" + numeroMossa + ")" + mossa
-						+ "punteggio" + valoreAttuale + "" + this.frequenzaTabella[this.contatoreTabella]);
+				System.out.println("\t" + toString() + " analizza mossa( " + contatoreMossa + " / " + numeroMossa + " )"
+						+ mossa + "punteggio" + valoreAttuale + "" + this.frequenzaTabella[this.contatoreTabella]);
 				this.contatoreTabella++;
 				if (scacchiera.giocatoreAttuale().getColore().isBianco() && valoreAttuale >= massimo) {
 					massimo = valoreAttuale;
 					m = mossa;
-				} else if (scacchiera.giocatoreAttuale().getColore().isNero() && valoreAttuale <= massimo) {
+				} else if (scacchiera.giocatoreAttuale().getColore().isNero() && valoreAttuale <= minore) {
 					minore = valoreAttuale;
 					m = mossa;
 				} else {
-					System.out.println("\t" + toString() + "non posso eseguire mossa(" + contatoreMossa + "/"
-							+ numeroMossa + ")" + mossa);
+					System.out.println("\t" + toString() + " non posso eseguire mossa( " + contatoreMossa + " / "
+							+ numeroMossa + " )" + mossa);
 				}
 				contatoreMossa++;
 			}
