@@ -36,7 +36,7 @@ public abstract class Giocatore {
 	}
 
 	public boolean isInStallo() {
-		return !this.isInScacco && !hasMosseDiFuga(); // non � n� in scacco n� ha mosse di fuga
+		return !this.isInScacco && !hasMosseDiFuga(); // non e in scacco e non ha mosse di fuga
 	}
 
 	public Re getGiocatoreRe() {
