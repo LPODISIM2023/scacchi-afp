@@ -3,11 +3,13 @@ package it.univaq.disim.oop.scacchi.gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class Pareggio extends JDialog {
@@ -20,13 +22,17 @@ public class Pareggio extends JDialog {
 		myPanel.add(new JLabel("Pareggio"));
 
 		final JButton okButton = new JButton("OK");
+		final JButton reset = new JButton("Nuova Partita");
 
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Pareggio.this.setVisible(false);
 			}
 		});
+		
+		reset.addActionListener(e -> Tabella.get().AnnullamentoTutteMosse());
 
+		myPanel.add(reset);
 		myPanel.add(okButton);
 
 		setLocationRelativeTo(frame);

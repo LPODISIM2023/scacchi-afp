@@ -20,13 +20,17 @@ public class ScaccoMatto extends JDialog {
 		myPanel.add(new JLabel("Scacco Matto"));
 
 		final JButton okButton = new JButton("OK");
+		final JButton reset = new JButton("Nuova Partita");
 
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ScaccoMatto.this.setVisible(false);
 			}
 		});
+		
+		reset.addActionListener(e -> Tabella.get().AnnullamentoTutteMosse());
 
+		myPanel.add(reset);
 		myPanel.add(okButton);
 
 		setLocationRelativeTo(frame);

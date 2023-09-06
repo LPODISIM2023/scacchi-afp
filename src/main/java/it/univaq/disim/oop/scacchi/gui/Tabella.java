@@ -127,11 +127,11 @@ public class Tabella extends Observable {
 	private Pareggio getPareggio() {
 		return this.pareggio;
 	}
-	
+
 	private Scacco getScacco() {
 		return this.scacco;
 	}
-	
+
 	private ScaccoMatto getScaccoMatto() {
 		return this.scaccoMatto;
 	}
@@ -221,9 +221,9 @@ public class Tabella extends Observable {
 	}
 
 	private static String playerInfo(final Giocatore giocatore) {
-		return ("Il Giocatore e'¨: " + giocatore.getColore() + "\nmosse legali (" + giocatore.getMosseLegali().size()
-				+ ") = " + giocatore.getMosseLegali() + "\ne'¨inScacco = " + giocatore.isInScacco()
-				+ "\ne'¨inScaccoMatto = " + giocatore.isInScaccoMatto()) + "\n";
+		return ("Il Giocatore e'ï¿½: " + giocatore.getColore() + "\nmosse legali (" + giocatore.getMosseLegali().size()
+				+ ") = " + giocatore.getMosseLegali() + "\ne'ï¿½inScacco = " + giocatore.isInScacco()
+				+ "\ne'ï¿½inScaccoMatto = " + giocatore.isInScaccoMatto()) + "\n";
 	}
 
 	private void aggiornaGiocoScacchiera(final Scacchiera scacchiera) {
@@ -234,7 +234,7 @@ public class Tabella extends Observable {
 		this.computerMossa = mossa;
 	}
 
-	private void AnnullamentoTutteMosse() {
+	public void AnnullamentoTutteMosse() {
 		for (int i = Tabella.get().getRegistroMosse().size() - 1; i >= 0; i--) {
 			final Mossa ultimaMossa = Tabella.get().getRegistroMosse()
 					.rimuoviMossa(Tabella.get().getRegistroMosse().size() - 1);
@@ -491,10 +491,9 @@ public class Tabella extends Observable {
 							|| ScacchieraController.isFineDelGioco(Tabella.get().getGiocoBoard())) {
 						if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScacco()) {
 							Tabella.get().getScacco().promptScacco();
-						} else {
-							if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
-								Tabella.get().getScaccoMatto().promptScaccoMatto();
-							}
+						}
+						if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
+							Tabella.get().getScaccoMatto().promptScaccoMatto();
 						}
 						if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
 							Tabella.get().getPareggio().promptPareggio();
