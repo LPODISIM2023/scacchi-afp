@@ -320,7 +320,7 @@ public class Tabella extends Observable {
 	private static class TabellaGiocoCPUWatcher implements Observer {
 
 		public void update(final Observable o, final Object arg) {
-
+			
 			if (Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
@@ -333,10 +333,12 @@ public class Tabella extends Observable {
 
 			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
 				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + " Scacco Matto!");
+				Tabella.get().getScaccoMatto().promptScaccoMatto();
 			}
 
 			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
 				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + " in Stallo!");
+				Tabella.get().getPareggio().promptPareggio();
 			}
 		}
 
