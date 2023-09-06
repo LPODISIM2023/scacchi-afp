@@ -30,11 +30,11 @@ public abstract class Mossa {
 
 	@Override
 	public int hashCode() {
-		final int primo = 31;
 		int risultato = 1;
-		risultato = primo * risultato + this.coordinateDestinazione;
-		risultato = primo * risultato + this.pezzoMosso.hashCode();
-		risultato = primo * risultato + this.pezzoMosso.getCoordinatePezzo();
+		risultato = 31 * risultato + this.coordinateDestinazione;
+		risultato = 31 * risultato + this.pezzoMosso.hashCode();
+		risultato = 31 * risultato + this.pezzoMosso.getCoordinatePezzo();
+		risultato = risultato + (primaMossa ? 1 : 0);
 		return risultato;
 	}
 
@@ -234,7 +234,17 @@ public abstract class Mossa {
 	public static class Passa extends Mossa {
 
 		public Passa() {
-			super(null, 65);
+			super(null, -1);
+		}
+
+		@Override
+		public int getCoordinateAttuali() {
+			return -1;
+		}
+
+		@Override
+		public int getCoordinateDestinazione() {
+			return -1;
 		}
 
 		@Override
@@ -242,8 +252,9 @@ public abstract class Mossa {
 			throw new RuntimeException("Non puoi eseguire una mossa nulla");
 		}
 
-		public int getCoordinateAttuali() {
-			return -1;
+		@Override
+		public String toString() {
+			return "Mossa Nulla";
 		}
 
 	}

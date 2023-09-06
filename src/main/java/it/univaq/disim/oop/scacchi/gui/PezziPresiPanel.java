@@ -62,13 +62,14 @@ public class PezziPresiPanel extends JPanel {
 		}
 
 		Collections.sort(pezziPresiBianchi, new Comparator<Pezzo>() {
-
+			@Override
 			public int compare(Pezzo p1, Pezzo p2) {
 				return Ints.compare(p1.getValorePezzo(), p2.getValorePezzo());
 			}
 		});
 
 		Collections.sort(pezziPresiNeri, new Comparator<Pezzo>() {
+			@Override
 			public int compare(Pezzo p1, Pezzo p2) {
 				return Ints.compare(p1.getValorePezzo(), p2.getValorePezzo());
 			}

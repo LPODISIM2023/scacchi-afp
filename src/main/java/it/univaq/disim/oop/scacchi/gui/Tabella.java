@@ -256,22 +256,22 @@ public class Tabella extends Observable {
 		resetMenuItem.addActionListener(e -> AnnullamentoTutteMosse());
 		opzioniMenu.add(resetMenuItem);
 
-		final JMenuItem legalMovesMenuItem = new JMenuItem("Stato Corrente", KeyEvent.VK_L);
-		legalMovesMenuItem.addActionListener(e -> {
+		final JMenuItem mosseLegaliMenuItem = new JMenuItem("Stato Corrente", KeyEvent.VK_L);
+		mosseLegaliMenuItem.addActionListener(e -> {
 			System.out.println(scacchiScacchiera.getPezziBianchi());
 			System.out.println(scacchiScacchiera.getPezziNeri());
 			System.out.println(playerInfo(scacchiScacchiera.giocatoreAttuale()));
 			System.out.println(playerInfo(scacchiScacchiera.giocatoreAttuale().getAvversario()));
 		});
-		opzioniMenu.add(legalMovesMenuItem);
+		opzioniMenu.add(mosseLegaliMenuItem);
 
-		final JMenuItem undoMoveMenuItem = new JMenuItem("Ritorna all'ultima mossa", KeyEvent.VK_M);
-		undoMoveMenuItem.addActionListener(e -> {
+		final JMenuItem RitornaAlUltimaMossaMenuItem = new JMenuItem("Ritorna all'ultima mossa", KeyEvent.VK_M);
+		RitornaAlUltimaMossaMenuItem.addActionListener(e -> {
 			if (Tabella.get().getRegistroMosse().size() > 0) {
 				undoUltimaMossa();
 			}
 		});
-		opzioniMenu.add(undoMoveMenuItem);
+		opzioniMenu.add(RitornaAlUltimaMossaMenuItem);
 
 		final JMenuItem setupGiocoMenuItem = new JMenuItem("Setup Gioco");
 		setupGiocoMenuItem.addActionListener(new ActionListener() {
@@ -318,9 +318,9 @@ public class Tabella extends Observable {
 	}
 
 	private static class TabellaGiocoCPUWatcher implements Observer {
-
+		@Override
 		public void update(final Observable o, final Object arg) {
-			
+
 			if (Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
@@ -329,6 +329,11 @@ public class Tabella extends Observable {
 				// Gruppo di riflessione sull'intelligenza artificiale
 				final LogicaCPU thinkTank = new LogicaCPU();
 				thinkTank.execute();
+			}
+
+			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScacco()) {
+				System.out.println(Tabella.get().getGiocoBoard().giocatoreAttuale() + " Scacco");
+				Tabella.get().getScacco().promptScacco();
 			}
 
 			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
@@ -364,6 +369,7 @@ public class Tabella extends Observable {
 			return mossaMigliore;
 		}
 
+		@Override
 		public void done() {
 			try {
 				final Mossa mossaMigliore = get();
@@ -486,7 +492,7 @@ public class Tabella extends Observable {
 			assegnaIconaPezzoCasella(scacchiScacchiera);
 			evidenziaBordiCasella(scacchiScacchiera);
 			addMouseListener(new MouseListener() {
-
+				@Override
 				public void mouseClicked(final MouseEvent e) {
 
 					if (Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
@@ -540,18 +546,22 @@ public class Tabella extends Observable {
 					}
 				}
 
+				@Override
 				public void mousePressed(final MouseEvent e) {
 
 				}
 
+				@Override
 				public void mouseReleased(final MouseEvent e) {
 
 				}
 
+				@Override
 				public void mouseEntered(final MouseEvent e) {
 
 				}
 
+				@Override
 				public void mouseExited(final MouseEvent e) {
 
 				}

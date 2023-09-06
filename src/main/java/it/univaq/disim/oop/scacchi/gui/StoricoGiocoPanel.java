@@ -98,27 +98,27 @@ public class StoricoGiocoPanel extends JPanel {
 		private static final String[] NOMI = { "Bianco", "Nero" };
 
 		DataModel() {
-			this.valori = new ArrayList<Riga>();
+			this.valori = new ArrayList<>();
 		}
 
 		public void clear() {
 			this.valori.clear();
 			setRowCount(0);
 		}
-
+		@Override
 		public int getRowCount() {
 			if (this.valori == null) {
 				return 0;
 			}
 			return this.valori.size();
 		}
-
+		@Override
 		public int getColumnCount() {
 			return NOMI.length;
 		}
-
+		@Override
 		public Object getValueAt(final int riga, final int colonna) {
-			final Riga rigaCorrente = (Riga) this.valori.get(riga);
+			final Riga rigaCorrente = this.valori.get(riga);
 			if (colonna == 0) {
 				return rigaCorrente.getMossaBianco();
 			} else if (colonna == 1) {
@@ -126,14 +126,14 @@ public class StoricoGiocoPanel extends JPanel {
 			}
 			return null;
 		}
-
+		@Override
 		public void setValueAt(final Object unValore, final int riga, final int colonna) {
 			final Riga rigaCorrente;
 			if (this.valori.size() <= riga) {
 				rigaCorrente = new Riga();
 				this.valori.add(rigaCorrente);
 			} else {
-				rigaCorrente = (Riga) this.valori.get(riga);
+				rigaCorrente = this.valori.get(riga);
 			}
 			if (colonna == 0) {
 				rigaCorrente.setMossaBianco((String) unValore);
@@ -143,11 +143,11 @@ public class StoricoGiocoPanel extends JPanel {
 				fireTableCellUpdated(riga, colonna);
 			}
 		}
-
+		@Override
 		public Class<?> getColumnClass(final int colonna) {
 			return Mossa.class;
 		}
-
+		@Override
 		public String getColumnName(final int colonna) {
 			return NOMI[colonna];
 		}
