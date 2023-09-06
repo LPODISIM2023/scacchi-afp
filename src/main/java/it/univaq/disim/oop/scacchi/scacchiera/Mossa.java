@@ -74,22 +74,7 @@ public abstract class Mossa {
 
 	public Scacchiera esegui() {
 
-		final Costruttore costruttore = new Costruttore(); // controllo tutti i pezzi
-		/*
-		 * del giocatore attuale, // controllo quali pezzi ha mosso e li inserisco nella
-		 * nuova Scacchiera for (final Pezzo pezzo :
-		 * this.scacchiera.giocatoreAttuale().getPezziAttivi()) { if
-		 * (!this.pezzoMosso.equals(pezzo)) { costruttore.setPezzo(pezzo); } }
-		 * 
-		 * for (final Pezzo pezzo :
-		 * this.scacchiera.giocatoreAttuale().getAvversario().getPezziAttivi()) {
-		 * costruttore.setPezzo(pezzo); } // sposta il pezzo dopo la mossa
-		 * costruttore.setPezzo(this.pezzoMosso.pezzoMosso(this)); // dopo aver fatto
-		 * una mossa passo al giocatore di colore opposto
-		 * costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getAvversario().
-		 * getColore()); // restiruisco una nuova scacchira dopo ogni mossa fatta return
-		 * costruttore.crea();
-		 */
+		final Costruttore costruttore = new Costruttore();
 
 		this.scacchiera.giocatoreAttuale().getPezziAttivi().stream().filter(pezzo -> !this.pezzoMosso.equals(pezzo))
 				.forEach(costruttore::setPezzo);
@@ -242,15 +227,6 @@ public abstract class Mossa {
 		public String toString() {
 			return ScacchieraController.getPosizioneInCoordinate(this.pezzoMosso.getCoordinatePezzo()).substring(0, 1)
 					+ "x" + ScacchieraController.getPosizioneInCoordinate(this.coordinateDestinazione);
-		}
-
-	}
-
-	public static class PresaVarcoPedone extends MossaAttaccoPedone {
-
-		public PresaVarcoPedone(final Scacchiera scacchiera, final Pezzo pezzoMosso, final int coordinateDestinazione,
-				final Pezzo pezzoAttaccante) {
-			super(scacchiera, pezzoMosso, coordinateDestinazione, pezzoAttaccante);
 		}
 
 	}

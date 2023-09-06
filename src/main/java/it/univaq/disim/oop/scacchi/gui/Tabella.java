@@ -37,10 +37,12 @@ public class Tabella extends Observable {
 	private final JFrame gameFrame;
 	private final StoricoGiocoPanel storicoGiocoPanel;
 	private final PezziPresiPanel pezziPresiPanel;
-	private final DebugPanel debugPanel;
 	private final ScacchieraPanel scacchieraPanel;
 	private final RegistroMosse registroMosse;
 	private final GiocoSetup giocoSetup;
+	private final Pareggio pareggio;
+	private final Scacco scacco;
+	private final ScaccoMatto scaccoMatto;
 	private Scacchiera scacchiScacchiera;
 	private Mossa computerMossa;
 	private Casella provenienzaCasella;
@@ -71,21 +73,23 @@ public class Tabella extends Observable {
 		this.usaLibro = false;
 		this.setIconaPezzoPath("art/pezzi/");
 		this.storicoGiocoPanel = new StoricoGiocoPanel();
-		this.debugPanel = new DebugPanel();
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
 		this.registroMosse = new RegistroMosse();
 		this.addObserver(new TabellaGiocoCPUWatcher());
 		this.giocoSetup = new GiocoSetup(this.gameFrame, true);
+		this.pareggio = new Pareggio(this.gameFrame, true);
+		this.scacco = new Scacco(this.gameFrame, true);
+		this.scaccoMatto = new ScaccoMatto(this.gameFrame, true);
 		this.gameFrame.add(this.pezziPresiPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.scacchieraPanel, BorderLayout.CENTER);
 		this.gameFrame.add(this.storicoGiocoPanel, BorderLayout.EAST);
-		this.gameFrame.add(debugPanel, BorderLayout.SOUTH);
 		setDefaultLookAndFeelDecorated(true);
 		this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.gameFrame.setSize(DIMENSIONE_FRAME_ESTERNO);
 		center(this.gameFrame);
 		this.gameFrame.setVisible(true);
+
 	}
 
 	public static Tabella get() {
@@ -116,12 +120,20 @@ public class Tabella extends Observable {
 		return this.pezziPresiPanel;
 	}
 
-	private DebugPanel getDebugPanel() {
-		return this.debugPanel;
-	}
-
 	private GiocoSetup getGiocoSetup() {
 		return this.giocoSetup;
+	}
+
+	private Pareggio getPareggio() {
+		return this.pareggio;
+	}
+	
+	private Scacco getScacco() {
+		return this.scacco;
+	}
+	
+	private ScaccoMatto getScaccoMatto() {
+		return this.scaccoMatto;
 	}
 
 	private boolean getEvidenziaMosseLegali() {
@@ -137,7 +149,6 @@ public class Tabella extends Observable {
 		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
 		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
 		Tabella.get().getScacchieraPanel().disegnaScacchiera(Tabella.get().getGiocoBoard());
-		Tabella.get().getDebugPanel().redo();
 	}
 
 	private JMenuBar creaTabellaMenuBar() {
@@ -210,9 +221,9 @@ public class Tabella extends Observable {
 	}
 
 	private static String playerInfo(final Giocatore giocatore) {
-		return ("Il Giocatore è: " + giocatore.getColore() + "\nmosse legali (" + giocatore.getMosseLegali().size()
-				+ ") = " + giocatore.getMosseLegali() + "\nèinScacco = " + giocatore.isInScacco()
-				+ "\nèinScaccoMatto = " + giocatore.isInScaccoMatto()) + "\n";
+		return ("Il Giocatore e'�: " + giocatore.getColore() + "\nmosse legali (" + giocatore.getMosseLegali().size()
+				+ ") = " + giocatore.getMosseLegali() + "\ne'�inScacco = " + giocatore.isInScacco()
+				+ "\ne'�inScaccoMatto = " + giocatore.isInScaccoMatto()) + "\n";
 	}
 
 	private void aggiornaGiocoScacchiera(final Scacchiera scacchiera) {
@@ -235,7 +246,6 @@ public class Tabella extends Observable {
 		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
 		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
 		Tabella.get().getScacchieraPanel().disegnaScacchiera(scacchiScacchiera);
-		Tabella.get().getDebugPanel().redo();
 	}
 
 	private JMenu creaMenuOpzioni() {
@@ -287,9 +297,8 @@ public class Tabella extends Observable {
 		Tabella.get().getStoricoGiocoPanel().redo(scacchiScacchiera, Tabella.get().getRegistroMosse());
 		Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
 		Tabella.get().getScacchieraPanel().disegnaScacchiera(scacchiScacchiera);
-		Tabella.get().getDebugPanel().redo();
 	}
-	
+
 	public String getIconaPezzoPath() {
 		return iconaPezzoPath;
 	}
@@ -297,11 +306,11 @@ public class Tabella extends Observable {
 	public void setIconaPezzoPath(String iconaPezzoPath) {
 		this.iconaPezzoPath = iconaPezzoPath;
 	}
-	
+
 	private void mossaFattaUpdate(final GiocatoreTipo giocatoreTipo) {
-        setChanged();
-        notifyObservers(giocatoreTipo);
-    }
+		setChanged();
+		notifyObservers(giocatoreTipo);
+	}
 
 	private void setupUpdate(final GiocoSetup giocoSetup) {
 		setChanged();
@@ -316,18 +325,18 @@ public class Tabella extends Observable {
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()
 					&& !Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
 				System.out.println(
-						Tabella.get().getGiocoBoard().giocatoreAttuale() + " è impostato con la CPU, penso....");
+						Tabella.get().getGiocoBoard().giocatoreAttuale() + " e' impostato con la CPU, penso....");
 				// Gruppo di riflessione sull'intelligenza artificiale
 				final LogicaCPU thinkTank = new LogicaCPU();
 				thinkTank.execute();
 			}
 
 			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
-				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + "è Scacco Matto!");
+				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + " Scacco Matto!");
 			}
 
 			if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
-				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + "è in Stallo!");
+				System.out.println("fine, " + Tabella.get().getGiocoBoard().giocatoreAttuale() + " in Stallo!");
 			}
 		}
 
@@ -337,7 +346,7 @@ public class Tabella extends Observable {
 		UMANO, COMPUTER
 	}
 
-	//Elabora le mosse delle CPU
+	// Elabora le mosse delle CPU
 	private static class LogicaCPU extends SwingWorker<Mossa, String> {
 
 		private LogicaCPU() {
@@ -345,12 +354,11 @@ public class Tabella extends Observable {
 
 		@Override
 		protected Mossa doInBackground() {
-			
+
 			final Computer computer = new Computer(4);
-			
+
 			final Mossa mossaMigliore = computer.esegui(Tabella.get().getGiocoBoard());
-			
-			
+
 			return mossaMigliore;
 		}
 
@@ -358,12 +366,13 @@ public class Tabella extends Observable {
 			try {
 				final Mossa mossaMigliore = get();
 				Tabella.get().aggiornaMosseComputer(mossaMigliore);
-				Tabella.get().aggiornaGiocoScacchiera(Tabella.get().getGiocoBoard().giocatoreAttuale().mossaFatta(mossaMigliore).getInScacchiera());
+				Tabella.get().aggiornaGiocoScacchiera(
+						Tabella.get().getGiocoBoard().giocatoreAttuale().mossaFatta(mossaMigliore).getInScacchiera());
 				Tabella.get().getRegistroMosse().addMosse(mossaMigliore);
-				Tabella.get().getStoricoGiocoPanel().redo(Tabella.get().getGiocoBoard(), Tabella.get().getRegistroMosse());
+				Tabella.get().getStoricoGiocoPanel().redo(Tabella.get().getGiocoBoard(),
+						Tabella.get().getRegistroMosse());
 				Tabella.get().getPezziPresiPanel().redo(Tabella.get().getRegistroMosse());
 				Tabella.get().getScacchieraPanel().disegnaScacchiera(Tabella.get().getGiocoBoard());
-				Tabella.get().getDebugPanel().redo();
 				Tabella.get().mossaFattaUpdate(GiocatoreTipo.COMPUTER);
 			} catch (final Exception e) {
 				e.printStackTrace();
@@ -477,11 +486,21 @@ public class Tabella extends Observable {
 			addMouseListener(new MouseListener() {
 
 				public void mouseClicked(final MouseEvent e) {
-					
-					if(Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale()) ||
-		                       ScacchieraController.isFineDelGioco(Tabella.get().getGiocoBoard())) {
-		                        return ;
-		                    }
+
+					if (Tabella.get().getGiocoSetup().isCPUGiocatore(Tabella.get().getGiocoBoard().giocatoreAttuale())
+							|| ScacchieraController.isFineDelGioco(Tabella.get().getGiocoBoard())) {
+						if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScacco()) {
+							Tabella.get().getScacco().promptScacco();
+						} else {
+							if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInScaccoMatto()) {
+								Tabella.get().getScaccoMatto().promptScaccoMatto();
+							}
+						}
+						if (Tabella.get().getGiocoBoard().giocatoreAttuale().isInStallo()) {
+							Tabella.get().getPareggio().promptPareggio();
+						}
+						return;
+					}
 
 					if (SwingUtilities.isRightMouseButton(e)) {
 						provenienzaCasella = null;
@@ -511,11 +530,10 @@ public class Tabella extends Observable {
 							public void run() {
 								storicoGiocoPanel.redo(scacchiScacchiera, registroMosse);
 								pezziPresiPanel.redo(registroMosse);
-								if(giocoSetup.isCPUGiocatore(scacchiScacchiera.giocatoreAttuale())) {
+								if (giocoSetup.isCPUGiocatore(scacchiScacchiera.giocatoreAttuale())) {
 									Tabella.get().mossaFattaUpdate(GiocatoreTipo.UMANO);
 								}
 								scacchieraPanel.disegnaScacchiera(scacchiScacchiera);
-								debugPanel.redo();
 							}
 						});
 					}
@@ -569,16 +587,16 @@ public class Tabella extends Observable {
 				setBorder(BorderFactory.createLineBorder(Color.GRAY));
 			}
 		}
-		
+
 		private void evidenziaMosseCPU() {
-            if(computerMossa != null) {
-                if(this.casellaId == computerMossa.getCoordinateAttuali()) {
-                    setBackground(Color.pink);
-                } else if(this.casellaId == computerMossa.getCoordinateDestinazione()) {
-                    setBackground(Color.red);
-                }
-            }
-        }
+			if (computerMossa != null) {
+				if (this.casellaId == computerMossa.getCoordinateAttuali()) {
+					setBackground(Color.pink);
+				} else if (this.casellaId == computerMossa.getCoordinateDestinazione()) {
+					setBackground(Color.red);
+				}
+			}
+		}
 
 		private void assegnaIconaPezzoCasella(final Scacchiera scacchiera) {
 			this.removeAll();

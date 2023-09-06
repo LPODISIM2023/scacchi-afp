@@ -72,10 +72,6 @@ public abstract class Giocatore {
 	}
 
 
-	public boolean isArroccato() {
-		return false;
-	}
-
 	public TransizioneMossa mossaFatta(final Mossa mossa) {
 		if (!this.mosseLegali.contains(mossa)) {
 			return new TransizioneMossa(this.scacchiera, this.scacchiera, mossa, StatoMossa.MOSSA_ILLEGALE);
