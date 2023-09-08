@@ -27,6 +27,7 @@ import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
 import it.univaq.disim.oop.scacchi.cpu.Computer;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.player.Giocatore;
+import it.univaq.disim.oop.scacchi.saving.GestioneFile;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
@@ -40,6 +41,7 @@ public class Tabella extends Observable {
 	private final ScacchieraPanel scacchieraPanel;
 	private final RegistroMosse registroMosse;
 	private final GiocoSetup giocoSetup;
+	private final GestioneFile gestioneFile;
 	private final Pareggio pareggio;
 	private final Scacco scacco;
 	private final ScaccoMatto scaccoMatto;
@@ -72,6 +74,7 @@ public class Tabella extends Observable {
 		this.evidenziaMosseLegali = false;
 		this.usaLibro = false;
 		this.setIconaPezzoPath("art/pezzi/");
+		this.gestioneFile = new GestioneFile();
 		this.storicoGiocoPanel = new StoricoGiocoPanel();
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
@@ -123,7 +126,11 @@ public class Tabella extends Observable {
 	private GiocoSetup getGiocoSetup() {
 		return this.giocoSetup;
 	}
-
+	
+	private GestioneFile getGestioneFile() {
+		return this.gestioneFile;
+	}
+	
 	private Pareggio getPareggio() {
 		return this.pareggio;
 	}
@@ -171,14 +178,24 @@ public class Tabella extends Observable {
 	// Menu File
 	private JMenu creaFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
-		final JMenuItem openPGN = new JMenuItem("Carica PGN File");
-		openPGN.addActionListener(new ActionListener() {
+		final JMenuItem nuovoTxt = new JMenuItem("Nuovo File");
+		nuovoTxt.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("aprire questo file pgn!");
+				Tabella.get().getGestioneFile().CreaFile();
+				System.out.println("Nuovo file creato");
 			}
 		});
-		fileMenu.add(openPGN);
+		fileMenu.add(nuovoTxt);
+		
+		final JMenuItem apriTxt = new JMenuItem("Carica File");
+		apriTxt.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("aprire questo file txt!");
+			}
+		});
+		fileMenu.add(apriTxt);
 
 		final JMenuItem exitMenuItem = new JMenuItem("Esci");
 		exitMenuItem.addActionListener(new ActionListener() {
