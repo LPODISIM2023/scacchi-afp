@@ -1,10 +1,6 @@
 package it.univaq.disim.oop.scacchi.cpu;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import it.univaq.disim.oop.scacchi.controller.ScacchieraController;
-import it.univaq.disim.oop.scacchi.player.*;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 import it.univaq.disim.oop.scacchi.scacchiera.TransizioneMossa;

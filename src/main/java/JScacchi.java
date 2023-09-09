@@ -1,5 +1,3 @@
-
-
 import it.univaq.disim.oop.scacchi.gui.Tabella;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 

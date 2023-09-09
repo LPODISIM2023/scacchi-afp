@@ -23,8 +23,8 @@ public abstract class Giocatore {
 		this.scacchiera = scacchiera;
 		this.giocatoreRe = stabilireRe();
 		this.mosseLegali = ImmutableList.copyOf(mosseLegali);
-		this.isInScacco = !Giocatore.calcolaAttaccoSuCasella(this.giocatoreRe.getCoordinatePezzo(), mosseAvversario)
-				.isEmpty();
+		this.isInScacco = !Giocatore.calcolaAttaccoSuCasella(this.giocatoreRe.getCoordinatePezzo(),
+				mosseAvversario).isEmpty();
 	}
 
 	public boolean isInScacco() {
