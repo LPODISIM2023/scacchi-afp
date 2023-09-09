@@ -1,0 +1,21 @@
+h4
+f5
+Pd3
+Pc6
+Qd2
+Cf6
+Th3
+Pd6
+Qg5
+Pe6
+Qg6
+Ke7
+Mossa [scacchiera=  t  c  a  q  -  a  -  t
+  p  p  -  -  k  -  p  p
+  -  -  p  p  p  c  Q  -
+  -  -  -  -  -  p  -  -
+  -  -  -  -  -  -  -  P
+  -  -  -  P  -  -  -  T
+  P  P  P  -  P  P  P  -
+  T  C  A  -  K  A  C  -
+, coordinateDestinazione=14, pezzoMosso=Q, primaMossa=true]

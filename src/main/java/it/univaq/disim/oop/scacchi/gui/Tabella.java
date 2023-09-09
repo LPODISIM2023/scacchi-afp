@@ -28,6 +28,7 @@ import it.univaq.disim.oop.scacchi.cpu.Computer;
 import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.player.Giocatore;
 import it.univaq.disim.oop.scacchi.saving.GestioneFile;
+import it.univaq.disim.oop.scacchi.saving.LetturaFile;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
@@ -42,6 +43,7 @@ public class Tabella extends Observable {
 	private final RegistroMosse registroMosse;
 	private final GiocoSetup giocoSetup;
 	private final GestioneFile gestioneFile;
+	private final LetturaFile letturaFile;
 	private final Pareggio pareggio;
 	private final Scacco scacco;
 	private final ScaccoMatto scaccoMatto;
@@ -75,6 +77,7 @@ public class Tabella extends Observable {
 		this.usaLibro = false;
 		this.setIconaPezzoPath("art/pezzi/");
 		this.gestioneFile = new GestioneFile();
+		this.letturaFile = new LetturaFile();
 		this.storicoGiocoPanel = new StoricoGiocoPanel();
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
@@ -131,6 +134,10 @@ public class Tabella extends Observable {
 		return this.gestioneFile;
 	}
 	
+	private LetturaFile getLetturaFile() {
+		return this.letturaFile;
+	}
+	
 	private Pareggio getPareggio() {
 		return this.pareggio;
 	}
@@ -178,24 +185,25 @@ public class Tabella extends Observable {
 	// Menu File
 	private JMenu creaFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
-		final JMenuItem nuovoTxt = new JMenuItem("Nuovo File");
-		nuovoTxt.addActionListener(new ActionListener() {
+				
+		final JMenuItem scriviTxt = new JMenuItem("Salva partita");
+		scriviTxt.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Tabella.get().getGestioneFile().CreaFile();
+				Tabella.get().getGestioneFile().ScriviFile(Tabella.get().getRegistroMosse().getMosse());
 				System.out.println("Nuovo file creato");
 			}
 		});
-		fileMenu.add(nuovoTxt);
+		fileMenu.add(scriviTxt);
 		
-		final JMenuItem apriTxt = new JMenuItem("Carica File");
-		apriTxt.addActionListener(new ActionListener() {
+		final JMenuItem leggiTxt = new JMenuItem("Visualizza salvataggio");
+		leggiTxt.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("aprire questo file txt!");
+				Tabella.get().getLetturaFile().LeggiFile();
 			}
 		});
-		fileMenu.add(apriTxt);
+		fileMenu.add(leggiTxt);
 
 		final JMenuItem exitMenuItem = new JMenuItem("Esci");
 		exitMenuItem.addActionListener(new ActionListener() {
