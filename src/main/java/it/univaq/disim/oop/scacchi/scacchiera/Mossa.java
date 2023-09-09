@@ -92,6 +92,14 @@ public abstract class Mossa {
 		costruttore.setMossaFatta(this.scacchiera.giocatoreAttuale().getColore());
 		return costruttore.crea();
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "Mossa [scacchiera=" + scacchiera + ", coordinateDestinazione=" + coordinateDestinazione
+				+ ", pezzoMosso=" + pezzoMosso + ", primaMossa=" + primaMossa + "]";
+	}
+
 
 	public enum StatoMossa {
 		FATTO {

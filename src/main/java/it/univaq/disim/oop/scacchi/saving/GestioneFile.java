@@ -5,22 +5,50 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 
 public class GestioneFile {
+	
+	public void ScriviFile(List<Mossa> mosse) {
 		
-	public File CreaFile() {
+		Iterator<Mossa> listaMosse = mosse.iterator();
+		List<String> elencoMosse = new ArrayList<String>();
+			
+		for(Mossa mossa: mosse) {
+			String s = (String) mossa.toString();
+			elencoMosse.add(s);
+		}
+		
+		Path file = CreaFile();
+
+		try {
+			Files.write(file, elencoMosse, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+		
+	public Path CreaFile() {
 		
 		String cartella = CreaCartella();
 		Path percorsoFile = NomeFile(cartella);
+		Path pathFile = null;
 		
 		try {
-			Files.createFile(percorsoFile);
+			pathFile = Files.createFile(percorsoFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return pathFile;
 	}
 	
 	private static Path NomeFile(String cartella) {

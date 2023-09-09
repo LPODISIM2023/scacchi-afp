@@ -188,6 +188,16 @@ public class Tabella extends Observable {
 		});
 		fileMenu.add(nuovoTxt);
 		
+		final JMenuItem scriviTxt = new JMenuItem("Salva partita");
+		scriviTxt.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				Tabella.get().getGestioneFile().ScriviFile(Tabella.get().getRegistroMosse().getMosse());
+				System.out.println("Nuovo file creato");
+			}
+		});
+		fileMenu.add(scriviTxt);
+		
 		final JMenuItem apriTxt = new JMenuItem("Carica File");
 		apriTxt.addActionListener(new ActionListener() {
 
