@@ -51,7 +51,7 @@ public class GestioneFile {
 		return pathFile;
 	}
 	
-	private static Path NomeFile(String cartella) {
+	public Path NomeFile(String cartella) {
 		
 		String nomeFile = "game";
 		final String nome = nomeFile;
