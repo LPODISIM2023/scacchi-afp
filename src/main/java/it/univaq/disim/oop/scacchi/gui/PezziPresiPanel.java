@@ -27,6 +27,8 @@ public class PezziPresiPanel extends JPanel {
 	private static final Color COLORE_PANNELLO = Color.BLUE;
 	private static final Dimension DIMENSIONE_PEZZI_PRESI = new Dimension(40, 80);
 	private static final EtchedBorder BORDO_PANNELLO = new EtchedBorder(EtchedBorder.RAISED);
+	
+	int pezziPresiTot;
 
 	public PezziPresiPanel() {
 		super(new BorderLayout());
@@ -86,7 +88,7 @@ public class PezziPresiPanel extends JPanel {
 				e.printStackTrace();
 			}
 		}
-
+		
 		for (final Pezzo pezzoPreso : pezziPresiNeri) {
 			try {
 				final BufferedImage image = ImageIO.read(new File("art/pezzi/"
@@ -102,6 +104,13 @@ public class PezziPresiPanel extends JPanel {
 		}
 
 		validate();
+		
+		pezziPresiTot = pezziPresiBianchi.size() + pezziPresiNeri.size();
+	}
+	
+	public int getPezziPresiTot() {
+				
+		return pezziPresiTot;
 	}
 
 }

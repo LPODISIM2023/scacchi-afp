@@ -24,7 +24,7 @@
                 </execution>
             </executions>
             <configuration>
-                <mainClass>JScacchi</mainClass>
+                <mainClass>Partita</mainClass>
             </configuration>
         </plugin>
     </plugins>

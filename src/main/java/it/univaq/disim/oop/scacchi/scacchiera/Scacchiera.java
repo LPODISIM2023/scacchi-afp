@@ -154,7 +154,7 @@ public class Scacchiera {
 
 		return costruttore.crea();
 	}
-
+	
 	public static class Costruttore {
 		Map<Integer, Pezzo> scacchieraConfig;
 		Colore prossimaMossaFatta;

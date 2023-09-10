@@ -15,11 +15,14 @@ import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 
 public class GestioneFile {
 	
-	public void ScriviFile(List<Mossa> mosse) {
+	public void ScriviFile(List<Mossa> mosse, int pezziPresi) {
 		
 		Iterator<Mossa> listaMosse = mosse.iterator();
 		List<String> elencoMosse = new ArrayList<String>();
-			
+		
+		String st = "" + pezziPresi;
+		elencoMosse.add(st);
+		
 		for(Mossa mossa: mosse) {
 			String s = (String) mossa.toString();
 			elencoMosse.add(s);
@@ -28,6 +31,7 @@ public class GestioneFile {
 		Path file = CreaFile();
 
 		try {
+			//Files.write(file, pezziPresi.getBytes(), )
 			Files.write(file, elencoMosse, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

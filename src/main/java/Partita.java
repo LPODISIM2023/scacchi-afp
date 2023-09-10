@@ -1,7 +1,7 @@
 import it.univaq.disim.oop.scacchi.gui.Tabella;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
 
-public class JScacchi {
+public class Partita {
 
 	public static void main(String[] args) {
 

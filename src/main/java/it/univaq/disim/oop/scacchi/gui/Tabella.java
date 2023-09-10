@@ -29,6 +29,8 @@ import it.univaq.disim.oop.scacchi.pezzi.Pezzo;
 import it.univaq.disim.oop.scacchi.player.Giocatore;
 import it.univaq.disim.oop.scacchi.saving.GestioneFile;
 import it.univaq.disim.oop.scacchi.saving.LetturaFile;
+import it.univaq.disim.oop.scacchi.saving.OrdinaMosse;
+import it.univaq.disim.oop.scacchi.saving.OrdinaPezziPresi;
 import it.univaq.disim.oop.scacchi.scacchiera.Casella;
 import it.univaq.disim.oop.scacchi.scacchiera.Mossa;
 import it.univaq.disim.oop.scacchi.scacchiera.Scacchiera;
@@ -44,6 +46,8 @@ public class Tabella extends Observable {
 	private final GiocoSetup giocoSetup;
 	private final GestioneFile gestioneFile;
 	private final LetturaFile letturaFile;
+	private final OrdinaMosse ordinaMosse;
+	private final OrdinaPezziPresi ordinaPezziPresi;
 	private final Pareggio pareggio;
 	private final Scacco scacco;
 	private final ScaccoMatto scaccoMatto;
@@ -78,6 +82,8 @@ public class Tabella extends Observable {
 		this.setIconaPezzoPath("art/pezzi/");
 		this.gestioneFile = new GestioneFile();
 		this.letturaFile = new LetturaFile();
+		this.ordinaMosse = new OrdinaMosse();
+		this.ordinaPezziPresi = new OrdinaPezziPresi();
 		this.storicoGiocoPanel = new StoricoGiocoPanel();
 		this.pezziPresiPanel = new PezziPresiPanel();
 		this.scacchieraPanel = new ScacchieraPanel();
@@ -138,6 +144,14 @@ public class Tabella extends Observable {
 		return this.letturaFile;
 	}
 	
+	private OrdinaMosse getOrdinaMosse() {
+		return this.ordinaMosse;
+	}
+	
+	private OrdinaPezziPresi getOrdinaPezziPresi() {
+		return this.ordinaPezziPresi;
+	}
+	
 	private Pareggio getPareggio() {
 		return this.pareggio;
 	}
@@ -168,6 +182,7 @@ public class Tabella extends Observable {
 	private JMenuBar creaTabellaMenuBar() {
 		final JMenuBar tabellaMenuBar = new JMenuBar();
 		tabellaMenuBar.add(creaFileMenu());
+		tabellaMenuBar.add(creaMenuOrdinamenti());
 		tabellaMenuBar.add(creaMenuPreferenze());
 		tabellaMenuBar.add(creaMenuOpzioni());
 		return tabellaMenuBar;
@@ -190,7 +205,7 @@ public class Tabella extends Observable {
 		scriviTxt.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Tabella.get().getGestioneFile().ScriviFile(Tabella.get().getRegistroMosse().getMosse());
+				Tabella.get().getGestioneFile().ScriviFile(Tabella.get().getRegistroMosse().getMosse(), Tabella.get().getPezziPresiPanel().getPezziPresiTot());
 				System.out.println("Nuovo file creato");
 			}
 		});
@@ -215,7 +230,34 @@ public class Tabella extends Observable {
 		fileMenu.add(exitMenuItem);
 		return fileMenu;
 	}
+	
+	//Menu ordinamenti
+	private JMenu creaMenuOrdinamenti() {
+		final JMenu ordinamentiMenu = new JMenu("Ordina File");
+		
+		final JMenuItem ordinaPezziPresi = new JMenuItem("Ordinamento pezzi presi");
+		ordinaPezziPresi.addActionListener(new ActionListener() {
 
+			public void actionPerformed(ActionEvent e) {
+				Tabella.get().getOrdinaPezziPresi().ordina();
+				System.out.println("Files ordinati per numero di pezzi presi, in maniera crescente");
+			}
+		});
+		ordinamentiMenu.add(ordinaPezziPresi);
+		
+		final JMenuItem ordinaMosse = new JMenuItem("Ordinamento mosse effettuate");
+		ordinaMosse.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				Tabella.get().getOrdinaMosse().ordina();
+				System.out.println("Files ordinati in maniera decrescente, dal quello con piu mosse al file con meno mosse");
+			}
+		});
+		ordinamentiMenu.add(ordinaMosse);
+		
+		return ordinamentiMenu;
+	}
+	
 	// Menu Preferenze
 	private JMenu creaMenuPreferenze() {
 		final JMenu preferencesMenu = new JMenu("Preferenze");
