@@ -1,0 +1,46 @@
+6
+e4
+d5
+exd5
+Pe6
+Qf3
+exd5
+Mossa [scacchiera=  t  c  a  q  k  a  c  t
+  p  p  p  -  -  p  p  p
+  -  -  -  -  -  -  -  -
+  -  -  -  p  -  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  Q  -  -
+  P  P  P  P  -  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=27, pezzoMosso=Q, primaMossa=true]
+Pf6
+Mossa [scacchiera=  t  c  a  q  k  a  c  t
+  p  p  p  -  -  -  p  p
+  -  -  -  -  -  p  -  -
+  -  -  -  Q  -  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  P  -  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=9, pezzoMosso=Q, primaMossa=true]
+Ag4
+Mossa [scacchiera=  t  c  -  q  k  a  c  t
+  p  Q  p  -  -  -  p  p
+  -  -  -  -  -  p  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  a  -
+  -  -  -  -  -  -  -  -
+  P  P  P  P  -  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=0, pezzoMosso=Q, primaMossa=true]
+Qd3
+Mossa [scacchiera=  Q  c  -  -  k  a  c  t
+  p  -  p  -  -  -  p  p
+  -  -  -  -  -  p  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  a  -
+  -  -  -  q  -  -  -  -
+  P  P  P  P  -  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=1, pezzoMosso=Q, primaMossa=true]

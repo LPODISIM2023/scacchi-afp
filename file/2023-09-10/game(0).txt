@@ -1,0 +1,15 @@
+3
+d4
+e5
+dxe5
+Pd6
+exd6
+Mossa [scacchiera=  t  c  a  q  k  a  c  t
+  p  p  p  -  -  p  p  p
+  -  -  -  P  -  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  P  P  P  P
+  T  C  A  Q  K  A  C  T
+, coordinateDestinazione=19, pezzoMosso=Q, primaMossa=true]

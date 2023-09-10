@@ -1,0 +1,71 @@
+8
+d4
+e5
+dxe5
+d5
+Mossa [scacchiera=  t  c  a  q  k  a  c  t
+  p  p  p  -  -  p  p  p
+  -  -  -  -  -  -  -  -
+  -  -  -  p  P  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  P  P  P  P
+  T  C  A  Q  K  A  C  T
+, coordinateDestinazione=27, pezzoMosso=Q, primaMossa=true]
+Ae6
+Mossa [scacchiera=  t  c  -  q  k  a  c  t
+  p  p  p  -  -  p  p  p
+  -  -  -  -  a  -  -  -
+  -  -  -  Q  P  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  P  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=9, pezzoMosso=Q, primaMossa=true]
+Ac4
+Mossa [scacchiera=  t  c  -  q  k  a  c  t
+  p  Q  p  -  -  p  p  p
+  -  -  -  -  -  -  -  -
+  -  -  -  -  P  -  -  -
+  -  -  a  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  P  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=0, pezzoMosso=Q, primaMossa=true]
+Mossa [scacchiera=  Q  c  -  q  k  a  c  t
+  p  -  p  -  -  p  p  p
+  -  -  -  -  -  -  -  -
+  -  -  -  -  P  -  -  -
+  -  -  a  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  P  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=52, pezzoMosso=A, primaMossa=true]
+Mossa [scacchiera=  Q  c  -  q  k  a  c  t
+  p  -  p  -  -  p  p  p
+  -  -  -  -  -  -  -  -
+  -  -  -  -  P  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  a  P  P  P
+  T  C  A  -  K  A  C  T
+, coordinateDestinazione=52, pezzoMosso=A, primaMossa=true]
+Pc6
+Mossa [scacchiera=  Q  c  -  q  k  a  c  t
+  p  -  -  -  -  p  p  p
+  -  -  p  -  -  -  -  -
+  -  -  -  -  P  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  A  P  P  P
+  T  C  A  -  K  -  C  T
+, coordinateDestinazione=1, pezzoMosso=Q, primaMossa=true]
+Mossa [scacchiera=  -  Q  -  q  k  a  c  t
+  p  -  -  -  -  p  p  p
+  -  -  p  -  -  -  -  -
+  -  -  -  -  P  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  -  -
+  P  P  P  -  A  P  P  P
+  T  C  A  -  K  -  C  T
+, coordinateDestinazione=1, pezzoMosso=Q, primaMossa=true]

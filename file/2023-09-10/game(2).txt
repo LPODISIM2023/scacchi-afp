@@ -1,0 +1,13 @@
+1
+g4
+Pd6
+Pf3
+Mossa [scacchiera=  t  c  a  q  k  a  c  t
+  p  p  p  -  p  p  p  p
+  -  -  -  p  -  -  -  -
+  -  -  -  -  -  -  -  -
+  -  -  -  -  -  -  P  -
+  -  -  -  -  -  P  -  -
+  P  P  P  P  P  -  -  P
+  T  C  A  Q  K  A  C  T
+, coordinateDestinazione=38, pezzoMosso=A, primaMossa=true]
